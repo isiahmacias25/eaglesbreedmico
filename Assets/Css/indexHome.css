@@ -68,15 +68,30 @@ header p {
     font-size: 1.5rem;
 }
 
-/* Slogan Styling */
+/* Slogan Styling with a cool effect */
 .ebffeb {
-  font-size: 30px; /* Larger font for emphasis */
+  font-size: 50px; /* Larger font size for emphasis */
   font-weight: bold; /* Make the text bold */
-  color: #ff5733; /* Vibrant color for the slogan */
+  color: black; /* Black color for the text */
   text-align: center; /* Center the text */
-  margin-top: 20px; /* Add space above */
-  margin-bottom: 20px; /* Add space below */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); /* Shadow for contrast */
+  margin-top: 40px; /* Add space above */
+  margin-bottom: 40px; /* Add space below */
+  text-transform: uppercase; /* Make the text all caps */
+  letter-spacing: 3px; /* Adds spacing between letters */
+  font-family: 'Arial', sans-serif; /* Modern, clean font */
+  text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.7), 0 0 25px rgba(255, 87, 51, 0.8); /* Glow effect with shadow */
+  animation: slideIn 2s ease-out; /* Cool sliding effect */
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(100px); /* Start from below */
+    opacity: 0; /* Fade in */
+  }
+  to {
+    transform: translateY(0); /* End at normal position */
+    opacity: 1; /* Fully visible */
+  }
 }
 
 .content-container p {
