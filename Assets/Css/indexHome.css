@@ -145,7 +145,7 @@ nav ul li a:hover {
 }
 
 .banner {
-  background-image: url('banner.heic'); /* Replace with your image path */
+  background-image: url('logo.PNG'); /* Replace with your image path */
   background-size: cover; /* Ensures the image covers the entire banner */
   background-position: center; /* Centers the image */
   height: 250px; /* Adjust height based on your preference */
