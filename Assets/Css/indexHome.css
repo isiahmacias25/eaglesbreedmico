@@ -105,3 +105,30 @@ footer {
     padding: 20px 0;
     font-size: 0.9rem;
 }
+
+nav {
+  background-color: #333; /* Dark background color */
+  text-align: center;
+  padding: 10px 0;
+}
+
+nav ul {
+  list-style-type: none;
+}
+
+nav ul li {
+  display: inline-block;
+  margin: 0 15px;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: white; /* White text */
+  font-size: 16px;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+  color: #ff5733; /* Orange color when hovered */
+}
