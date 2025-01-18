@@ -87,6 +87,15 @@ header p {
     background-color: #0056b3;
 }
 
+.logo img {
+    width: 150px; /* Adjust size as needed */
+    height: 150px; /* Ensure it's a perfect square */
+    border-radius: 50%; /* Makes it a circle */
+    object-fit: cover; /* Ensures the image fits nicely inside the circle */
+    border: 4px solid #333; /* Optional border around the sphere */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Optional shadow for a 3D effect */
+}
+
 /* Footer styling */
 footer {
     background: #333;
