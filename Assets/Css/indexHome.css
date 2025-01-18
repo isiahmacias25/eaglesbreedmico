@@ -73,7 +73,7 @@ header p {
     font-size: 1rem;
 }
 
-.welcome-container .btn {
+.content-container .btn {
     display: inline-block;
     padding: 10px 20px;
     background: #007bff;
@@ -84,7 +84,7 @@ header p {
     margin-top: 1rem;
 }
 
-.welcome-container .btn:hover {
+.content-container .btn:hover {
     background-color: #0056b3;
 }
 
