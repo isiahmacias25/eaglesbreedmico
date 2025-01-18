@@ -68,6 +68,17 @@ header p {
     font-size: 1.5rem;
 }
 
+/* Slogan Styling */
+.ebffeb {
+  font-size: 30px; /* Larger font for emphasis */
+  font-weight: bold; /* Make the text bold */
+  color: #ff5733; /* Vibrant color for the slogan */
+  text-align: center; /* Center the text */
+  margin-top: 20px; /* Add space above */
+  margin-bottom: 20px; /* Add space below */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); /* Shadow for contrast */
+}
+
 .content-container p {
     margin: 1rem 0;
     font-size: 1rem;
