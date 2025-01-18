@@ -132,3 +132,21 @@ nav ul li a {
 nav ul li a:hover {
   color: #ff5733; /* Orange color when hovered */
 }
+
+.banner {
+  background-image: url('banner.heic'); /* Replace with your image path */
+  background-size: cover; /* Ensures the image covers the entire banner */
+  background-position: center; /* Centers the image */
+  height: 250px; /* Adjust height based on your preference */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner p {
+  color: white; /* Text color */
+  font-size: 24px; /* Font size */
+  font-weight: bold; /* Bold text */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); /* Adds a shadow to make text stand out */
+  margin: 0;
+}
