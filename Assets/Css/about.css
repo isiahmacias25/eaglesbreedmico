@@ -1,0 +1,19 @@
+.btn {
+  background-color: #333; /* Dark background color */
+  color: white; /* Text color */
+  padding: 12px 24px; /* Padding around the text */
+  border: 2px solid #fff; /* White border around the button */
+  border-radius: 8px; /* Rounded corners */
+  font-size: 16px; /* Font size */
+  font-weight: bold; /* Bold text */
+  text-transform: uppercase; /* Uppercase text */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: all 0.3s ease-in-out; /* Smooth transition for hover effect */
+}
+
+.btn:hover {
+  background-color: #fff; /* Light background on hover */
+  color: #333; /* Dark text on hover */
+  transform: translateY(-3px); /* Slight upward movement on hover */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Box shadow on hover */
+}
