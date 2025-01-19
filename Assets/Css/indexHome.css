@@ -161,6 +161,7 @@ nav ul li a:hover {
 
 .banner {
   background-image: url('banner.jpg'); /* Replace with your image path */
+  background-size: cover; /* Ensures the image scales to fit the banner */
   height: 250px; /* Adjust height based on your preference */
   display: flex;
   align-items: center;
