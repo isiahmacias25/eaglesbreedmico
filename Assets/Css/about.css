@@ -9,6 +9,8 @@
   text-transform: uppercase; /* Uppercase text */
   cursor: pointer; /* Pointer cursor on hover */
   transition: all 0.3s ease-in-out; /* Smooth transition for hover effect */
+  margin-top: 10px; /* Space between the button and any following text */
+  margin-bottom: 10px; /* Space between the button and any following text */
 }
 
 .btn:hover {
