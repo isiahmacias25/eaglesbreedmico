@@ -24,3 +24,9 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
     document.getElementById("loginError").style.display = "block";
   }
 });
+
+function logout() {
+  localStorage.removeItem("token");
+  document.getElementById("loginForm").style.display = "block";
+  document.getElementById("membersContent").style.display = "none";
+}
