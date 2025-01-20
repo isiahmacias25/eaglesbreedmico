@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Members Portal | Eagles Breed Brotherhood MC</title>
+  <link rel="stylesheet" href="../Assets/Css/layout.css">
+  <link rel="stylesheet" href="../Assets/Css/membersPortal.css">
+  <script src="../Assets/Js/layout.js" defer></script>
+  <script src="../Assets/Js/membersPortal.js" defer></script>
+</head>
+<body>
+   <header>
+        <h1>Eagles Breed Brotherhood MC</h1>
+        <p>Miami County, Ohio Chapter</p>
+  </header>
+
+  <div class="content-container">
+
+    <h1>Members Portal</H1>
+     
+     <nav>
+        <ul>
+          <li><a href="../home.html">Home Page</a></li>
+          <li><a href="../About/about.html">About Us</a></li>
+          <li><a href="../Events/events.html">Events</a></li>
+          <li><a href="#">Supporter Menu</a></li>
+          <li><a href="../MembersPortal/membersPortal.html">Members Portal</a></li>
+        </ul>
+      </nav>
+  
+
+    <h2>Member Login</h2>
+    <form action="/login" method="POST">
+      <div class="form-group">
+        <label for="roadName">Road Name:</label>
+        <input type="text" id="roadName" name="roadName" placeholder="Enter your road name" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+      </div>
+      
+      <button type="submit" class="login-btn">Login</button>
+    </form>
+
+    <p id="loginError" style="color: red; display: none;">Invalid road name or password</p>
+
+    <div id="membersContent" style="display: none;">
+      <h2 id="welcomeMessage"></h2>
+      <p>Welcome to the Eagles Breed Brotherhood Members Portal.</p>
+      <ul>
+        <li><a href="#">Manage Events</a></li>
+        <li><a href="#">Update Profile</a></li>
+        <li><a href="#" onclick="logout()">Logout</a></li>
+      </ul>
+    </div>
+
+
+  </div>
+<footer class="footer">
+  <div class="footer-content">
+    <p>
+      Facebook: 
+      <a href="https://www.facebook.com/Eagles-Breed-Brotherhood-Miami-County-Chapter" target="_blank">
+        Eagles Breed Brotherhood Miami County Chapter
+      </a>
+    </p>
+    <p>Email: <a href="mailto:ebb.miamicounty@gmail.com">ebb.miamicounty@gmail.com</a></p>
+    <p>Phone: <a href="tel:9375387128">(937) 538-7128</a></p>
+    <p id="timer"></p>
+  </div>
+</footer>
+
+</body>
+</html>
