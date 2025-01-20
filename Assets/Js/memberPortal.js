@@ -14,8 +14,12 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
   const result = await response.json();
 
   if (response.ok) {
-    localStorage.setItem("token", result.token);  // Save token for authentication
-    window.location.href = "members-portal.html"; // Redirect to members area
+    localStorage.setItem("token", result.token);  // Store the token locally
+
+    // Hide login form and show members-only content
+    document.getElementById("loginForm").style.display = "none";
+    document.getElementById("membersContent").style.display = "block";
+    document.getElementById("welcomeMessage").textContent = `Welcome, ${roadName}!`;
   } else {
     document.getElementById("loginError").style.display = "block";
   }
