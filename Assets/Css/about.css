@@ -1,0 +1,24 @@
+.btn {
+  background-color: #333;
+  color: white;
+  padding: 12px 24px;
+  border: 2px solid #fff;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  display: inline-block; /* Ensures button is inline and doesn’t overlap */
+  margin-right: 10px; /* Adds space between button and text */
+  margin-top: 10px; /* Adds space above button */
+  margin-bottom: 10px; /* Adds space below button */
+  vertical-align: middle; /* Ensures the button aligns correctly vertically */
+}
+
+.btn:hover {
+  background-color: #fff;
+  color: #333;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
