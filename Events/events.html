@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../Assets/Css/layout.css">
   <link rel="stylesheet" href="../Assets/Css/events.css">
   <script src="../Assets/Js/layout.js" defer></script>
+  <script src="../Assets/Js/events.js" defer></script>
 </head>
 <body>
    <header>
@@ -28,7 +29,28 @@
         </ul>
       </nav>
   
+  <div class="calendar-grid">
+  <button class="month-btn" data-month="01">January</button>
+  <button class="month-btn" data-month="02">February</button>
+  <button class="month-btn" data-month="03">March</button>
+  <button class="month-btn" data-month="04">April</button>
+  <button class="month-btn" data-month="05">May</button>
+  <button class="month-btn" data-month="06">June</button>
+  <button class="month-btn" data-month="07">July</button>
+  <button class="month-btn" data-month="08">August</button>
+  <button class="month-btn" data-month="09">September</button>
+  <button class="month-btn" data-month="10">October</button>
+  <button class="month-btn" data-month="11">November</button>
+  <button class="month-btn" data-month="12">December</button>
+</div>
 
+<div id="calendar-popup" class="popup">
+  <div class="popup-content">
+    <span class="close-btn">&times;</span>
+    <h2 id="popup-month-title"></h2>
+    <div id="calendar"></div>
+  </div>
+</div>
 
   </div>
 <footer class="footer">
