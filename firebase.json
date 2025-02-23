@@ -9,7 +9,7 @@
     "rewrites": [
       {
         "source": "/membersPortal",
-        "destination": "/pages/membersPortal.html"
+        "destination": "/MembersPortal/membersPortal.html"
       }
     ]
   }
