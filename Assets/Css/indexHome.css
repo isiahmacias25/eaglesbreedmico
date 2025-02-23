@@ -76,15 +76,14 @@
   top: -5px;  /* Adjust to touch the top edge of the popup */
   right: -5px; /* Adjust to touch the right edge of the popup */
   background-color: red; /* Red box for the "X" button */
-  border-radius: 50%; /* Rounded square corners */
   width: 35px; /* Size of the "X" button container */
   height: 35px; /* Ensure it stays square */
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Optional: add a shadow to make it pop */
-  border: 2px solid black; /* Black border to contrast with the white */
+  border border:: 2px solid black; /* Black border to contrast with the white */
+  border-radius: 0; /* Square corners, no rounding */
 }
 
 /* Close button (X) inside the red box */
@@ -93,11 +92,4 @@
   font-size: 18px; /* Adjust the font size */
   font-weight: bold;
   line-height: 0; /* Adjust to center the "X" */
-  text-align: center; /* Center the "X" */
-}
-
-/* Popup text */
-.constructionPopup p {
-  text-align: center;
-  font-size: 20px; /* Increase font size for readability */
-}
+  text-
