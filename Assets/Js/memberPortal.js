@@ -3,12 +3,13 @@ import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/fir
 
 // Firebase configuration (replace with your Firebase project config)
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID",
+  apiKey: "AIzaSyChVYbT54aRIbAHyy_HRsH7caRHyaZwWTA",
+  authDomain: "eaglesbreedmico.firebaseapp.com",
+  projectId: "eaglesbreedmico",
+  storageBucket: "eaglesbreedmico.firebasestorage.app",
+  messagingSenderId: "258146487149",
+  appId: "1:258146487149:web:c443a6f9af1c929cb6e864",
+  measurementId: "G-ZR1P59C7BP"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -21,8 +22,11 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
   const password = document.getElementById("password").value.trim();
 
   try {
-    // Firebase login with the road name as email (assuming road name is used as the email)
-    const userCredential = await signInWithEmailAndPassword(auth, `${roadName}@eaglesbreedmico.com`, password);
+    // Append the domain to the road name for Firebase login
+    const email = `${roadName}@eaglesbreedmico.com`;
+
+    // Firebase login with the road name as email
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
 
     // Store token in localStorage
     const user = userCredential.user;
