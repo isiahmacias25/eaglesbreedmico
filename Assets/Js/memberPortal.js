@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-// Firebase configuration (replace with your Firebase project config)
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyChVYbT54aRIbAHyy_HRsH7caRHyaZwWTA",
   authDomain: "eaglesbreedmico.firebaseapp.com",
@@ -21,17 +21,18 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
   const roadName = document.getElementById("roadName").value.trim();
   const password = document.getElementById("password").value.trim();
 
-  // Convert road name to lowercase for Firebase Authentication
-  const formattedRoadName = roadName.replace(" ", "-").toLowerCase();
+  // Convert road name to lowercase and format for Firebase Authentication
+  const formattedRoadName = roadName.replace(/\s+/g, "-").toLowerCase(); 
 
   try {
     // Attempt login with Firebase
     const userCredential = await signInWithEmailAndPassword(auth, `${formattedRoadName}@eaglesbreedmico.com`, password);
 
-    // Store token in localStorage
+    // Store token and road name in localStorage
     const user = userCredential.user;
     const token = await user.getIdToken();
-    localStorage.setItem("token", token); // Store token for session
+    localStorage.setItem("token", token);
+    localStorage.setItem("roadName", roadName); // Store original road name
 
     // Show members-only content
     document.getElementById("loginForm").style.display = "none";
@@ -39,50 +40,30 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
     document.getElementById("welcomeMessage").textContent = `Welcome, ${roadName}!`;
 
   } catch (error) {
-    // Show error if login fails
     console.error("Login error:", error.message);
     document.getElementById("loginError").style.display = "block";
   }
 });
 
+// Check authentication state on page load
 window.onload = function() {
   const token = localStorage.getItem("token");
+  const roadName = localStorage.getItem("roadName") || "Member"; // Default to "Member" if missing
 
   if (token) {
-    // If the user has a token, show members-only content
     document.getElementById("loginForm").style.display = "none";
     document.getElementById("membersContent").style.display = "block";
+    document.getElementById("welcomeMessage").textContent = `Welcome, ${roadName}!`;
   } else {
-    // If no token, show login form
     document.getElementById("loginForm").style.display = "block";
     document.getElementById("membersContent").style.display = "none";
   }
 };
 
-document.addEventListener('DOMContentLoaded', function() {
-  // Check if user is logged in
-  const token = localStorage.getItem("token");
-
-  if (token) {
-    // User is logged in, show members content
-    document.getElementById("loginForm").style.display = "none";
-    document.getElementById("membersContent").style.display = "block";
-
-    // Show welcome message
-    const roadName = localStorage.getItem("roadName"); // Get road name from localStorage
-    document.getElementById("welcomeMessage").textContent = `Welcome, ${roadName}!`;
-  } else {
-    // User is not logged in, show login form
-    document.getElementById("loginForm").style.display = "block";
-    document.getElementById("membersContent").style.display = "none";
-  }
-
-  // Handle logout
-  window.logout = function() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("roadName");
-    document.getElementById("loginForm").style.display = "block";
-    document.getElementById("membersContent").style.display = "none";
-  };
-});
-
+// Logout function (now global)
+window.logout = function() {
+  localStorage.removeItem("token");
+  localStorage.removeItem("roadName");
+  document.getElementById("loginForm").style.display = "block";
+  document.getElementById("membersContent").style.display = "none";
+};
