@@ -29,39 +29,27 @@
     </nav>
 
     <!-- Login Form -->
-<!-- Login Form -->
-    <div id="loginForm" style="display: block;">
-      <h2>Member Login</h2>
-      <form id="loginForm">
-      <div class="form-group">
-        <label for="roadName">Road Name:</label>
-        <input type="text" id="roadName" name="roadName" placeholder="Enter your road name" required>
-      </div>
-    
-      <div class="form-group">
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" placeholder="Enter your password" required>
-      </div>
-    
-      <button type="submit" class="login-btn">Login</button>
-    </form>
+<form id="loginForm">
+  <div class="form-group">
+    <label for="roadName">Road Name:</label>
+    <input type="text" id="roadName" name="roadName" placeholder="Enter your road name" required>
+  </div>
 
+  <div class="form-group">
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+  </div>
 
+  <button type="submit" class="login-btn">Login</button>
+</form>
 
-      <p id="loginError" style="color: red; display: none;">Invalid road name or password</p>
-    </div>
+<!-- This content is hidden until login is successful -->
+<div id="membersContent" style="display: none;">
+  <h1> welcomeMessage </h1>
+  <!-- Add any other members-only content here -->
+</div>
 
-    <!-- Members-Only Content -->
-    <div id="membersContent" style="display: none;">
-      <h2 id="welcomeMessage"></h2>
-      <p>Welcome to the Eagles Breed Brotherhood Members Portal.</p>
-      <ul>
-        <li><a href="#">Manage Events</a></li>
-        <li><a href="#">Update Profile</a></li>
-        <li><a href="member_features_page.html">Other Members Features</a></li> <!-- link to other member features -->
-        <li><a href="#" onclick="logout()">Logout</a></li>
-      </ul>
-    </div>
+<div id="loginError" style="color: red; display: none;"></div>
  
   </div>
 
