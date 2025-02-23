@@ -3,13 +3,13 @@ import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/fir
 
 // Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyChVYbT54aRIbAHyy_HRsH7caRHyaZwWTA",
-  authDomain: "eaglesbreedmico.firebaseapp.com",
-  projectId: "eaglesbreedmico",
-  storageBucket: "eaglesbreedmico.firebasestorage.app",
-  messagingSenderId: "258146487149",
-  appId: "1:258146487149:web:c443a6f9af1c929cb6e864",
-  measurementId: "G-ZR1P59C7BP"
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_AUTH_DOMAIN",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_STORAGE_BUCKET",
+  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+  appId: "YOUR_APP_ID",
+  measurementId: "YOUR_MEASUREMENT_ID"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -17,13 +17,13 @@ const auth = getAuth(app);
 
 // Handle login form submission
 document.getElementById("loginForm").addEventListener("submit", async function(event) {
-  event.preventDefault();  // Prevent the form from submitting traditionally
+  event.preventDefault();
 
   const roadName = document.getElementById("roadName").value.trim();
   const password = document.getElementById("password").value.trim();
 
   // Format road name for Firebase Authentication (convert to email format)
-  const formattedRoadName = roadName.replace(/\s+/g, "-").toLowerCase();
+  const formattedRoadName = roadName.replace(/\s+/g, "-").toLowerCase(); 
 
   try {
     // Attempt to log in using Firebase
@@ -35,7 +35,7 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
     localStorage.setItem("token", token);
     localStorage.setItem("roadName", roadName); // Store original road name for personalized welcome message
 
-    // Hide the login form and show members-only content
+    // Show members-only content
     document.getElementById("loginForm").style.display = "none";
     document.getElementById("membersContent").style.display = "block";
     document.getElementById("welcomeMessage").textContent = `Welcome, ${roadName}!`;
@@ -43,7 +43,7 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
   } catch (error) {
     console.error("Login error:", error.message);
 
-    // Show error messages based on the error
+    // Show different error messages based on the error
     if (error.code === "auth/user-not-found") {
       document.getElementById("loginError").textContent = "No user found with that road name.";
     } else if (error.code === "auth/wrong-password") {
@@ -54,7 +54,6 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
     document.getElementById("loginError").style.display = "block";
   }
 });
-
 
 // Check if the user is already authenticated on page load
 window.onload = function() {
@@ -72,7 +71,6 @@ window.onload = function() {
     document.getElementById("membersContent").style.display = "none";
   }
 };
-
 
 // Logout function
 window.logout = function() {
