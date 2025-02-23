@@ -44,15 +44,20 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
     console.error("Login error:", error.message);
 
     // Show different error messages based on the error
+    let errorMessage = "An error occurred. Please try again."; // Default error message
+
     if (error.code === "auth/user-not-found") {
-      document.getElementById("loginError").textContent = "No user found with that road name.";
+      errorMessage = "No user found with that road name.";
     } else if (error.code === "auth/wrong-password") {
-      document.getElementById("loginError").textContent = "Incorrect password. Please try again.";
-    } else {
-      document.getElementById("loginError").textContent = "An error occurred. Please try again.";
+      errorMessage = "Incorrect password. Please try again.";
+    } else if (error.code === "auth/invalid-email") {
+      errorMessage = "Invalid email format. Please check your road name.";
     }
+
+    document.getElementById("loginError").textContent = errorMessage;
     document.getElementById("loginError").style.display = "block";
-  }
+}
+
 });
 
 // Check if the user is already authenticated on page load
