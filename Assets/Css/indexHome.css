@@ -40,3 +40,42 @@
 .content-container .btn:hover {
     background-color: #0056b3;
 }
+
+/* Popup style */
+.constructionPopup {
+  display: block; /* Display it by default */
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  width: 300px;
+  padding: 20px;
+  border: 2px solid white;
+  border-radius: 10px;
+  color: white;
+  font-family: Arial, sans-serif;
+  z-index: 1000;
+}
+
+/* Popup content style */
+.constructionPopup-content {
+  position: relative;
+}
+
+/* Close button */
+.constructionClose-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  color: red;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Popup text */
+.constructionPopup p {
+  text-align: center;
+  font-size: 16px;
+}
+
