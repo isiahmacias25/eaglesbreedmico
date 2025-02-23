@@ -9,8 +9,7 @@
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    background-image: url('https://via.placeholder.com/1500x1000') !important;
-
+    background-image: url('../Images/americanFlag.jpg') !important;
     background-size: cover;
     background-position: center;
     color: #333;
