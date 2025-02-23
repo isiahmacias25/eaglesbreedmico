@@ -52,7 +52,7 @@
   width: 400px; /* Half of the content container width */
   height: 400px; /* 75% of the viewport height */
   padding: 20px;
-  border: 3px solid white; /* White border around the popup */
+  border: 5px solid white; /* Thicker white border to encase the red X button */
   border-radius: 10px;
   color: white;
   font-family: Arial, sans-serif;
@@ -73,17 +73,18 @@
 /* Close button container (red box) */
 .constructionClose-btn-container {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: -5px;  /* Adjust to touch the top edge of the popup */
+  right: -5px; /* Adjust to touch the right edge of the popup */
   background-color: red; /* Red box for the "X" button */
-  border-radius: 50%; /* Round shape like a close window button */
-  width: 30px;
-  height: 30px;
+  border-radius: 4px; /* Square corners for a button look */
+  width: 35px; /* Adjust the size to make it square */
+  height: 35px; /* Ensure it stays square */
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Optional: add a shadow to make it pop */
+  border: 2px solid black; /* Add a black border to contrast with the white */
 }
 
 /* Close button (X) inside the red box */
