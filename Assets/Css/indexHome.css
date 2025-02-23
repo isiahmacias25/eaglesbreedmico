@@ -49,7 +49,7 @@
   left: 50%;
   transform: translateX(-50%); /* Center horizontally */
   background-color: rgba(0, 0, 0, 0.7);
-  width: 50vw; /* Half of the viewport width (50% of content container) */
+  width: 45%; /* Half of the content container width, adjusted for 90% width of content-container */
   height: 75vh; /* 75% of the viewport height */
   padding: 20px;
   border: 2px solid white;
