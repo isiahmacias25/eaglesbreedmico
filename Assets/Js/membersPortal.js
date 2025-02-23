@@ -18,7 +18,7 @@ const auth = getAuth(app);
 
 // Handle login form submission
 document.getElementById("loginForm").addEventListener("submit", async function(event) {
-  event.preventDefault(); // Prevent form submission (no page reload)
+  event.preventDefault();  // Prevents the form from submitting traditionally
 
   const roadName = document.getElementById("roadName").value.trim();
   const password = document.getElementById("password").value.trim();
@@ -36,7 +36,7 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
     localStorage.setItem("token", token);
     localStorage.setItem("roadName", roadName); // Store original road name for personalized welcome message
 
-    // Hide login form and show members-only content
+    // Show members-only content
     document.getElementById("loginForm").style.display = "none";
     document.getElementById("membersContent").style.display = "block";
     document.getElementById("welcomeMessage").textContent = `Welcome, ${roadName}!`;
@@ -55,6 +55,7 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
     document.getElementById("loginError").style.display = "block";
   }
 });
+
 
 // Check if the user is already authenticated on page load
 window.onload = function() {
