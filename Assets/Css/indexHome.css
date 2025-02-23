@@ -74,8 +74,8 @@
 /* Close button container (red box) */
 .constructionClose-btn-container {
   position: absolute;
-  top: -8px;  /* Position inside the white border */
-  right: -8px; /* Position inside the white border */
+  top: -8px;  /* This places the red box within the white border */
+  right: -8px; /* This places it within the white border on the right */
   background-color: red; /* Red box for the "X" button */
   width: 30px; /* Button size */
   height: 30px; /* Keep it square */
@@ -84,6 +84,7 @@
   align-items: center;
   cursor: pointer;
   border-radius: 0; /* Square corners */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Optional: shadow to make the button pop */
 }
 
 /* Close button (X) inside the red box */
