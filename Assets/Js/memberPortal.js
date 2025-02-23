@@ -21,23 +21,25 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
   const roadName = document.getElementById("roadName").value.trim();
   const password = document.getElementById("password").value.trim();
 
-  try {
-    // Append the domain to the road name for Firebase login
-    const email = `${roadName}@eaglesbreedmico.com`;
+  // Convert road name to lowercase for Firebase Authentication
+  const formattedRoadName = roadName.replace(" ", "-").toLowerCase();
 
-    // Firebase login with the road name as email
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+  try {
+    // Attempt login with Firebase
+    const userCredential = await signInWithEmailAndPassword(auth, `${formattedRoadName}@eaglesbreedmico.com`, password);
 
     // Store token in localStorage
     const user = userCredential.user;
     const token = await user.getIdToken();
-    localStorage.setItem("token", token);
+    localStorage.setItem("token", token); // Store token for session
 
-    // Hide login form and show members-only content
+    // Show members-only content
     document.getElementById("loginForm").style.display = "none";
     document.getElementById("membersContent").style.display = "block";
     document.getElementById("welcomeMessage").textContent = `Welcome, ${roadName}!`;
+
   } catch (error) {
+    // Show error if login fails
     console.error("Login error:", error.message);
     document.getElementById("loginError").style.display = "block";
   }
