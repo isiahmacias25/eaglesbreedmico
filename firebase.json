@@ -1,6 +1,6 @@
 {
-  "hosting": {
-    "public": "./",
+ "hosting": {
+    "public": ".",  // Points to the root directory where index.html is located
     "ignore": [
       "firebase.json",
       "**/.*",
