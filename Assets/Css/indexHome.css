@@ -48,7 +48,7 @@
   top: 20%; /* Adjust vertical position */
   left: 50%;
   transform: translateX(-50%); /* Center horizontally */
-  background-color: black; /* Solid black background */
+  background-color: black; /* Solid black background for the entire popup */
   width: 400px; /* Half of the content container width */
   height: 400px; /* 75% of the viewport height */
   padding: 20px;
@@ -83,7 +83,7 @@
   align-items: center;
   cursor: pointer;
   border: 2px solid black; /* Black border to contrast with the white popup border */
-  border-radius: 0; /* Square corners, no rounding */
+  border-radius: 0; /* Square corners */
 }
 
 /* Close button (X) inside the red box */
