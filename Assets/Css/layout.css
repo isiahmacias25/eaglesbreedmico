@@ -9,14 +9,15 @@
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    background-image: url('Assets/Images/americanFlag.jpg'); /* Replace with your actual image path */
-    background-size: cover; /* Ensure the image covers the entire screen */
-    background-position: center; /* Center the image */
+    background-image: url('AmericanFlag.jpg') !important; /* Make sure the image takes precedence */
+    background-size: cover;
+    background-position: center;
     color: #333;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
+
 
 /* Header styling */
 header {
