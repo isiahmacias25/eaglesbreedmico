@@ -46,7 +46,10 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
 });
 
 function logout() {
+  // Remove token from localStorage
   localStorage.removeItem("token");
+
+  // Show login form and hide members-only content
   document.getElementById("loginForm").style.display = "block";
   document.getElementById("membersContent").style.display = "none";
 }
