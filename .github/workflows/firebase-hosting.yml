@@ -27,7 +27,8 @@ jobs:
 
       - name: Firebase deploy
         run: |
-          firebase deploy --token ${{ secrets.FIREBASE_AUTH_TOKEN }}
+          firebase deploy --project eaglesbreedmico --token ${{ secrets.FIREBASE_AUTH_TOKEN }}
+
         env:
           FIREBASE_AUTH_TOKEN: ${{ secrets.FIREBASE_AUTH_TOKEN }}
  
