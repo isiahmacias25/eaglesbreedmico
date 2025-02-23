@@ -52,7 +52,7 @@
   width: 400px; /* Half of the content container width */
   height: 400px; /* 75% of the viewport height */
   padding: 20px;
-  border: 10px solid white; /* Thicker white border around the popup */
+  border: 15px solid white; /* Increased the white border size */
   border-radius: 10px;
   color: white;
   font-family: Arial, sans-serif;
@@ -77,8 +77,8 @@
   top: -5px;  /* Adjust to touch the top edge of the popup */
   right: -5px; /* Adjust to touch the right edge of the popup */
   background-color: red; /* Red box for the "X" button */
-  width: 35px; /* Size of the "X" button container */
-  height: 35px; /* Ensure it stays square */
+  width: 45px; /* Increase size of the "X" button container */
+  height: 45px; /* Ensure it stays square */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -90,7 +90,7 @@
 /* Close button (X) inside the red box */
 .constructionClose-btn-container .constructionClose-btn {
   color: white; /* White "X" */
-  font-size: 18px; /* Adjust the font size */
+  font-size: 22px; /* Increase the font size for the "X" */
   font-weight: bold;
   line-height: 0; /* Adjust to center the "X" */
   text-align: center; /* Center the "X" */
