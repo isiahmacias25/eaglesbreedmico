@@ -48,16 +48,17 @@
   top: 20%; /* Adjust vertical position */
   left: 50%;
   transform: translateX(-50%); /* Center horizontally */
-  background-color: black; /* Solid black background for the entire popup */
+  background-color: black; /* Black background for the outside sliver */
   width: 400px; /* Half of the content container width */
   height: 400px; /* 75% of the viewport height */
   padding: 20px;
-  border: 5px solid white; /* Thicker white border around the popup */
+  border: 10px solid white; /* Thicker white border around the popup */
   border-radius: 10px;
   color: white;
   font-family: Arial, sans-serif;
   z-index: 1000;
   overflow: hidden; /* Optional: to prevent content from overflowing */
+  box-shadow: 0 0 0 5px black; /* Creates the black sliver around the white border */
 }
 
 /* Popup content style */
