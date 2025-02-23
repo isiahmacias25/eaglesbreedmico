@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": ".",   // ← This tells Firebase to use the root directory!
+    "public": "./", 
     "ignore": [
       "firebase.json",
       "**/.*",
