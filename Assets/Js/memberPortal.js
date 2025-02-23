@@ -45,15 +45,6 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
   }
 });
 
-function logout() {
-  // Remove token from localStorage
-  localStorage.removeItem("token");
-
-  // Show login form and hide members-only content
-  document.getElementById("loginForm").style.display = "block";
-  document.getElementById("membersContent").style.display = "none";
-}
-
 window.onload = function() {
   const token = localStorage.getItem("token");
 
@@ -67,3 +58,31 @@ window.onload = function() {
     document.getElementById("membersContent").style.display = "none";
   }
 };
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Check if user is logged in
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    // User is logged in, show members content
+    document.getElementById("loginForm").style.display = "none";
+    document.getElementById("membersContent").style.display = "block";
+
+    // Show welcome message
+    const roadName = localStorage.getItem("roadName"); // Get road name from localStorage
+    document.getElementById("welcomeMessage").textContent = `Welcome, ${roadName}!`;
+  } else {
+    // User is not logged in, show login form
+    document.getElementById("loginForm").style.display = "block";
+    document.getElementById("membersContent").style.display = "none";
+  }
+
+  // Handle logout
+  window.logout = function() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("roadName");
+    document.getElementById("loginForm").style.display = "block";
+    document.getElementById("membersContent").style.display = "none";
+  };
+});
+
