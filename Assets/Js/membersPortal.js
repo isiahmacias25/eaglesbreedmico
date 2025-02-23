@@ -17,7 +17,7 @@ const auth = getAuth(app);
 
 // Handle login form submission
 document.getElementById("loginForm").addEventListener("submit", async function(event) {
-  event.preventDefault();
+  event.preventDefault(); // Prevent the form from submitting the traditional way
 
   const roadName = document.getElementById("roadName").value.trim();
   const password = document.getElementById("password").value.trim();
