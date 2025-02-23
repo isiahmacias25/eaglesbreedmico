@@ -50,3 +50,17 @@ function logout() {
   document.getElementById("loginForm").style.display = "block";
   document.getElementById("membersContent").style.display = "none";
 }
+
+window.onload = function() {
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    // If the user has a token, show members-only content
+    document.getElementById("loginForm").style.display = "none";
+    document.getElementById("membersContent").style.display = "block";
+  } else {
+    // If no token, show login form
+    document.getElementById("loginForm").style.display = "block";
+    document.getElementById("membersContent").style.display = "none";
+  }
+};
