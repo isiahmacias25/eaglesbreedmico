@@ -12,19 +12,18 @@ const firebaseConfig = {
   measurementId: "G-ZR1P59C7BP"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 // Handle login form submission
 document.getElementById("loginForm").addEventListener("submit", async function(event) {
-  event.preventDefault();  // Prevents the form from submitting traditionally
+  event.preventDefault();  // Prevent the form from submitting traditionally
 
   const roadName = document.getElementById("roadName").value.trim();
   const password = document.getElementById("password").value.trim();
 
   // Format road name for Firebase Authentication (convert to email format)
-  const formattedRoadName = roadName.replace(/\s+/g, "-").toLowerCase(); 
+  const formattedRoadName = roadName.replace(/\s+/g, "-").toLowerCase();
 
   try {
     // Attempt to log in using Firebase
@@ -36,7 +35,7 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
     localStorage.setItem("token", token);
     localStorage.setItem("roadName", roadName); // Store original road name for personalized welcome message
 
-    // Show members-only content
+    // Hide the login form and show members-only content
     document.getElementById("loginForm").style.display = "none";
     document.getElementById("membersContent").style.display = "block";
     document.getElementById("welcomeMessage").textContent = `Welcome, ${roadName}!`;
@@ -44,7 +43,7 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
   } catch (error) {
     console.error("Login error:", error.message);
 
-    // Show different error messages based on the error
+    // Show error messages based on the error
     if (error.code === "auth/user-not-found") {
       document.getElementById("loginError").textContent = "No user found with that road name.";
     } else if (error.code === "auth/wrong-password") {
@@ -73,6 +72,7 @@ window.onload = function() {
     document.getElementById("membersContent").style.display = "none";
   }
 };
+
 
 // Logout function
 window.logout = function() {
