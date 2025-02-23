@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": ".",
+    "public": "public",   // Make sure this points to the folder containing your index.html
     "ignore": [
       "firebase.json",
       "**/.*",
