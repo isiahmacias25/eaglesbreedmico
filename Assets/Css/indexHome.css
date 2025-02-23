@@ -49,8 +49,8 @@
   left: 50%;
   transform: translateX(-50%); /* Center horizontally */
   background-color: rgba(0, 0, 0, 0.7);
-  width: 430px; /* Half of the content container width, adjusted for 90% width of content-container */
-  height: 240px; /* 75% of the viewport height */
+  width: 400px; /* Half of the content container width, adjusted for 90% width of content-container */
+  height: 400px; /* 75% of the viewport height */
   padding: 20px;
   border: 2px solid white;
   border-radius: 10px;
