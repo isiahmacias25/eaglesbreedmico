@@ -15,9 +15,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Handle login form submission
+Handle login form submission
 document.getElementById("loginForm").addEventListener("submit", async function(event) {
-  event.preventDefault(); // Prevent the form from submitting the traditional way
+  event.preventDefault(); // Prevents the form from submitting and changing the URL
 
   const roadName = document.getElementById("roadName").value.trim();
   const password = document.getElementById("password").value.trim();
@@ -54,7 +54,6 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
     document.getElementById("loginError").style.display = "block";
   }
 });
-
 // Check if the user is already authenticated on page load
 window.onload = function() {
   const token = localStorage.getItem("token");
