@@ -9,7 +9,7 @@
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    background-image: url('./Assets/Images/americanFlag.jpg') !important; /* Make sure the image takes precedence */
+    background-image: url('../Assets/Images/americanFlag.jpg') !important; /* Make sure the image takes precedence */
     background-size: cover;
     background-position: center;
     color: #333;
