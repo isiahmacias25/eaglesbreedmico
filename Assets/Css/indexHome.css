@@ -45,37 +45,43 @@
 .constructionPopup {
   display: block; /* Display it by default */
   position: fixed;
-  top: 20%;
+  top: 20%; /* Adjust vertical position */
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%); /* Center horizontally */
   background-color: rgba(0, 0, 0, 0.7);
-  width: 300px;
+  width: 50vw; /* Half of the viewport width (50% of content container) */
+  height: 75vh; /* 75% of the viewport height */
   padding: 20px;
   border: 2px solid white;
   border-radius: 10px;
   color: white;
   font-family: Arial, sans-serif;
   z-index: 1000;
+  overflow: hidden; /* Optional: to prevent content from overflowing */
 }
 
 /* Popup content style */
 .constructionPopup-content {
   position: relative;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Close button */
 .constructionClose-btn {
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 10px;
+  right: 10px;
   color: red;
-  font-size: 24px;
+  font-size: 32px; /* Make the button a little larger */
   cursor: pointer;
 }
 
 /* Popup text */
 .constructionPopup p {
   text-align: center;
-  font-size: 16px;
+  font-size: 20px; /* Increase font size for readability */
 }
- 
