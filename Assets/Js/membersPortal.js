@@ -42,7 +42,7 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
     console.error("Login error:", error);
 
     // Show the exact error message in the UI
-    //let errorMessage = "An error occurred. Please try again."; // Default message
+    let errorMessage = "An error occurred. Please try again."; // Default message
 
     // Handle Firebase error codes more specifically
     if (error.code === "auth/user-not-found") {
