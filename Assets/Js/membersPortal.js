@@ -3,15 +3,14 @@ import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/fir
 
 // Firebase configuration
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID",
-  measurementId: "YOUR_MEASUREMENT_ID"
+  apiKey: "AIzaSyChVYbT54aRIbAHyy_HRsH7caRHyaZwWTA",
+  authDomain: "eaglesbreedmico.firebaseapp.com",
+  projectId: "eaglesbreedmico",
+  storageBucket: "eaglesbreedmico.firebasestorage.app",
+  messagingSenderId: "258146487149",
+  appId: "1:258146487149:web:c443a6f9af1c929cb6e864",
+  measurementId: "G-ZR1P59C7BP"
 };
-
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
