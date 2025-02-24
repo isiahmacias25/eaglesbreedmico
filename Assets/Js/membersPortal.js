@@ -14,6 +14,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
+// Handle login form submission
 document.getElementById("loginForm").addEventListener("submit", async function(event) {
   event.preventDefault(); // Prevent form submission (page reload)
 
@@ -29,14 +30,20 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
     // If login is successful
     const user = userCredential.user;
     const token = await user.getIdToken();
+
+    // Set expiration time (1 hour)
+    const expirationTime = Date.now() + (60 * 60 * 1000); // 1 hour from now
+
+    // Store token, roadName, and expiration in localStorage
     localStorage.setItem("token", token);
     localStorage.setItem("roadName", roadName); // Store road name for personalized message
+    localStorage.setItem("expiration", expirationTime); // Store expiration time
 
     // Show members-only content
     document.getElementById("loginForm").style.display = "none";
     document.getElementById("membersContent").style.display = "block";
     document.getElementById("welcomeMessage").textContent = `Welcome, ${roadName}!`;
-    
+
   } catch (error) {
     // Log the full error to the console
     console.error("Login error:", error);
@@ -59,8 +66,7 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
   }
 });
 
-
-
+// Check for logged-in user on page load
 window.onload = function() {
   const token = localStorage.getItem("token");
   const roadName = localStorage.getItem("roadName");
@@ -83,14 +89,12 @@ window.onload = function() {
 
 // Logout function
 window.logout = function() {
+  // Clear localStorage
   localStorage.removeItem("token");
   localStorage.removeItem("roadName");
+  localStorage.removeItem("expiration");
+
+  // Redirect to the login screen
   document.getElementById("loginForm").style.display = "block";
   document.getElementById("membersContent").style.display = "none";
 };
-
-// Store token with expiration time (e.g., 1 hour)
-const expirationTime = Date.now() + (60 * 60 * 1000); // 1 hour from now
-localStorage.setItem("token", token);
-localStorage.setItem("roadName", roadName);
-localStorage.setItem("expiration", expirationTime);
