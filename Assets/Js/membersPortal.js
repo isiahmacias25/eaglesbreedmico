@@ -39,7 +39,7 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
     
   } catch (error) {
     // Log the full error to the console
-    console.error("Login error:", error);
+   // console.error("Login error:", error);
 
     // Show the exact error message in the UI
     let errorMessage = "An error occurred. Please try again."; // Default message
