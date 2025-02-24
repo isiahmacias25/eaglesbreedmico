@@ -31,9 +31,9 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
     const user = userCredential.user;
     const token = await user.getIdToken();
 
-    // Store token and roadName in sessionStorage for this session
+    // Store token and roadName in sessionStorage (this persists until the tab/browser is closed)
     sessionStorage.setItem("token", token);
-    sessionStorage.setItem("roadName", roadName); // Store road name for personalized message
+    sessionStorage.setItem("roadName", roadName);
 
     // Show members-only content
     document.getElementById("loginForm").style.display = "none";
@@ -68,12 +68,12 @@ window.onload = function() {
   const roadName = sessionStorage.getItem("roadName");
 
   if (token && roadName) {
-    // User is logged in
+    // User is logged in (session is still valid)
     document.getElementById("loginForm").style.display = "none";
     document.getElementById("membersContent").style.display = "block";
     document.getElementById("welcomeMessage").textContent = `Welcome, ${roadName}!`;
   } else {
-    // No session or expired session, show login form
+    // No session, show login form
     document.getElementById("loginForm").style.display = "block";
     document.getElementById("membersContent").style.display = "none";
   }
