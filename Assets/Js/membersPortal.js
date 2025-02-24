@@ -27,7 +27,7 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
     // Attempt to log in using Firebase
     const userCredential = await signInWithEmailAndPassword(auth, `${formattedRoadName}@eaglesbreedmico.com`, password);
 
-    // Proceed if login is successful
+    // If login is successful
     const user = userCredential.user;
     const token = await user.getIdToken();
     localStorage.setItem("token", token);
@@ -37,16 +37,15 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
     document.getElementById("loginForm").style.display = "none";
     document.getElementById("membersContent").style.display = "block";
     document.getElementById("welcomeMessage").textContent = `Welcome, ${roadName}!`;
-
-    // Redirect to a different page if needed, but avoid reloading here
-    // For example: window.location.href = '/membersPortal.html'; // Or another route if desired
-
+    
   } catch (error) {
-    console.error("Login error:", error); // Log the full error
+    // Log the full error to the console
+    console.error("Login error:", error);
 
-    // Show a detailed error message without changing the URL
-    let errorMessage = "An error occurred. Please try again."; // Default error message
+    // Show the exact error message in the UI
+    let errorMessage = "An error occurred. Please try again."; // Default message
 
+    // Handle Firebase error codes more specifically
     if (error.code === "auth/user-not-found") {
       errorMessage = "No user found with that road name.";
     } else if (error.code === "auth/wrong-password") {
@@ -55,10 +54,12 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
       errorMessage = "Invalid email format. Please check your road name.";
     }
 
+    // Display the error message
     document.getElementById("loginError").textContent = errorMessage;
-    document.getElementById("loginError").style.display = "block"; // Show the error message without redirecting
+    document.getElementById("loginError").style.display = "block";
   }
 });
+
 
 
 window.onload = function() {
