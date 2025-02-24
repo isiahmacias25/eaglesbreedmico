@@ -54,10 +54,3 @@ const loadMeetingMinutes = async () => {
     });
 };
 
-// Ensure user is logged in before loading data
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        loadMeetingMinutes();
-    } else {
-        alert("You must be logged in to view meeting minutes.");
-        window.location.href = "/login.html
