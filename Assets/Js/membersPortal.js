@@ -31,19 +31,15 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
     const user = userCredential.user;
     const token = await user.getIdToken();
 
-    // Set expiration time (1 hour)
-    const expirationTime = Date.now() + (60 * 60 * 1000); // 1 hour from now
-
-    // Store token, roadName, and expiration in localStorage
-    localStorage.setItem("token", token);
-    localStorage.setItem("roadName", roadName); // Store road name for personalized message
-    localStorage.setItem("expiration", expirationTime); // Store expiration time
+    // Store token and road name in sessionStorage
+    sessionStorage.setItem("token", token);
+    sessionStorage.setItem("roadName", roadName); // Store road name for personalized message
 
     // Show members-only content
     document.getElementById("loginForm").style.display = "none";
     document.getElementById("membersContent").style.display = "block";
     document.getElementById("welcomeMessage").textContent = `Welcome, ${roadName}!`;
-
+    
   } catch (error) {
     // Log the full error to the console
     console.error("Login error:", error);
@@ -67,34 +63,30 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
 });
 
 // Check for logged-in user on page load
+// Check for logged-in user on page load
 window.onload = function() {
-  const token = localStorage.getItem("token");
-  const roadName = localStorage.getItem("roadName");
-  const expiration = localStorage.getItem("expiration");
+  const token = sessionStorage.getItem("token");
+  const roadName = sessionStorage.getItem("roadName");
 
-  if (token && roadName && expiration && Date.now() < expiration) {
-    // User is logged in and session is valid
+  if (token && roadName) {
+    // User is logged in
     document.getElementById("loginForm").style.display = "none";
     document.getElementById("membersContent").style.display = "block";
     document.getElementById("welcomeMessage").textContent = `Welcome, ${roadName}!`;
   } else {
-    // Session is expired or no token, log them out
-    localStorage.removeItem("token");
-    localStorage.removeItem("roadName");
-    localStorage.removeItem("expiration");
+    // No token, log the user out
     document.getElementById("loginForm").style.display = "block";
     document.getElementById("membersContent").style.display = "none";
   }
 };
 
+
 // Logout function
 window.logout = function() {
-  // Clear localStorage
-  localStorage.removeItem("token");
-  localStorage.removeItem("roadName");
-  localStorage.removeItem("expiration");
+  sessionStorage.removeItem("token");
+  sessionStorage.removeItem("roadName");
 
-  // Redirect to the login screen
+  // Show login form again
   document.getElementById("loginForm").style.display = "block";
   document.getElementById("membersContent").style.display = "none";
 };
