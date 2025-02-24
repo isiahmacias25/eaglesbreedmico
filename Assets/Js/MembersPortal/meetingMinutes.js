@@ -23,34 +23,26 @@ const storage = getStorage(app); // Add Storage
 // Function to load meeting minutes
 const loadMeetingMinutes = async () => {
     const minutesGrid = document.getElementById('minutesGrid');
-    minutesGrid.innerHTML = ""; // Clear previous content
+    const querySnapshot = await getDocs(collection(db, 'meetingMinutes'));
 
-    const querySnapshot = await getDocs(collection(db, 'MeetingMinutes'));
-
-    querySnapshot.forEach(async (doc) => {
+    querySnapshot.forEach((doc) => {
         const data = doc.data();
-        const title = data.title;
-        const fileName = data.fileName; // Ensure Firestore has `fileName` field
+        const gridItem = document.createElement('div');
+        gridItem.classList.add('grid-item');
+        
+        // Create the link element
+        const link = document.createElement('a');
+        link.href = data.pdfURL;  // Use the pdfURL from Firestore
+        link.textContent = data.title;  // Use the title from Firestore
+        link.target = "_blank";  // Open in a new tab
 
-        // Get secure download URL from Firebase Storage
-        const fileRef = ref(storage, `MeetingMinutes/${fileName}`);
-        try {
-            const pdfURL = await getDownloadURL(fileRef);
+        // Append the link to the grid item
+        gridItem.appendChild(link);
 
-            // Create grid item
-            const gridItem = document.createElement('div');
-            gridItem.classList.add('grid-item');
-
-            const link = document.createElement('a');
-            link.href = pdfURL;
-            link.textContent = title;
-            link.target = "_blank";
-
-            gridItem.appendChild(link);
-            minutesGrid.appendChild(gridItem);
-        } catch (error) {
-            console.error("Error getting PDF URL:", error);
-        }
+        // Add the grid item to the grid container
+        minutesGrid.appendChild(gridItem);
     });
 };
 
+// Trigger the loading function when the page loads
+window.onload = loadMeetingMinutes;
