@@ -31,7 +31,7 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
     const user = userCredential.user;
     const token = await user.getIdToken();
 
-    // Store token and road name in sessionStorage
+    // Store token and roadName in sessionStorage for this session
     sessionStorage.setItem("token", token);
     sessionStorage.setItem("roadName", roadName); // Store road name for personalized message
 
@@ -63,7 +63,6 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
 });
 
 // Check for logged-in user on page load
-// Check for logged-in user on page load
 window.onload = function() {
   const token = sessionStorage.getItem("token");
   const roadName = sessionStorage.getItem("roadName");
@@ -74,19 +73,18 @@ window.onload = function() {
     document.getElementById("membersContent").style.display = "block";
     document.getElementById("welcomeMessage").textContent = `Welcome, ${roadName}!`;
   } else {
-    // No token, log the user out
+    // No session or expired session, show login form
     document.getElementById("loginForm").style.display = "block";
     document.getElementById("membersContent").style.display = "none";
   }
 };
 
-
 // Logout function
 window.logout = function() {
-  sessionStorage.removeItem("token");
-  sessionStorage.removeItem("roadName");
+  sessionStorage.removeItem("token"); // Remove token from sessionStorage
+  sessionStorage.removeItem("roadName"); // Remove roadName from sessionStorage
 
-  // Show login form again
+  // Show login form again and hide members-only content
   document.getElementById("loginForm").style.display = "block";
   document.getElementById("membersContent").style.display = "none";
 };
