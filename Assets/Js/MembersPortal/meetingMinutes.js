@@ -25,7 +25,7 @@ const loadMeetingMinutes = async () => {
     const minutesGrid = document.getElementById('minutesGrid');
     minutesGrid.innerHTML = ""; // Clear previous content
 
-    const querySnapshot = await getDocs(collection(db, 'meetingMinutes'));
+    const querySnapshot = await getDocs(collection(db, 'MeetingMinutes'));
 
     querySnapshot.forEach(async (doc) => {
         const data = doc.data();
@@ -33,7 +33,7 @@ const loadMeetingMinutes = async () => {
         const fileName = data.fileName; // Ensure Firestore has `fileName` field
 
         // Get secure download URL from Firebase Storage
-        const fileRef = ref(storage, `meetingMinutes/${fileName}`);
+        const fileRef = ref(storage, `MeetingMinutes/${fileName}`);
         try {
             const pdfURL = await getDownloadURL(fileRef);
 
