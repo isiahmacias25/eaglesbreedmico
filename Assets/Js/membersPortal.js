@@ -43,16 +43,26 @@ try {
 } catch (error) {
   console.error("Login error:", error); // Log the full error to the console for debugging
 
+     // Show a more detailed error message
+  document.getElementById("loginError").textContent = `Error: ${error.message}`;
+  document.getElementById("loginError").style.display = "block";
+}
+
     // Show different error messages based on the error
+    let errorMessage = "An error occurred. Please try again."; // Default error message
+
     if (error.code === "auth/user-not-found") {
-      document.getElementById("loginError").textContent = "No user found with that road name.";
+      errorMessage = "No user found with that road name.";
     } else if (error.code === "auth/wrong-password") {
-      document.getElementById("loginError").textContent = "Incorrect password. Please try again.";
-    } else {
-      document.getElementById("loginError").textContent = "An error occurred. Please try again.";
+      errorMessage = "Incorrect password. Please try again.";
+    } else if (error.code === "auth/invalid-email") {
+      errorMessage = "Invalid email format. Please check your road name.";
     }
+
+    document.getElementById("loginError").textContent = errorMessage;
     document.getElementById("loginError").style.display = "block";
-  }
+}
+
 });
 
 window.onload = function() {
