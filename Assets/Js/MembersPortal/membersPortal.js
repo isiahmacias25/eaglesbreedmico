@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -11,6 +11,7 @@ const firebaseConfig = {
   appId: "1:258146487149:web:c443a6f9af1c929cb6e864",
   measurementId: "G-ZR1P59C7BP"
 };
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
@@ -20,71 +21,93 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
 
   const roadName = document.getElementById("roadName").value.trim();
   const password = document.getElementById("password").value.trim();
+  const loginError = document.getElementById("loginError");
+  const loginButton = document.getElementById("loginButton"); // Ensure your button has this ID
+
+  if (!roadName || !password) {
+    loginError.textContent = "Both fields are required.";
+    loginError.style.display = "block";
+    return;
+  }
 
   const formattedRoadName = roadName.replace(/\s+/g, "-").toLowerCase(); // Format for email
 
   try {
-    // Attempt to log in using Firebase
+    // Disable login button while logging in
+    loginButton.disabled = true;
+    loginButton.textContent = "Logging in...";
+
+    // Attempt Firebase login
     const userCredential = await signInWithEmailAndPassword(auth, `${formattedRoadName}@eaglesbreedmico.com`, password);
-
-    // If login is successful
     const user = userCredential.user;
-    const token = await user.getIdToken();
 
-    // Store token and roadName in sessionStorage (this persists until the tab/browser is closed)
-    sessionStorage.setItem("token", token);
+    // Store roadName in sessionStorage
     sessionStorage.setItem("roadName", roadName);
 
-    // Show members-only content
-    document.getElementById("loginForm").style.display = "none";
-    document.getElementById("membersContent").style.display = "block";
-    document.getElementById("welcomeMessage").textContent = `Welcome, ${roadName}!`;
-    
+    // Hide login form and show members-only content
+    showMembersContent(roadName);
+
   } catch (error) {
-    // Log the full error to the console
     console.error("Login error:", error);
 
-    // Show the exact error message in the UI
-    let errorMessage = "An error occurred. Please try again."; // Default message
+    let errorMessage = "An error occurred. Please try again.";
 
-    // Handle Firebase error codes more specifically
-    if (error.code === "auth/user-not-found") {
-      errorMessage = "No user found with that road name.";
-    } else if (error.code === "auth/wrong-password") {
-      errorMessage = "Incorrect password. Please try again.";
-    } else if (error.code === "auth/invalid-email") {
-      errorMessage = "Invalid email format. Please check your road name.";
+    switch (error.code) {
+      case "auth/user-not-found":
+        errorMessage = "No user found with that road name.";
+        break;
+      case "auth/wrong-password":
+        errorMessage = "Incorrect password. Please try again.";
+        break;
+      case "auth/invalid-email":
+        errorMessage = "Invalid email format. Please check your road name.";
+        break;
+      case "auth/too-many-requests":
+        errorMessage = "Too many failed attempts. Try again later.";
+        break;
+      default:
+        errorMessage = error.message;
+        break;
     }
 
-    // Display the error message
-    document.getElementById("loginError").textContent = errorMessage;
-    document.getElementById("loginError").style.display = "block";
+    loginError.textContent = errorMessage;
+    loginError.style.display = "block";
+  } finally {
+    // Reset button state
+    loginButton.disabled = false;
+    loginButton.textContent = "Login";
   }
 });
 
-// Check for logged-in user on page load
-window.onload = function() {
-  const token = sessionStorage.getItem("token");
-  const roadName = sessionStorage.getItem("roadName");
+// Function to show members-only content
+function showMembersContent(roadName) {
+  document.getElementById("loginForm").style.display = "none";
+  document.getElementById("membersContent").style.display = "block";
+  document.getElementById("welcomeMessage").textContent = `Welcome, ${roadName || "Member"}!`;
+}
 
-  if (token && roadName) {
-    // User is logged in (session is still valid)
-    document.getElementById("loginForm").style.display = "none";
-    document.getElementById("membersContent").style.display = "block";
-    document.getElementById("welcomeMessage").textContent = `Welcome, ${roadName}!`;
+// Monitor authentication state
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    const roadName = sessionStorage.getItem("roadName") || "Member";
+    showMembersContent(roadName);
   } else {
-    // No session, show login form
+    // No user is logged in
     document.getElementById("loginForm").style.display = "block";
     document.getElementById("membersContent").style.display = "none";
   }
-};
+});
 
 // Logout function
-window.logout = function() {
-  sessionStorage.removeItem("token"); // Remove token from sessionStorage
-  sessionStorage.removeItem("roadName"); // Remove roadName from sessionStorage
+window.logout = async function() {
+  try {
+    await signOut(auth);
+    sessionStorage.removeItem("roadName");
 
-  // Show login form again and hide members-only content
-  document.getElementById("loginForm").style.display = "block";
-  document.getElementById("membersContent").style.display = "none";
+    // Show login form again and hide members-only content
+    document.getElementById("loginForm").style.display = "block";
+    document.getElementById("membersContent").style.display = "none";
+  } catch (error) {
+    console.error("Logout error:", error);
+  }
 };
