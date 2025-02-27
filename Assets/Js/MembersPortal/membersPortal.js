@@ -11,6 +11,13 @@ const firebaseConfig = {
   appId: "1:258146487149:web:c443a6f9af1c929cb6e864",
   measurementId: "G-ZR1P59C7BP"
 };
+
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+} else {
+    firebase.app(); // Use the default app
+}
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
