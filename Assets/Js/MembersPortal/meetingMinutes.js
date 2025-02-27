@@ -36,6 +36,8 @@ document.addEventListener("DOMContentLoaded", async function () {
       const minuteData = doc.data(); // Document data
       const title = minuteData.title;
       const pdfUrl = minuteData.pdfUrl;
+      console.log(pdfUrl); // Log the URL to the console to check it's correct
+
 
       // Create a grid tile for each meeting minute
       const tile = document.createElement("div");
