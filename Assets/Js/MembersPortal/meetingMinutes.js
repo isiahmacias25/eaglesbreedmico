@@ -37,11 +37,12 @@ document.addEventListener("DOMContentLoaded", async function () {
       const title = minuteData.title;
       const pdfURL = minuteData.pdfURL;
 
-      // Log to check if the pdfUrl is correct
-      console.log(pdfURL);
+      // Log to check if the pdfURL is correct
+      console.log('pdfURL:', pdfURL);
 
       // Construct the full URL
       const fullpdfURL = `https://firebasestorage.googleapis.com/v0/b/${storage.bucket}/o/${pdfURL}?alt=media`;
+      console.log('Full URL:', fullpdfURL); // Log the full URL for verification
 
       // Create a grid tile for each meeting minute
       const tile = document.createElement("div");
