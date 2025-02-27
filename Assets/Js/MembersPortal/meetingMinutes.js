@@ -22,7 +22,7 @@ const storage = getStorage(app);
 
 // Wait until the document is ready
 document.addEventListener("DOMContentLoaded", async function () {
-  const minutesGrid = document.getElementById("meetingMinutesGrid");
+  const minutesGrid = document.getElementById("minutesGrid");
 
   if (!minutesGrid) {
     console.error("Meeting minutes grid is missing from the DOM.");
