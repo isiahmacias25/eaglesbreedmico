@@ -1,4 +1,4 @@
- import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
 // Firebase configuration
@@ -25,7 +25,7 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
 
   try {
     // Attempt to log in using Firebase
-    const userCredential = await signInWithEmailAndPassword(auth, ${formattedRoadName}@eaglesbreedmico.com, password);
+    const userCredential = await signInWithEmailAndPassword(auth, '${formattedRoadName}@eaglesbreedmico.com', password);
 
     // If login is successful
     const user = userCredential.user;
