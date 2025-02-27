@@ -20,39 +20,33 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-// Function to load meeting minutes
-const loadMeetingMinutes = async () => {
-    const minutesGrid = document.getElementById('minutesGrid');
-    if (!minutesGrid) {
-        console.error("Error: 'minutesGrid' not found in DOM.");
-        return;
-    }
+// Wait until the document is ready
+document.addEventListener("DOMContentLoaded", async function () {
+  const meetingMinutesGrid = document.getElementById("meetingMinutesGrid");
 
-    try {
-        const querySnapshot = await getDocs(collection(db, 'meetingMinutes'));
+  if (!meetingMinutesGrid) {
+    console.error("Meeting minutes grid is missing from the DOM.");
+    return;
+  }
 
-        if (querySnapshot.empty) {
-            minutesGrid.innerHTML = "<p>No meeting minutes available.</p>";
-            return;
-        }
+  // Fetch meeting minutes data from Firestore
+  try {
+    const querySnapshot = await getDocs(collection(db, "MeetingMinutes"));
+    querySnapshot.forEach((doc) => {
+      const minuteData = doc.data(); // Document data
+      const title = minuteData.title;
+      const pdfUrl = minuteData.pdfUrl;
 
-        querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            const gridItem = document.createElement('div');
-            gridItem.classList.add('grid-item');
-
-            const link = document.createElement('a');
-            link.href = data.pdfURL;
-            link.textContent = data.title || "Meeting Minutes"; // Default title if missing
-            link.target = "_blank";
-
-            gridItem.appendChild(link);
-            minutesGrid.appendChild(gridItem);
-        });
-    } catch (error) {
-        console.error("Error loading meeting minutes:", error);
-        minutesGrid.innerHTML = "<p>Error loading meeting minutes.</p>";
-    }
-};
-
-// Ensure script runs when the pag
+      // Create a grid tile for each meeting minute
+      const tile = document.createElement("div");
+      tile.classList.add("meeting-minute-tile");
+      tile.innerHTML = `
+        <h3>${title}</h3>
+        <a href="${pdfUrl}" target="_blank">View PDF</a>
+      `;
+      meetingMinutesGrid.appendChild(tile);
+    });
+  } catch (error) {
+    console.error("Error fetching meeting minutes: ", error);
+  }
+});
