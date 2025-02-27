@@ -38,7 +38,7 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
     // Show members-only content
     document.getElementById("loginForm").style.display = "none";
     document.getElementById("membersContent").style.display = "block";
-   document.getElementById("welcomeMessage").textContent = `Welcome, ${roadName}!`;
+    document.getElementById("welcomeMessage").textContent = `Welcome, ${roadName}!`;
 
     
   } catch (error) {
@@ -72,7 +72,7 @@ window.onload = function() {
     // User is logged in (session is still valid)
     document.getElementById("loginForm").style.display = "none";
     document.getElementById("membersContent").style.display = "block";
-    document.getElementById("welcomeMessage").textContent = Welcome, ${roadName}!;
+    document.getElementById("welcomeMessage").textContent = `Welcome, ${roadName}!`;
   } else {
     // No session, show login form
     document.getElementById("loginForm").style.display = "block";
