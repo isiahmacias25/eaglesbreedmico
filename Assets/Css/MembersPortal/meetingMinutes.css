@@ -10,6 +10,7 @@
     background-color: #f8f9fa; /* Light gray background */
     padding: 20px;
     border-radius: 8px;
+    border: 2px solid #000; /* Added black border for contrast */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
