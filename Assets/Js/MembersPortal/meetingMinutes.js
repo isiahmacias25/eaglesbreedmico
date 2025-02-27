@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       console.log(pdfURL);
 
       // Construct the full URL
-      const fullpdfURL = `https://firebasestorage.googleapis.com/v0/b/${storage.bucket}/o/${encodeURIComponent(pdfURL)}?alt=media`;
+      const fullpdfURL = `https://firebasestorage.googleapis.com/v0/b/${storage.bucket}/o/${pdfURL}?alt=media`;
 
       // Create a grid tile for each meeting minute
       const tile = document.createElement("div");
