@@ -35,20 +35,20 @@ document.addEventListener("DOMContentLoaded", async function () {
     querySnapshot.forEach((doc) => {
       const minuteData = doc.data(); // Document data
       const title = minuteData.title;
-      const pdfUrl = minuteData.pdfURL;
+      const pdfURL = minuteData.pdfURL;
 
       // Log to check if the pdfUrl is correct
-      console.log(pdfUrl);
+      console.log(pdfURL);
 
       // Construct the full URL if it's a relative path (optional, depending on your storage setup)
-      const fullPdfUrl = `https://firebasestorage.googleapis.com/v0/b/${storage.bucket}/o/${encodeURIComponent(pdfUrl)}?alt=media`;
+      const fullpdfURL = `https://firebasestorage.googleapis.com/v0/b/${storage.bucket}/o/${encodeURIComponent(pdfURL)}?alt=media`;
 
       // Create a grid tile for each meeting minute
       const tile = document.createElement("div");
       tile.classList.add("meeting-minute-tile");
       tile.innerHTML = `
         <h3>${title}</h3>
-        <a href="${fullPdfUrl}" target="_blank">View PDF</a>
+        <a href="${fullpdfURL}" target="_blank">View PDF</a>
       `;
       minutesGrid.appendChild(tile);
     });
