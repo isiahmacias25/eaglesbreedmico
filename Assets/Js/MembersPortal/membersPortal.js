@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
   }
-});  
+
   // Handle login form submission
   loginForm.addEventListener("submit", async function (event) {
     event.preventDefault();
