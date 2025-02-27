@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       // Log to check if the pdfUrl is correct
       console.log(pdfURL);
 
-      // Construct the full URL if it's a relative path (optional, depending on your storage setup)
+      // Construct the full URL
       const fullpdfURL = `https://firebasestorage.googleapis.com/v0/b/${storage.bucket}/o/${encodeURIComponent(pdfURL)}?alt=media`;
 
       // Create a grid tile for each meeting minute
