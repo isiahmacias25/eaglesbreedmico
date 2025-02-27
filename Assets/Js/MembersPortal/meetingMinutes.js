@@ -22,9 +22,9 @@ const storage = getStorage(app);
 
 // Wait until the document is ready
 document.addEventListener("DOMContentLoaded", async function () {
-  const meetingMinutesGrid = document.getElementById("meetingMinutesGrid");
+  const minutesGrid = document.getElementById("meetingMinutesGrid");
 
-  if (!meetingMinutesGrid) {
+  if (!minutesGrid) {
     console.error("Meeting minutes grid is missing from the DOM.");
     return;
   }
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         <h3>${title}</h3>
         <a href="${pdfUrl}" target="_blank">View PDF</a>
       `;
-      meetingMinutesGrid.appendChild(tile);
+      minutesGrid.appendChild(tile);
     });
   } catch (error) {
     console.error("Error fetching meeting minutes: ", error);
