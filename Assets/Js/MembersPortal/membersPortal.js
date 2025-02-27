@@ -90,3 +90,7 @@ window.logout = function() {
   document.getElementById("loginForm").style.display = "block";
   document.getElementById("membersContent").style.display = "none";
 };
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Your event listener code here
+});
