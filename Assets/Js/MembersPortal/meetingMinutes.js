@@ -32,26 +32,33 @@ document.addEventListener("DOMContentLoaded", async function () {
   // Fetch meeting minutes data from Firestore
   try {
     const querySnapshot = await getDocs(collection(db, "MeetingMinutes"));
-    querySnapshot.forEach((doc) => {
+    querySnapshot.forEach(async (doc) => {
       const minuteData = doc.data(); // Document data
       const title = minuteData.title;
-      const pdfURL = minuteData.pdfURL;
+      const pdfURL = minuteData.pdfURL; // This should be the Firebase Storage path
 
       // Log to check if the pdfURL is correct
       console.log('pdfURL:', pdfURL);
 
-      // Construct the full URL
-      const fullpdfURL = `https://firebasestorage.googleapis.com/v0/b/${storage.bucket}/o/${pdfURL}?alt=media`;
-      console.log('Full URL:', fullpdfURL); // Log the full URL for verification
+      // Reference to the file in Firebase Storage
+      const pdfRef = ref(storage, pdfURL);
 
-      // Create a grid tile for each meeting minute
-      const tile = document.createElement("div");
-      tile.classList.add("meeting-minute-tile");
-      tile.innerHTML = `
-        <h3>${title}</h3>
-        <a href="${fullpdfURL}" target="_blank">View PDF</a>
-      `;
-      minutesGrid.appendChild(tile);
+      try {
+        // Get the download URL for the file from Firebase Storage
+        const fullpdfURL = await getDownloadURL(pdfRef);
+        console.log('Full URL:', fullpdfURL); // Log the full URL for verification
+
+        // Create a grid tile for each meeting minute
+        const tile = document.createElement("div");
+        tile.classList.add("meeting-minute-tile");
+        tile.innerHTML = `
+          <h3>${title}</h3>
+          <a href="${fullpdfURL}" target="_blank">View PDF</a>
+        `;
+        minutesGrid.appendChild(tile);
+      } catch (error) {
+        console.error('Error fetching download URL: ', error);
+      }
     });
   } catch (error) {
     console.error("Error fetching meeting minutes: ", error);
