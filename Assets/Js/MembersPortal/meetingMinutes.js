@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     querySnapshot.forEach((doc) => {
       const minuteData = doc.data(); // Document data
       const title = minuteData.title;
-      const pdfUrl = minuteData.pdfUrl;
+      const pdfUrl = minuteData.pdfURL;
 
       // Log to check if the pdfUrl is correct
       console.log(pdfUrl);
