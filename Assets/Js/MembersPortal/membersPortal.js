@@ -22,14 +22,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const welcomeMessage = document.getElementById("welcomeMessage");
   const loginError = document.getElementById("loginError");
 
-    if (window.location.pathname.includes("membersPortal.html")) {
-      if (!loginForm || !membersContent || !welcomeMessage || !loginError) {
-        console.error("One or more elements are missing from the DOM.");
-        return;
-      }
+  if (window.location.pathname.includes("membersPortal.html")) {
+    if (!loginForm || !membersContent || !welcomeMessage || !loginError) {
+      console.error("One or more elements are missing from the DOM.");
+      return;
     }
- }
-
+  }
+});  
   // Handle login form submission
   loginForm.addEventListener("submit", async function (event) {
     event.preventDefault();
