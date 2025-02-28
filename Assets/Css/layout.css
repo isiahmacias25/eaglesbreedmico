@@ -1,7 +1,6 @@
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
 /* Basic styling */
@@ -35,7 +34,7 @@ header p {
     font-size: 1rem;
 }
 
-/* Welcome page-specific styling */
+/* Main Content Container */
 .content-container {
     flex: 1;
     display: flex;
@@ -50,11 +49,6 @@ header p {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     max-width: 800px;
     width: 90%;
-}
-
-.content-container .logo img {
-    max-width: 150px;
-    margin-bottom: 1rem;
 }
 
 .content-container h1 {
@@ -88,12 +82,19 @@ nav {
     background-color: #333;
     text-align: center;
     padding: 10px 0;
-    margin-top: 5px;
+    width: 80%;
+    max-width: 800px;
+    margin: 5px auto;
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 nav ul {
     list-style-type: none;
     padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
 }
 
 nav ul li {
@@ -106,11 +107,56 @@ nav ul li a {
     color: white;
     font-size: 16px;
     font-weight: bold;
-    transition: color 0.3s ease;
+    padding: 8px 12px;
+    display: inline-block;
+    transition: color 0.3s ease, background 0.3s ease;
 }
 
 nav ul li a:hover {
     color: #ff5733;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+}
+
+/* Members-Only Navigation (Match Main Nav) */
+.members-sub-nav {
+    background-color: #444;
+    text-align: center;
+    padding: 10px 0;
+    width: 80%;
+    max-width: 800px;
+    margin: 5px auto;
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.members-sub-nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.members-sub-nav ul li {
+    display: inline-block;
+    margin: 0 15px;
+}
+
+.members-sub-nav ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 8px 12px;
+    display: inline-block;
+    transition: color 0.3s ease, background 0.3s ease;
+}
+
+.members-sub-nav ul li a:hover {
+    color: #ff5733;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
 }
 
 /* Banner styling */
@@ -125,48 +171,5 @@ nav ul li a:hover {
     width: 100%;
     margin: 0;
     max-width: 1200px;
-} 
-
-/* Members Sub-Navigation */
-.members-sub-nav {
-    background-color: #444;
-    text-align: center;
-    padding: 10px 0;
-    margin-top: 5px;
-    max-width: 800px; /* Prevents full-screen stretching */
-    width: 90%; /* Keeps it responsive */
-    margin-left: auto;
-    margin-right: auto;
-    border-radius: 5px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-.members-sub-nav ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    justify-content: center; /* Centers items */
-    flex-wrap: wrap; /* Wraps on smaller screens */
-}
-
-.members-sub-nav ul li {
-    display: inline-block;
-    margin: 0 10px;
-}
-
-.members-sub-nav ul li a {
-    text-decoration: none;
-    color: white;
-    font-size: 14px;
-    font-weight: bold;
-    padding: 8px 12px;
-    display: inline-block;
-    transition: color 0.3s ease, background 0.3s ease;
-}
-
-.members-sub-nav ul li a:hover {
-    color: #ff5733;
-    background-color: rgba(255, 255, 255, 0.2);
-    border-radius: 5px;
-}
