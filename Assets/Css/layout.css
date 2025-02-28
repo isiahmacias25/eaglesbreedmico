@@ -56,7 +56,7 @@ header p {
     margin-bottom: 1rem;
 }
 
-content-container h1 {
+.content-container h1 {
     margin: 0.5rem 0;
     color: #222;
     font-size: 2rem;
@@ -103,12 +103,16 @@ nav, .members-sub-nav {
     margin-right: auto;
 }
 
+/* Ensure that nav items are aligned the same way */
 nav ul, .members-sub-nav ul {
     list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
 }
 
 nav ul li, .members-sub-nav ul li {
-    display: inline-block;
     margin: 0 15px;
 }
 
@@ -136,4 +140,4 @@ nav ul li a:hover, .members-sub-nav ul li a:hover {
     width: 100%;
     margin: 0;
     max-width: 1200px;
-} 
+}
