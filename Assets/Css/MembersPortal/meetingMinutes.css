@@ -1,9 +1,13 @@
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Slightly larger items */
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
     gap: 20px;
     margin-top: 20px;
     padding: 10px;
+    width: 100%; /* Ensure it uses full width */
+    max-width: 1200px; /* Adjust as needed */
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .meeting-minute-tile {
