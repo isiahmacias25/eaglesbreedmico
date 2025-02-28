@@ -36,20 +36,20 @@ header p {
 
 /* Welcome page-specific styling */
 .content-container {
-    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
     padding: 2rem;
-    background: rgba(255, 255, 255, 0.9); /* Slight transparency for better readability */
+    background: rgba(255, 255, 255, 0.9);
     margin: auto;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     max-width: 800px;
     width: 90%;
 }
+
 
 .content-container .logo img {
     max-width: 150px;
