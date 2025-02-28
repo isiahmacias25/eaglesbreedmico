@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const membersContent = document.getElementById("membersContent");
   const welcomeMessage = document.getElementById("welcomeMessage");
   const loginError = document.getElementById("loginError");
+  const membersSubNav = document.getElementById("membersSubNav");
 
   // Only run login-related code if loginForm exists
   if (loginForm) {
@@ -40,6 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         loginForm.style.display = "none";
         membersContent.style.display = "block";
+        membersSubNav.style.display = "block"; // Show the members sub-navigation
         welcomeMessage.textContent = `Welcome, ${roadName}!`;
       } catch (error) {
         console.error("Login error:", error);
@@ -65,10 +67,12 @@ document.addEventListener("DOMContentLoaded", function () {
     if (token && roadName) {
       loginForm.style.display = "none";
       membersContent.style.display = "block";
+      membersSubNav.style.display = "block"; // Show sub-navigation for members
       welcomeMessage.textContent = `Welcome, ${roadName}!`;
     } else {
       loginForm.style.display = "block";
       membersContent.style.display = "none";
+      membersSubNav.style.display = "none"; // Hide sub-navigation if not logged in
     }
 
     // Logout function
@@ -77,6 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
       sessionStorage.removeItem("roadName");
       loginForm.style.display = "block";
       membersContent.style.display = "none";
+      membersSubNav.style.display = "none"; // Hide members sub-navigation on logout
     };
   }
 });
