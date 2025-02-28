@@ -96,6 +96,7 @@ nav {
     background-color: #333;
     text-align: center;
     padding: 10px 0;
+    padding: 10px 0;
 }
 
 nav ul {
@@ -137,6 +138,7 @@ nav ul li a:hover {
 .members-sub-nav {
     background-color: #444;
     text-align: center;
+    padding: 10px 0;
     padding: 10px 0;
 
 }
