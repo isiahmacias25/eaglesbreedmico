@@ -18,19 +18,29 @@
   </header>
   <!-- Welcome Section -->
   <div class="content-container">
-    
-  
-    <h1>Meeting Minutes</h1>
+  <h1>Meeting Minutes</h1>
+    <div id="membersContent" style="display: none;">
+      <h2 id="welcomeMessage"></h2>
+      <p>Introducing the Eagles Breed Brotherhood Members Portal.</p>
+
+          <!-- Members-Only Navigation (Visible Only After Login) -->
+      <div id="membersSubNav" class="members-sub-nav" style="display: none;">
+          <ul>
+            <li><a href="../MembersPortal/settings.html">Settings</a></li>
+            <li><a href="../MembersPortal/MeetingMinutes/meetingMinutes.html">Meeting Minutes</a></li>
+            <li><a href="../MembersPortal/EventManager/eventManager.html">Event Manager</a></li>
+            <li><a href="../MembersPortal/SupportersManager/supportersManager.html">Supporters Manager</a></li>
+            <li><a href="#" onclick="logout()">Logout</a></li>
+          </ul>
+      </div>
     
     <div id="minutesGrid" class="grid-container">
         <!-- Dynamically filled with JavaScript -->
     </div>
-
+</div>
     
     
-  </div>
-
-  <!-- Footer Section -->
+</div>
 <footer class="footer">
   <div class="footer-content">
     <p>
