@@ -28,17 +28,6 @@
         </ul>
     </nav>
 
-    <!-- Members-Only Navigation (Visible Only After Login) -->
-    <div id="membersSubNav" class="members-sub-nav" style="display: none;">
-        <ul>
-          <li><a href="../settings.html">Settings</a></li>
-          <li><a href="../MeetingMinutes/meetingMinutes.html">Meeting Minutes</a></li>
-          <li><a href="../EventManager/eventManager.html">Event Manager</a></li>
-          <li><a href="../SupportersManager/supportersManager.html">Supporters Manager</a></li>
-          <li><a href="#" onclick="logout()">Logout</a></li>
-        </ul>
-    </div>
-
     <!-- Login Form -->
   <form id="loginForm">
     <div class="form-group">
@@ -59,7 +48,18 @@
   <div id="membersContent" style="display: none;">
       <h2 id="welcomeMessage"></h2>
       <p>Introducing the Eagles Breed Brotherhood Members Portal.</p>
-    </div>
+
+          <!-- Members-Only Navigation (Visible Only After Login) -->
+      <div id="membersSubNav" class="members-sub-nav" style="display: none;">
+          <ul>
+            <li><a href="../settings.html">Settings</a></li>
+            <li><a href="../MeetingMinutes/meetingMinutes.html">Meeting Minutes</a></li>
+            <li><a href="../EventManager/eventManager.html">Event Manager</a></li>
+            <li><a href="../SupportersManager/supportersManager.html">Supporters Manager</a></li>
+            <li><a href="#" onclick="logout()">Logout</a></li>
+          </ul>
+      </div>
+ </div>
 
     
   </div>
