@@ -56,14 +56,17 @@ h2 {
   background-color: #0056b3;
 }
 
-.memberscontent {
-    max-width: 800px;
-    width: 90%;
-    padding: 1rem; /* Adjust padding as needed */
+.membersContent {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
+    padding: 10px 0;
+    margin-top: 5px;
+    width: 100%;
+    max-width: 1200px; /* Adjust as needed */
+    margin-left: auto;
+    margin-right: auto;
 }
