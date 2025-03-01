@@ -55,3 +55,15 @@ h2 {
 .login-btn:hover {
   background-color: #0056b3;
 }
+
+#memberscontent {
+    max-width: 800px;
+    width: 90%;
+    padding: 1rem; /* Adjust padding as needed */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
