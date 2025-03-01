@@ -75,18 +75,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Logout function
     window.logout = function (event) {
-        event.preventDefault();  // Prevent the default link behavior (navigation)
-        
-        // Clear session data
-        sessionStorage.removeItem("token");
-        sessionStorage.removeItem("roadName");
+    event.preventDefault();  // Prevent the default link behavior (navigation)
     
-        // Optionally, hide the members content and show the login form
-        loginForm.style.display = "block";  // Assuming loginForm is the element for login
-        membersContent.style.display = "none";  // Assuming membersContent is the element for member pages
-    
-        // Redirect to the login page (or any other page you want)
-        window.location.href = "../../MembersPortal/membersPortal.html";  // Change this path to your actual login page
-    };
+    // Clear session data
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("roadName");
+
+    // Optionally, hide the members content and show the login form (ensure these elements exist)
+    var loginForm = document.getElementById("loginForm");
+    var membersContent = document.getElementById("membersContent");
+
+    if (loginForm && membersContent) {
+        loginForm.style.display = "block";  // Show the login form
+        membersContent.style.display = "none";  // Hide the members content
+    }
+
+    // Redirect to the login page after logout (delay the redirect to allow the DOM update)
+    setTimeout(function() {
+        window.location.href = "../../MembersPortal/membersPortal.html";  // Redirect to the page you want
+    }, 500);  // A small delay (500ms) to ensure the logout actions are completed first
+};
+
   }
 });
