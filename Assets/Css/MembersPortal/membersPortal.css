@@ -63,8 +63,8 @@ h2 {
     justify-content: center;
     align-items: center;
     text-align: center;
-    width: 800px;  /* Force exact width */
-    max-width: 800px; /* Ensure it never exceeds 800px */
+    width: 800px !important;
+    max-width: 800px !important;
     margin-left: auto;
     margin-right: auto;
     flex-shrink: 0; /* Prevents shrinking */
