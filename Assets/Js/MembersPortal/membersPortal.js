@@ -16,11 +16,34 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
+// Global logout function (accessible outside the DOMContentLoaded listener)
+window.logout = function (event) {
+    event.preventDefault();  // Prevent the default link behavior (navigation)
+
+    // Clear session data
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("roadName");
+
+    // Optionally, hide the members content and show the login form
+    var loginForm = document.getElementById("loginForm");
+    var membersContent = document.getElementById("membersContent");
+
+    if (loginForm && membersContent) {
+        loginForm.style.display = "block";  // Show the login form
+        membersContent.style.display = "none";  // Hide the members content
+    }
+
+    // Redirect after logout
+    window.location.href = "../../MembersPortal/membersPortal.html";  // Ensure this is the correct path
+};
+
+// DOMContentLoaded event listener
 document.addEventListener("DOMContentLoaded", function () {
   const loginForm = document.getElementById("loginForm");
   const membersContent = document.getElementById("membersContent");
   const welcomeMessage = document.getElementById("welcomeMessage");
   const loginError = document.getElementById("loginError");
+  const membersSubNav = document.getElementById("membersSubNav");  // Make sure you have this element
 
   // Only run login-related code if loginForm exists
   if (loginForm) {
@@ -72,27 +95,5 @@ document.addEventListener("DOMContentLoaded", function () {
       membersContent.style.display = "none";
       membersSubNav.style.display = "none"; // Hide sub-navigation if not logged in
     }
-
-    // Global logout function
-    window.logout = function (event) {
-        event.preventDefault();  // Prevent the default link behavior (navigation)
-    
-        // Clear session data
-        sessionStorage.removeItem("token");
-        sessionStorage.removeItem("roadName");
-    
-        // Optionally, hide the members content and show the login form
-        var loginForm = document.getElementById("loginForm");
-        var membersContent = document.getElementById("membersContent");
-    
-        if (loginForm && membersContent) {
-            loginForm.style.display = "block";  // Show the login form
-            membersContent.style.display = "none";  // Hide the members content
-        }
-    
-        // Redirect after logout
-        window.location.href = "../../MembersPortal/membersPortal.html";  // Ensure this is the correct path
-    };
-
   }
 });
