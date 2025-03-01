@@ -92,13 +92,23 @@ footer {
 }
 
 /* Navigation bar */
-nav, .members-sub-nav {
+nav {
     background-color: #333;
     text-align: center;
     padding: 10px 0;
     margin-top: 5px;
-    width: 800px; /* Change from 100% to 800px */
-    max-width: 800px; /* Ensure max-width is also 800px */
+    width: 100%;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Members sub-nav */
+.members-sub-nav {
+    background-color: #444; /* Slightly lighter to distinguish it */
+    padding: 8px 0; /* Slightly smaller padding */
+    width: 100%;
+    max-width: 700px; /* Slightly smaller width */
     margin-left: auto;
     margin-right: auto;
 }
@@ -131,21 +141,25 @@ nav ul li a:hover, .members-sub-nav ul li a:hover {
 /* Responsive adjustments for smaller screens */
 @media (max-width: 768px) {
     nav, .members-sub-nav {
-        width: 95%; /* Reduce width on smaller screens */
+        width: 95%;
     }
 
     nav ul, .members-sub-nav ul {
-        flex-direction: column; /* Stack the items vertically */
+        flex-direction: column;
     }
 
     nav ul li, .members-sub-nav ul li {
-        margin-bottom: 10px; /* Add space between vertically stacked items */
+        margin-bottom: 10px;
+    }
+
+    .members-sub-nav {
+        max-width: 600px; /* Even smaller max-width for the sub-nav */
     }
 }
 
 /* Banner styling */
 .banner {
-    background-image: url('banner.jpg'); /* Ensure the correct path */
+    background-image: url('banner.jpg');
     background-size: cover;
     background-position: center;
     height: 250px;
@@ -156,5 +170,3 @@ nav ul li a:hover, .members-sub-nav ul li a:hover {
     margin: 0;
     max-width: 1200px;
 }
-
-
