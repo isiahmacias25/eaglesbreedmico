@@ -74,11 +74,19 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Logout function
-    window.logout = function () {
-      sessionStorage.removeItem("token");
-      sessionStorage.removeItem("roadName");
-      loginForm.style.display = "block";
-      membersContent.style.display = "none";
+    window.logout = function (event) {
+        event.preventDefault();  // Prevent the default link behavior (navigation)
+        
+        // Clear session data
+        sessionStorage.removeItem("token");
+        sessionStorage.removeItem("roadName");
+    
+        // Optionally, hide the members content and show the login form
+        loginForm.style.display = "block";  // Assuming loginForm is the element for login
+        membersContent.style.display = "none";  // Assuming membersContent is the element for member pages
+    
+        // Redirect to the login page (or any other page you want)
+        window.location.href = "../../login.html";  // Change this path to your actual login page
     };
   }
 });
