@@ -77,21 +77,26 @@ document.addEventListener("DOMContentLoaded", function () {
     window.logout = function (event) {
         event.preventDefault();  // Prevent the default link behavior (navigation)
     
+        console.log("Logout process started");
+    
         // Clear session data
         sessionStorage.removeItem("token");
         sessionStorage.removeItem("roadName");
     
-        // Optionally, hide the members content and show the login form (check if elements exist)
+        console.log("Session data cleared");
+    
+        // Check if elements exist before modifying them
         var loginForm = document.getElementById("loginForm");
         var membersContent = document.getElementById("membersContent");
     
-        // Check if the elements exist before trying to modify them
         if (loginForm && membersContent) {
             loginForm.style.display = "block";  // Show the login form
             membersContent.style.display = "none";  // Hide the members content
+            console.log("UI updated");
         }
     
-        // Redirect to the login page after logout
+        // Redirect after logout
+        console.log("Redirecting...");
         window.location.href = "../../MembersPortal/membersPortal.html";  // Ensure this is the correct path
     };
   }
