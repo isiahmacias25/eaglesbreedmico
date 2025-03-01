@@ -151,14 +151,14 @@ nav ul li a:hover, .members-sub-nav ul li a:hover {
 }
 
 /* Ensure child elements inside memberscontent follow the same layout structure */
-#memberscontent .content-container {
+#memberscontent {
     width: 100%; /* Prevent content from overflowing */
     padding: 1rem; /* Adjust padding as needed */
     box-sizing: border-box;
 }
 
 /* Specific adjustments for the 'minutes' file content */
-#memberscontent .minutes-content {
+#memberscontent {
     display: flex;
     flex-direction: column;
     justify-content: center;
