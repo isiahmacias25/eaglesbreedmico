@@ -143,8 +143,8 @@ nav ul li a:hover, .members-sub-nav ul li a:hover {
 }
 
 #memberscontent {
-    max-width: 1200px; /* Set a maximum width to control stretching */
-    width: 100%; /* Ensure it fills the available space but doesn't overflow */
+    max-width: 800px;
+    width: 90%;
     margin: 0 auto; /* Center it horizontally */
     padding: 2rem; /* Optional padding for spacing */
     box-sizing: border-box; /* Ensure padding doesn't affect width calculation */
@@ -152,17 +152,15 @@ nav ul li a:hover, .members-sub-nav ul li a:hover {
 
 /* Ensure child elements inside memberscontent follow the same layout structure */
 #memberscontent {
-    width: 100%; /* Prevent content from overflowing */
+    width: 90%; /* Prevent content from overflowing */
     padding: 1rem; /* Adjust padding as needed */
     box-sizing: border-box;
 }
-
-/* Specific adjustments for the 'minutes' file content */
 #memberscontent {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    width: 100%; /* Ensure it stays within the parent */
+    width: 90%; /* Ensure it stays within the parent */
 }
