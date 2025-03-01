@@ -128,6 +128,21 @@ nav ul li a:hover, .members-sub-nav ul li a:hover {
     color: #ff5733;
 }
 
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    nav, .members-sub-nav {
+        width: 95%; /* Reduce width on smaller screens */
+    }
+
+    nav ul, .members-sub-nav ul {
+        flex-direction: column; /* Stack the items vertically */
+    }
+
+    nav ul li, .members-sub-nav ul li {
+        margin-bottom: 10px; /* Add space between vertically stacked items */
+    }
+}
+
 /* Banner styling */
 .banner {
     background-image: url('banner.jpg'); /* Ensure the correct path */
