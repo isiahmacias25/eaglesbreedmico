@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
         membersContent.style.display = "none";  // Assuming membersContent is the element for member pages
     
         // Redirect to the login page (or any other page you want)
-        window.location.href = "../../login.html";  // Change this path to your actual login page
+        window.location.href = "../../MembersPortal/membersPortal.html";  // Change this path to your actual login page
     };
   }
 });
