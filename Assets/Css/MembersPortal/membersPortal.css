@@ -57,20 +57,15 @@ h2 {
 }
 
 .membersContent {
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
     width: 800px !important;
     max-width: 800px !important;
-    margin-left: auto;
-    margin-right: auto;
-    flex-shrink: 0; /* Prevents shrinking */
-    flex-grow: 0;   /* Prevents growing */
-    padding: 0;
-    margin: 0 auto;
-    border: none;
-  
+    min-width: 800px !important;
+    overflow: hidden; /* Prevents hidden content from expanding it */
 }
+
+.membersContent {
+    padding: 0 !important;
+    border: none !important;
+    box-sizing: border-box !important;
+}
+
