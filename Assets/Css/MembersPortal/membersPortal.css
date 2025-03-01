@@ -63,12 +63,14 @@ h2 {
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 10px 0;
-    margin-top: 5px;
     width: 800px;  /* Force exact width */
     max-width: 800px; /* Ensure it never exceeds 800px */
     margin-left: auto;
     margin-right: auto;
-   flex-shrink: 0; /* Prevents shrinking */
-   flex-grow: 0;   /* Prevents growing */
+    flex-shrink: 0; /* Prevents shrinking */
+    flex-grow: 0;   /* Prevents growing */
+    padding: 0;
+    margin: 0 auto;
+    border: none;
+  
 }
