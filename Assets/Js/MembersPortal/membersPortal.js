@@ -73,31 +73,26 @@ document.addEventListener("DOMContentLoaded", function () {
       membersSubNav.style.display = "none"; // Hide sub-navigation if not logged in
     }
 
-    // Logout function
+    // Global logout function
     window.logout = function (event) {
         event.preventDefault();  // Prevent the default link behavior (navigation)
-    
-        console.log("Logout process started");
     
         // Clear session data
         sessionStorage.removeItem("token");
         sessionStorage.removeItem("roadName");
     
-        console.log("Session data cleared");
-    
-        // Check if elements exist before modifying them
+        // Optionally, hide the members content and show the login form
         var loginForm = document.getElementById("loginForm");
         var membersContent = document.getElementById("membersContent");
     
         if (loginForm && membersContent) {
             loginForm.style.display = "block";  // Show the login form
             membersContent.style.display = "none";  // Hide the members content
-            console.log("UI updated");
         }
     
         // Redirect after logout
-        console.log("Redirecting...");
         window.location.href = "../../MembersPortal/membersPortal.html";  // Ensure this is the correct path
     };
+
   }
 });
