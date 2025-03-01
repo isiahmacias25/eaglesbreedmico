@@ -56,7 +56,7 @@ h2 {
   background-color: #0056b3;
 }
 
-#memberscontent {
+.memberscontent {
     max-width: 800px;
     width: 90%;
     padding: 1rem; /* Adjust padding as needed */
