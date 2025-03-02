@@ -49,17 +49,19 @@
 
 /* Add Meeting Minute Tile */
 .addMeetingMinuteTile {
-  background-color: #007bff;
-  color: white;
-  padding: 20px;
-  text-align: center;
-  cursor: pointer;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    background-color: #f8f9fa; /* Light gray background */
+    padding: 20px;
+    border-radius: 8px;
+    border: 2px solid #000; /* Added black border for contrast */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .addMeetingMinuteTile h3 {
-  font-size: 2.5em;
+    font-size: 1.2em;
+    color: #333;
+    margin-bottom: 10px;
 }
 
 .addMeetingMinuteTile p {
@@ -68,7 +70,10 @@
 }
 
 .addMeetingMinuteTile:hover {
-  background-color: #0056b3;
+    background: #007bff;
+    color: #fff;
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
 /* Modal (Popup) */
@@ -102,11 +107,11 @@
 
 .modal-content input[type="text"],
 .modal-content input[type="file"] {
-  width: 100%;
-  padding: 12px;
+  width: 90%;
+  padding: 8px;
   border: 2px solid #000;
   border-radius: 5px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .modal-content button {
@@ -123,7 +128,6 @@
   background-color: #0056b3;
 }
 
-/* Remove the "X" close button in the modal */
 .close {
   display: none;
 }
