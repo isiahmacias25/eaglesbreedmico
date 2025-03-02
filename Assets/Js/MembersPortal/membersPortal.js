@@ -16,25 +16,25 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Global logout function (accessible outside the DOMContentLoaded listener)
+// Global logout function
 window.logout = function (event) {
-    event.preventDefault();  // Prevent the default link behavior (navigation)
+    event.preventDefault(); // Prevent default navigation
 
     // Clear session data
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("roadName");
 
-    // Optionally, hide the members content and show the login form
-    var loginForm = document.getElementById("loginForm");
-    var membersContent = document.getElementById("membersContent");
+    // Hide members content and show login form
+    const loginForm = document.getElementById("loginForm");
+    const membersContent = document.getElementById("membersContent");
 
     if (loginForm && membersContent) {
-        loginForm.style.display = "block";  // Show the login form
-        membersContent.style.display = "none";  // Hide the members content
+        loginForm.style.display = "block";
+        membersContent.style.display = "none";
     }
 
     // Redirect after logout
-    window.location.href = "../../MembersPortal/membersPortal.html";  // Ensure this is the correct path
+    window.location.href = "../../MembersPortal/membersPortal.html";
 };
 
 // DOMContentLoaded event listener
@@ -43,9 +43,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const membersContent = document.getElementById("membersContent");
   const welcomeMessage = document.getElementById("welcomeMessage");
   const loginError = document.getElementById("loginError");
-  const membersSubNav = document.getElementById("membersSubNav");  // Make sure you have this element
+  const membersSubNav = document.getElementById("membersSubNav");
+  const membersParagraph = document.querySelector("#membersContent p"); // Select the <p> tag
 
-  // Only run login-related code if loginForm exists
+  // Hide <p> by default
+  if (membersParagraph) {
+    membersParagraph.style.display = "none";
+  }
+
   if (loginForm) {
     loginForm.addEventListener("submit", async function (event) {
       event.preventDefault();
@@ -63,8 +68,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
         loginForm.style.display = "none";
         membersContent.style.display = "block";
-        membersSubNav.style.display = "block"; // Show the members sub-navigation
+        membersSubNav.style.display = "block";
         welcomeMessage.textContent = `Welcome, ${roadName}!`;
+
+        if (membersParagraph) {
+          membersParagraph.style.display = "block"; // Show <p> when logged in
+        }
       } catch (error) {
         console.error("Login error:", error);
         let errorMessage = "An error occurred. Please try again.";
@@ -82,18 +91,27 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
-    // Check for logged-in user
+    // Check if user is logged in
     const token = sessionStorage.getItem("token");
     const roadName = sessionStorage.getItem("roadName");
 
     if (token && roadName) {
       loginForm.style.display = "none";
       membersContent.style.display = "block";
+      membersSubNav.style.display = "block";
       welcomeMessage.textContent = `Welcome, ${roadName}!`;
+
+      if (membersParagraph) {
+        membersParagraph.style.display = "block"; // Show <p> when logged in
+      }
     } else {
       loginForm.style.display = "block";
       membersContent.style.display = "none";
-      membersSubNav.style.display = "none"; // Hide sub-navigation if not logged in
+      membersSubNav.style.display = "none";
+
+      if (membersParagraph) {
+        membersParagraph.style.display = "none"; // Hide <p> when logged out
+      }
     }
   }
 });
