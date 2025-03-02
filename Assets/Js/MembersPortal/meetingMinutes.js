@@ -64,3 +64,25 @@ document.addEventListener("DOMContentLoaded", async function () {
     console.error("Error fetching meeting minutes: ", error);
   }
 });
+
+// Get modal and addMeetingTile elements
+var modal = document.getElementById("addMeetingModal");
+var addMeetingTile = document.getElementById("addMeetingTile");
+var closeModal = document.getElementById("closeModal");
+
+// When the "Add" tile is clicked, open the modal
+addMeetingTile.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the close button is clicked, close the modal
+closeModal.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
