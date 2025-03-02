@@ -46,3 +46,73 @@
     transform: scale(1.05);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
+
+/* Form Container */
+.addMeetingMinuteForm {
+    background-color: #f8f9fa; /* Light gray background */
+    padding: 20px;
+    border-radius: 8px;
+    border: 2px solid #000; /* Added black border for contrast */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    margin-bottom: 30px;
+    width: 100%;
+    max-width: 1200px; /* Adjust as needed */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Form Header */
+.addMeetingMinuteForm h2 {
+    font-size: 1.5em;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Form Elements (labels, inputs, button) */
+.addMeetingMinuteForm label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #333;
+    display: block;
+}
+
+.addMeetingMinuteForm input[type="text"],
+.addMeetingMinuteForm input[type="file"] {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #000;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    font-size: 1em;
+}
+
+.addMeetingMinuteForm input[type="text"]:focus,
+.addMeetingMinuteForm input[type="file"]:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Submit Button */
+.addMeetingMinuteForm button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 12px 20px;
+    font-size: 1.1em;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    width: 100%; /* Full-width for better alignment */
+}
+
+.addMeetingMinuteForm button:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* Hover Effect */
+.addMeetingMinuteForm:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
