@@ -68,17 +68,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 // Get modal and addMeetingTile elements
 var modal = document.getElementById("addMeetingModal");
 var addMeetingTile = document.getElementById("addMeetingTile");
-var closeModal = document.getElementById("closeModal");
 var closeOutButton = document.getElementById("closeOutButton");
 
 // When the "Add" tile is clicked, open the modal
 addMeetingTile.onclick = function() {
   modal.style.display = "block";
-}
-
-// When the close button is clicked, close the modal
-closeModal.onclick = function() {
-  modal.style.display = "none";
 }
 
 // When the "Close Out" button is clicked, close the modal without saving
