@@ -41,20 +41,28 @@
       
       <!-- Display Meeting Minutes -->
       <div id="minutesGrid" class="grid-container">
-              <!-- Add New Meeting Minute Form -->
-        <div class="addMeetingMinuteForm">
+        <!-- Add New Meeting Minute Tile (clicking it opens the form) -->
+        <div class="addMeetingMinuteTile" id="addMeetingTile">
+          <h3>+</h3>
+          <p>Add</p>
+        </div>
+      </div>
+      
+      <!-- Modal (Popup) for Adding New Meeting Minute -->
+      <div class="modal" id="addMeetingModal">
+        <div class="modal-content">
+          <span class="close" id="closeModal">&times;</span>
           <h2>Add New Meeting Minute</h2>
           <form id="addMeetingMinuteForm" enctype="multipart/form-data">
             <label for="title">Meeting Title:</label>
             <input type="text" id="title" name="title" required>
-  
+
             <label for="file">Upload Meeting PDF:</label>
             <input type="file" id="file" name="file" accept=".pdf" required>
-  
+
             <button type="submit">Add</button>
           </form>
         </div>
-          <!-- Dynamically filled with JavaScript -->
       </div>
     </div>
   </div>
