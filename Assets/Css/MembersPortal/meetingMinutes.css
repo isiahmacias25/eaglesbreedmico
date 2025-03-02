@@ -48,6 +48,11 @@
   font-size: 2.5em;
 }
 
+.addMeetingMinuteTile p {
+  font-size: 1.2em;
+  margin-top: 10px;
+}
+
 .addMeetingMinuteTile:hover {
   background-color: #0056b3;
 }
@@ -104,25 +109,12 @@
   background-color: #0056b3;
 }
 
-/* Close button for the modal */
+/* Remove the "X" close button in the modal */
 .close {
-  color: #aaa;
-  font-size: 28px;
-  font-weight: bold;
-  position: absolute;
-  top: 10px;
-  right: 25px;
-  background-color: transparent;
-  border: none;
+  display: none;
 }
 
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
-
+/* Close Out Button */
 #closeOutButton {
   background-color: #f44336;
   color: white;
