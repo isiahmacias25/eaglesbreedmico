@@ -39,23 +39,22 @@
         </ul>
       </div>
       
-      <!-- Add New Meeting Minute Form -->
-      <div class="addMeetingMinuteForm">
-        <h2>Add New Meeting Minute</h2>
-        <form id="addMeetingMinuteForm" enctype="multipart/form-data">
-          <label for="title">Meeting Title:</label>
-          <input type="text" id="title" name="title" required>
-
-          <label for="file">Upload Meeting PDF:</label>
-          <input type="file" id="file" name="file" accept=".pdf" required>
-
-          <button type="submit">Add</button>
-        </form>
-      </div>
-      
       <!-- Display Meeting Minutes -->
       <div id="minutesGrid" class="grid-container">
-        <!-- Dynamically filled with JavaScript -->
+              <!-- Add New Meeting Minute Form -->
+        <div class="addMeetingMinuteForm">
+          <h2>Add New Meeting Minute</h2>
+          <form id="addMeetingMinuteForm" enctype="multipart/form-data">
+            <label for="title">Meeting Title:</label>
+            <input type="text" id="title" name="title" required>
+  
+            <label for="file">Upload Meeting PDF:</label>
+            <input type="file" id="file" name="file" accept=".pdf" required>
+  
+            <button type="submit">Add</button>
+          </form>
+        </div>
+          <!-- Dynamically filled with JavaScript -->
       </div>
     </div>
   </div>
