@@ -142,3 +142,11 @@
 #closeOutButton:hover {
   background-color: #d32f2f;
 }
+
+.addButton {
+  width: 100%;
+  height: 100%;
+  max-width: 80px; /* Adjust size as needed */
+  max-height: 80px;
+  object-fit: contain; /* Ensures it fits within the tile */
+}
