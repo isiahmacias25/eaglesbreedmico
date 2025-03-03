@@ -23,7 +23,6 @@ const storage = getStorage(app);
 document.addEventListener("DOMContentLoaded", async function () {
   const minutesGrid = document.getElementById("minutesGrid");
   const modal = document.getElementById("addMeetingModal");
-  const addMeetingTile = document.getElementById("addMeetingTile");
   const closeOutButton = document.getElementById("closeOutButton");
   const meetingForm = document.getElementById("addMeetingMinuteForm");
   const loadingElement = document.getElementById('loading');
@@ -40,10 +39,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Show loading spinner while fetching data
     loadingElement.style.display = "block";
 
-    // Add "Add Meeting" tile as the first tile
+    // Add "Add Meeting" tile as the first tile with text
     const addTile = document.createElement("div");
     addTile.classList.add("meeting-minute-tile", "add-tile");
-    addTile.onclick = () => modal.style.display = "block";
+    addTile.innerHTML = `<h3>Add Meeting</h3>`; // Add text to the tile
+    addTile.onclick = () => modal.classList.add("show");
     minutesGrid.appendChild(addTile);
 
     // Fetch meeting minutes from Firestore
@@ -74,6 +74,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
   // Open the modal when clicking the "Add Meeting" tile
+  const addMeetingTile = document.getElementById("addMeetingTile");
   addMeetingTile.onclick = () => modal.classList.add("show");
 
   // Close modal without saving
