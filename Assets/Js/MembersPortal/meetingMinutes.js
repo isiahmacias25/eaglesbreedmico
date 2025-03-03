@@ -1,9 +1,9 @@
-import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"; 
-import { getAuth } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
+ import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"; 
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+import { getStorage, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
 
-// Firebase Configuration
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyChVYbT54aRIbAHyy_HRsH7caRHyaZwWTA",
   authDomain: "eaglesbreedmico.firebaseapp.com",
@@ -14,106 +14,75 @@ const firebaseConfig = {
   measurementId: "G-ZR1P59C7BP"
 };
 
-// Initialize Firebase (Prevent duplicate initialization)
+// Prevent duplicate Firebase initialization
 const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
+// Wait until the document is ready
 document.addEventListener("DOMContentLoaded", async function () {
   const minutesGrid = document.getElementById("minutesGrid");
-  const modal = document.getElementById("addMeetingModal");
-  const closeOutButton = document.getElementById("closeOutButton");
-  const meetingForm = document.getElementById("addMeetingMinuteForm");
 
   if (!minutesGrid) {
     console.error("Meeting minutes grid is missing from the DOM.");
     return;
   }
 
-  // Load existing meeting minutes
-  async function loadMeetingMinutes() {
-    minutesGrid.innerHTML = ""; // Clear grid before loading
+  // Fetch meeting minutes data from Firestore
+  try {
+    const querySnapshot = await getDocs(collection(db, "MeetingMinutes"));
+    querySnapshot.forEach(async (doc) => {
+      const minuteData = doc.data(); // Document data
+      const title = minuteData.title;
+      const pdfURL = minuteData.pdfURL; // This should be the Firebase Storage path
 
-    // Add "Add Meeting" tile as the first tile with text
-    const addTile = document.createElement("div");
-    addTile.classList.add("meeting-minute-tile", "add-tile");
-    addTile.innerHTML = `<h3>Add Meeting</h3>`; // Add text to the tile
-    addTile.onclick = () => modal.style.display = "block"; // Open modal
-    minutesGrid.appendChild(addTile);
+      // Log to check if the pdfURL is correct
+      console.log('pdfURL:', pdfURL);
 
-    // Fetch meeting minutes from Firestore
-    try {
-      const querySnapshot = await getDocs(collection(db, "MeetingMinutes"));
-      querySnapshot.forEach(async (doc) => {
-        const minuteData = doc.data();
-        const title = minuteData.title;
-        const pdfURL = minuteData.pdfURL;
+      // Reference to the file in Firebase Storage
+      const pdfRef = ref(storage, pdfURL);
 
-        const pdfRef = ref(storage, pdfURL);
-        try {
-          const fullpdfURL = await getDownloadURL(pdfRef);
-          const tile = document.createElement("div");
-          tile.classList.add("meeting-minute-tile");
-          tile.innerHTML = `<h3>${title}</h3><a href="${fullpdfURL}" target="_blank">View PDF</a>`;
-          minutesGrid.appendChild(tile);
-        } catch (error) {
-          console.error("Error fetching download URL: ", error);
-        }
-      });
-    } catch (error) {
-      console.error("Error fetching meeting minutes: ", error);
-    }
+      try {
+        // Get the download URL for the file from Firebase Storage
+        const fullpdfURL = await getDownloadURL(pdfRef);
+        console.log('Full URL:', fullpdfURL); // Log the full URL for verification
+
+        // Create a grid tile for each meeting minute
+        const tile = document.createElement("div");
+        tile.classList.add("meeting-minute-tile");
+        tile.innerHTML = 
+          <h3>${title}</h3>
+          <a href="${fullpdfURL}" target="_blank">View PDF</a>
+        ;
+        minutesGrid.appendChild(tile);
+      } catch (error) {
+        console.error('Error fetching download URL: ', error);
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching meeting minutes: ", error);
   }
-
-  // Open the modal when clicking the "Add Meeting" tile
-  const addMeetingTile = document.getElementById("addMeetingTile");
-  if (addMeetingTile) {
-    addMeetingTile.onclick = () => modal.style.display = "block"; // Ensure the modal opens when clicking on the add meeting tile
-  }
-
-  // Close modal without saving
-  closeOutButton.onclick = () => modal.style.display = "none";
-
-  // Close modal when clicking outside it
-  window.onclick = (event) => {
-    if (event.target == modal) {
-      modal.style.display = "none";
-    }
-  };
-
-  // Handle form submission to add a new meeting minute
-  meetingForm.addEventListener("submit", async (event) => {
-    event.preventDefault(); // Prevent page refresh on form submit
-
-    const titleInput = document.getElementById("title");
-    const fileInput = document.getElementById("file");
-    const title = titleInput.value.trim();
-    const file = fileInput.files[0];
-
-    if (!title || !file) {
-      alert("Please enter a title and upload a PDF.");
-      return;
-    }
-
-    try {
-      // Upload PDF to Firebase Storage
-      const fileRef = ref(storage, `meetingMinutes/${file.name}`);
-      await uploadBytes(fileRef, file);  // Upload the file
-      const pdfURL = await getDownloadURL(fileRef); // Get the URL of the uploaded file
-
-      // Save title & PDF URL in Firestore
-      await addDoc(collection(db, "MeetingMinutes"), { title, pdfURL });
-
-      // Close modal, reset form, and reload the grid
-      modal.style.display = "none";
-      meetingForm.reset();
-      loadMeetingMinutes(); // Reload the minutes grid with the new entry
-    } catch (error) {
-      console.error("Error uploading file or saving to Firestore:", error);
-    }
-  });
-
-  // Load meeting minutes on page load
-  loadMeetingMinutes();
 });
+
+// Get modal and addMeetingTile elements
+var modal = document.getElementById("addMeetingModal");
+var addMeetingTile = document.getElementById("addMeetingTile");
+var closeOutButton = document.getElementById("closeOutButton");
+
+// When the "Add" tile is clicked, open the modal
+addMeetingTile.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the "Close Out" button is clicked, close the modal without saving
+closeOutButton.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
