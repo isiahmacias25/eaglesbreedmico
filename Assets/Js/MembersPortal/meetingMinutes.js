@@ -51,10 +51,11 @@ document.addEventListener("DOMContentLoaded", async function () {
         // Create a grid tile for each meeting minute
         const tile = document.createElement("div");
         tile.classList.add("meeting-minute-tile");
-        tile.innerHTML = 
-          <h3>${title}</h3>
-          <a href="${fullpdfURL}" target="_blank">View PDF</a>
-        ;
+        tile.innerHTML = `
+         <h3>${title}</h3>
+         <a href="${fullpdfURL}" target="_blank">View PDF</a>
+       `;
+
         minutesGrid.appendChild(tile);
       } catch (error) {
         console.error('Error fetching download URL: ', error);
