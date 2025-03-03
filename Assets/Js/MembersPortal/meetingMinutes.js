@@ -25,7 +25,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   const modal = document.getElementById("addMeetingModal");
   const closeOutButton = document.getElementById("closeOutButton");
   const meetingForm = document.getElementById("addMeetingMinuteForm");
-  const loadingElement = document.getElementById('loading');
 
   if (!minutesGrid) {
     console.error("Meeting minutes grid is missing from the DOM.");
@@ -36,14 +35,11 @@ document.addEventListener("DOMContentLoaded", async function () {
   async function loadMeetingMinutes() {
     minutesGrid.innerHTML = ""; // Clear grid before loading
 
-    // Show loading spinner while fetching data
-    loadingElement.style.display = "block";
-
     // Add "Add Meeting" tile as the first tile with text
     const addTile = document.createElement("div");
     addTile.classList.add("meeting-minute-tile", "add-tile");
     addTile.innerHTML = `<h3>Add Meeting</h3>`; // Add text to the tile
-    addTile.onclick = () => modal.classList.add("show");
+    addTile.onclick = () => modal.style.display = "block"; // Open modal
     minutesGrid.appendChild(addTile);
 
     // Fetch meeting minutes from Firestore
@@ -67,23 +63,22 @@ document.addEventListener("DOMContentLoaded", async function () {
       });
     } catch (error) {
       console.error("Error fetching meeting minutes: ", error);
-    } finally {
-      // Hide loading spinner once data is loaded
-      loadingElement.style.display = "none";
     }
   }
 
   // Open the modal when clicking the "Add Meeting" tile
   const addMeetingTile = document.getElementById("addMeetingTile");
-  addMeetingTile.onclick = () => modal.classList.add("show");
+  if (addMeetingTile) {
+    addMeetingTile.onclick = () => modal.style.display = "block"; // Ensure the modal opens when clicking on the add meeting tile
+  }
 
   // Close modal without saving
-  closeOutButton.onclick = () => modal.classList.remove("show");
+  closeOutButton.onclick = () => modal.style.display = "none";
 
   // Close modal when clicking outside it
   window.onclick = (event) => {
     if (event.target == modal) {
-      modal.classList.remove("show");
+      modal.style.display = "none";
     }
   };
 
@@ -111,7 +106,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       await addDoc(collection(db, "MeetingMinutes"), { title, pdfURL });
 
       // Close modal, reset form, and reload the grid
-      modal.classList.remove("show");
+      modal.style.display = "none";
       meetingForm.reset();
       loadMeetingMinutes();
     } catch (error) {
