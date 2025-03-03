@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   // Handle form submission to add a new meeting minute
   meetingForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
+    event.preventDefault(); // Prevent page refresh on form submit
 
     const titleInput = document.getElementById("title");
     const fileInput = document.getElementById("file");
@@ -99,8 +99,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     try {
       // Upload PDF to Firebase Storage
       const fileRef = ref(storage, `meetingMinutes/${file.name}`);
-      await uploadBytes(fileRef, file);
-      const pdfURL = await getDownloadURL(fileRef);
+      await uploadBytes(fileRef, file);  // Upload the file
+      const pdfURL = await getDownloadURL(fileRef); // Get the URL of the uploaded file
 
       // Save title & PDF URL in Firestore
       await addDoc(collection(db, "MeetingMinutes"), { title, pdfURL });
@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       // Close modal, reset form, and reload the grid
       modal.style.display = "none";
       meetingForm.reset();
-      loadMeetingMinutes();
+      loadMeetingMinutes(); // Reload the minutes grid with the new entry
     } catch (error) {
       console.error("Error uploading file or saving to Firestore:", error);
     }
