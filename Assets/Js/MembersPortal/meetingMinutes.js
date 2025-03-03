@@ -39,7 +39,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Add "Add Meeting" tile as the first tile
     const addTile = document.createElement("div");
     addTile.classList.add("meeting-minute-tile", "add-tile");
-    addTile.innerHTML = '<img src="../../Assets/Images/plus-icon.png" alt="Add">';
     addTile.onclick = () => modal.style.display = "block";
     minutesGrid.appendChild(addTile);
 
