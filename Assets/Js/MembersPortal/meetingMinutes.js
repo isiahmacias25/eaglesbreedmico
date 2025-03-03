@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   const addMeetingTile = document.getElementById("addMeetingTile");
   const closeOutButton = document.getElementById("closeOutButton");
   const meetingForm = document.getElementById("addMeetingMinuteForm");
+  const loadingElement = document.getElementById('loading');
 
   if (!minutesGrid) {
     console.error("Meeting minutes grid is missing from the DOM.");
@@ -35,6 +36,9 @@ document.addEventListener("DOMContentLoaded", async function () {
   // Load existing meeting minutes
   async function loadMeetingMinutes() {
     minutesGrid.innerHTML = ""; // Clear grid before loading
+
+    // Show loading spinner while fetching data
+    loadingElement.style.display = "block";
 
     // Add "Add Meeting" tile as the first tile
     const addTile = document.createElement("div");
@@ -63,19 +67,22 @@ document.addEventListener("DOMContentLoaded", async function () {
       });
     } catch (error) {
       console.error("Error fetching meeting minutes: ", error);
+    } finally {
+      // Hide loading spinner once data is loaded
+      loadingElement.style.display = "none";
     }
   }
 
   // Open the modal when clicking the "Add Meeting" tile
-  addMeetingTile.onclick = () => modal.style.display = "block";
+  addMeetingTile.onclick = () => modal.classList.add("show");
 
   // Close modal without saving
-  closeOutButton.onclick = () => modal.style.display = "none";
+  closeOutButton.onclick = () => modal.classList.remove("show");
 
   // Close modal when clicking outside it
   window.onclick = (event) => {
     if (event.target == modal) {
-      modal.style.display = "none";
+      modal.classList.remove("show");
     }
   };
 
@@ -103,7 +110,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       await addDoc(collection(db, "MeetingMinutes"), { title, pdfURL });
 
       // Close modal, reset form, and reload the grid
-      modal.style.display = "none";
+      modal.classList.remove("show");
       meetingForm.reset();
       loadMeetingMinutes();
     } catch (error) {
