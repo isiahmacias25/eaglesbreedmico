@@ -1,6 +1,6 @@
- import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"; 
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"; 
+import { getAuth } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 import { getStorage, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
 
 // Firebase configuration
@@ -20,7 +20,10 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-// Wait until the document is ready
+// Extract year from URL (e.g., meetingMinutes_2025.html → "2025")
+const yearMatch = window.location.pathname.match(/(\d{4})/);
+const selectedYear = yearMatch ? yearMatch[0] : null;
+
 document.addEventListener("DOMContentLoaded", async function () {
   const minutesGrid = document.getElementById("minutesGrid");
 
@@ -29,39 +32,54 @@ document.addEventListener("DOMContentLoaded", async function () {
     return;
   }
 
-  // Fetch meeting minutes data from Firestore
+  if (!selectedYear) {
+    console.error("Year not found in URL. Ensure the page is named properly.");
+    return;
+  }
+
   try {
-    const querySnapshot = await getDocs(collection(db, "MeetingMinutes"));
+    // Query meeting minutes collection for the selected year, ordered by date (newest first)
+    const q = query(collection(db, `MeetingMinutes/${selectedYear}`), orderBy("date", "desc"));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      minutesGrid.innerHTML = `<p>No meeting minutes found for ${selectedYear}.</p>`;
+      return;
+    }
+
     querySnapshot.forEach(async (doc) => {
-      const minuteData = doc.data(); // Document data
+      const minuteData = doc.data();
       const title = minuteData.title;
-      const pdfURL = minuteData.pdfURL; // This should be the Firebase Storage path
+      const pdfURL = minuteData.pdfURL; // Firebase Storage path
+      const meetingDate = new Date(minuteData.date); // Convert stored date to JavaScript Date object
 
-      // Log to check if the pdfURL is correct
-      console.log('pdfURL:', pdfURL);
-
-      // Reference to the file in Firebase Storage
-      const pdfRef = ref(storage, pdfURL);
+      // Format date (e.g., "February 10, 2025")
+      const formattedDate = meetingDate.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
 
       try {
-        // Get the download URL for the file from Firebase Storage
+        // Fetch actual download URL from Firebase Storage
+        const pdfRef = ref(storage, pdfURL);
         const fullpdfURL = await getDownloadURL(pdfRef);
-        console.log('Full URL:', fullpdfURL); // Log the full URL for verification
 
-        // Create a grid tile for each meeting minute
+        // Create a tile for each meeting minute
         const tile = document.createElement("div");
         tile.classList.add("meeting-minute-tile");
         tile.innerHTML = `
-         <h3>${title}</h3>
-         <a href="${fullpdfURL}" target="_blank">View PDF</a>
-       `;
+          <h3>${title}</h3>
+          <p>${formattedDate}</p>
+          <a href="${fullpdfURL}" target="_blank">View PDF</a>
+        `;
 
         minutesGrid.appendChild(tile);
       } catch (error) {
-        console.error('Error fetching download URL: ', error);
+        console.error("Error fetching download URL:", error);
       }
     });
   } catch (error) {
-    console.error("Error fetching meeting minutes: ", error);
+    console.error("Error fetching meeting minutes:", error);
   }
 });
