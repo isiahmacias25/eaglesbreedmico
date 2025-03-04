@@ -170,3 +170,17 @@ nav ul li a:hover, .members-sub-nav ul li a:hover {
     margin: 0;
     max-width: 1200px;
 }
+
+/* Highlight the current active page in orange */
+nav ul li a.active, .members-sub-nav ul li a.active {
+    color: #ff5733; /* Bright orange */
+    font-weight: bold;
+    border-bottom: 2px solid #ff5733;
+}
+
+/* Darken the Members Portal tab when on a members-only page */
+nav ul li a.members-active {
+    background-color: rgba(255, 87, 51, 0.3); /* Light shaded orange */
+    border-radius: 5px;
+    padding: 5px 10px;
+}
