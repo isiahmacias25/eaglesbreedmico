@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       const minuteData = doc.data();
       const title = minuteData.title;
       const pdfURL = minuteData.pdfURL; // Firebase Storage path
-      const meetingDate = minuteData.date.toDate(); // Convert Firestore timestamp to JavaScript Date object
+      const meetingDate = minuteData.date.toDate(); // Convert Firestore timestamp to JavaScript Date object 
 
       // Format date (e.g., "November 10, 2024")
       const formattedDate = meetingDate.toLocaleDateString("en-US", {
