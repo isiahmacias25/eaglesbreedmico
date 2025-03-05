@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     console.error("Year not found in URL.");
     return;
   }
-  
+
   const year = currentYear[0];
   const gridContainer = document.getElementById(`${year}Minutes`);
 
@@ -37,8 +37,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
   try {
-    // Query Firestore for meeting minutes in the selected year, ordered by date descending (newest first)
-    const q = query(collection(db, `MeetingMinutes/MeetingMinutes/${year}`), orderBy("date", "desc"));
+    // Query Firestore for meeting minutes in the selected year
+    const q = query(collection(db, `MeetingMinutes/MeetingMinutes/${year}`));
     const querySnapshot = await getDocs(q);
 
     if (querySnapshot.empty) {
@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       return;
     }
 
-    // Fetch all documents and log them for debugging
+    // Fetch all documents and push them into an array
     const meetingData = [];
 
     querySnapshot.forEach((doc) => {
@@ -57,11 +57,8 @@ document.addEventListener("DOMContentLoaded", async function () {
       meetingData.push({ title, pdfURL, meetingDate });
     });
 
-    // Debugging: Check the meetingData array to ensure it's correct
-    console.log("Raw Meeting Data:", meetingData);
-
-    // Manually sort the array by date (descending)
-    meetingData.sort((a, b) => b.meetingDate - a.meetingDate);
+    // Sort the meetingData array manually by date in descending order
+    meetingData.sort((a, b) => b.meetingDate - a.meetingDate); // Sort in descending order
 
     // Create a tile for each meeting minute and add it to the grid
     meetingData.forEach(async (data) => {
