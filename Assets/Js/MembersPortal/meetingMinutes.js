@@ -29,9 +29,9 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
   
   const year = currentYear[0];
-  const minutesGrid = document.getElementById(`${year}Minutes`);
+  const grid-container = document.getElementById(`${year}Minutes`);
 
-  if (!minutesgrid) {
+  if (!grid-container) {
     console.error(`Grid for year ${year} not found.`);
     return;
   }
@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const querySnapshot = await getDocs(q);
 
     if (querySnapshot.empty) {
-      minutesGrid.innerHTML = `<p>No meeting minutes found for ${year}.</p>`;
+     grid-container.innerHTML = `<p>No meeting minutes found for ${year}.</p>`;
       return;
     }
 
@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", async function () {
           <a href="${fullpdfURL}" target="_blank">View PDF</a>
         `;
 
-        minutesGrid.appendChild(tile);
+        grid-container.appendChild(tile);
       } catch (error) {
         console.error("Error fetching download URL:", error);
       }
