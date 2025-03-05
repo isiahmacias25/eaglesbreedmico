@@ -1,6 +1,6 @@
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"; 
 import { getAuth } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+import { getFirestore, collection, getDocs, query } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 import { getStorage, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
 
 // Firebase configuration
@@ -20,10 +20,6 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-// Extract year from URL (e.g., meetingMinutes_2025.html → "2025")
-const yearMatch = window.location.pathname.match(/(\d{4})/);
-const selectedYear = yearMatch ? yearMatch[0] : null;
-
 document.addEventListener("DOMContentLoaded", async function () {
   const minutesGrid = document.getElementById("minutesGrid");
 
@@ -32,53 +28,66 @@ document.addEventListener("DOMContentLoaded", async function () {
     return;
   }
 
-  if (!selectedYear) {
-    console.error("Year not found in URL. Ensure the page is named properly.");
-    return;
-  }
-
   try {
-    // Query meeting minutes for the selected year, sorted by date (newest first)
-    const q = query(collection(db, `MeetingMinutes/MeetingMinutes/${selectedYear}`), orderBy("date", "desc"));
-    const querySnapshot = await getDocs(q);
+    // Get all years from Firestore (subcollections under MeetingMinutes)
+    const yearsSnapshot = await getDocs(collection(db, "MeetingMinutes"));
 
-    if (querySnapshot.empty) {
-      minutesGrid.innerHTML = `<p>No meeting minutes found for ${selectedYear}.</p>`;
-      return;
-    }
+    for (const yearDoc of yearsSnapshot.docs) {
+      const year = yearDoc.id; // Get the year as a string (e.g., "2024", "2025")
 
-    querySnapshot.forEach(async (doc) => {
-      const minuteData = doc.data();
-      const title = minuteData.title;
-      const pdfURL = minuteData.pdfURL; // Firebase Storage path
-      const meetingDate = minuteData.date.toDate(); // Convert Firestore timestamp to JavaScript Date object
+      // Fetch all meeting minutes for that year
+      const q = query(collection(db, `MeetingMinutes/${year}`));
+      const querySnapshot = await getDocs(q);
 
-      // Format date (e.g., "November 10, 2024")
-      const formattedDate = meetingDate.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
+      let minutesArray = [];
+
+      querySnapshot.forEach((doc) => {
+        const minuteData = doc.data();
+        const title = minuteData.title;
+        const pdfURL = minuteData.pdfURL;
+        const docName = doc.id; // The document name (e.g., "november-10-2024-monthly-meeting-minutes")
+
+        // Extract the date from the document name (e.g., "november-10-2024")
+        const dateMatch = docName.match(/(\w+)-(\d+)-(\d{4})/); // Match "november-10-2024"
+        if (!dateMatch) {
+          console.warn(`Skipping document with invalid name format: ${docName}`);
+          return;
+        }
+
+        const [, monthName, day, year] = dateMatch;
+        const formattedDate = new Date(`${monthName} ${day}, ${year}`);
+
+        minutesArray.push({
+          title,
+          pdfURL,
+          formattedDate,
+          docName,
+        });
       });
 
-      try {
-        // Fetch actual download URL from Firebase Storage
-        const pdfRef = ref(storage, pdfURL);
-        const fullpdfURL = await getDownloadURL(pdfRef);
+      // Sort by date (newest first)
+      minutesArray.sort((a, b) => b.formattedDate - a.formattedDate);
 
-        // Create a tile for each meeting minute
-        const tile = document.createElement("div");
-        tile.classList.add("meeting-minute-tile");
-        tile.innerHTML = `
-          <h3>${title}</h3>
-          <p>${formattedDate}</p>
-          <a href="${fullpdfURL}" target="_blank">View PDF</a>
-        `;
+      // Add sorted minutes to the page
+      minutesArray.forEach(async (minute) => {
+        try {
+          const pdfRef = ref(storage, minute.pdfURL);
+          const fullpdfURL = await getDownloadURL(pdfRef);
 
-        minutesGrid.appendChild(tile);
-      } catch (error) {
-        console.error("Error fetching download URL:", error);
-      }
-    });
+          const tile = document.createElement("div");
+          tile.classList.add("meeting-minute-tile");
+          tile.innerHTML = `
+            <h3>${minute.title}</h3>
+            <p>${minute.formattedDate.toDateString()}</p>
+            <a href="${fullpdfURL}" target="_blank">View PDF</a>
+          `;
+
+          minutesGrid.appendChild(tile);
+        } catch (error) {
+          console.error("Error fetching download URL:", error);
+        }
+      });
+    }
   } catch (error) {
     console.error("Error fetching meeting minutes:", error);
   }
