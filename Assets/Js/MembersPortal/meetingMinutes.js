@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
   
   const year = currentYear[0];
-  const gridContainer = document.getElementById(`${year}Minutes`);  // Changed to gridContainer
+  const gridContainer = document.getElementById(`${year}Minutes`);
 
   if (!gridContainer) {
     console.error(`Grid for year ${year} not found.`);
@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const querySnapshot = await getDocs(q);
 
     if (querySnapshot.empty) {
-      gridContainer.innerHTML = `<p>No meeting minutes found for ${year}.</p>`;  // Changed to gridContainer
+      gridContainer.innerHTML = `<p>No meeting minutes found for ${year}.</p>`;
       return;
     }
 
@@ -52,6 +52,10 @@ document.addEventListener("DOMContentLoaded", async function () {
       const title = minuteData.title;
       const pdfURL = minuteData.pdfURL; // Firebase Storage path
       const meetingDate = minuteData.date.toDate(); // Convert Firestore timestamp to JavaScript Date object 
+
+      // Debugging: Log the date and other details to check ordering
+      console.log("Meeting Date:", meetingDate);
+      console.log("Document Data:", minuteData);
 
       // Format date (e.g., "November 10, 2024")
       const formattedDate = meetingDate.toLocaleDateString("en-US", {
@@ -70,11 +74,11 @@ document.addEventListener("DOMContentLoaded", async function () {
         tile.classList.add("meeting-minute-tile");
         tile.innerHTML = `
           <h3>${title}</h3>
-          <p>Added: ${formattedDate}</p>  <!-- Added 'Added:' text before the date -->
+          <p>Added: ${formattedDate}</p>
           <a href="${fullpdfURL}" target="_blank">View PDF</a>
         `;
 
-        gridContainer.appendChild(tile);  // Changed to gridContainer
+        gridContainer.appendChild(tile);
       } catch (error) {
         console.error("Error fetching download URL:", error);
       }
