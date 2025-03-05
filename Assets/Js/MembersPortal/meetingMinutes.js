@@ -21,8 +21,9 @@ const db = getFirestore(app);
 const storage = getStorage(app);
 
 document.addEventListener("DOMContentLoaded", async function () {
-  // Get the grid element for the current year (e.g., "2024Minutes" for 2024)
+  // Get the year from the URL
   const currentYear = window.location.pathname.match(/(\d{4})/);
+  
   if (!currentYear) {
     console.error("Year not found in URL.");
     return;
@@ -32,7 +33,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   const gridContainer = document.getElementById(`${year}Minutes`);
 
   if (!gridContainer) {
-    console.error(`Grid for year ${year} not found.`);
+    console.error(`Grid for year ${year} not found in HTML.`);
     return;
   }
 
@@ -53,7 +54,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       const minuteData = doc.data();
       const title = minuteData.title;
       const pdfURL = minuteData.pdfURL; // Firebase Storage path
-      const meetingDate = minuteData.date.toDate(); // Convert Firestore timestamp to JavaScript Date object 
+      const meetingDate = minuteData.date.toDate(); // Convert Firestore timestamp to JavaScript Date object
 
       // Store meeting data
       meetingData.push({ title, pdfURL, meetingDate });
@@ -95,7 +96,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         gridContainer.appendChild(tile);
       } catch (error) {
-        console.error("Error fetching download URL:", error);
+        console.error("Error fetching download URL for:", pdfURL, error);
       }
     });
   } catch (error) {
