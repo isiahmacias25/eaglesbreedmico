@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
   try {
-    // Query Firestore for meeting minutes in the selected year
+    // Query Firestore for meeting minutes in the selected year, ordered by date descending (newest first)
     const q = query(collection(db, `MeetingMinutes/MeetingMinutes/${year}`), orderBy("date", "desc"));
     const querySnapshot = await getDocs(q);
 
@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         tile.classList.add("meeting-minute-tile");
         tile.innerHTML = `
           <h3>${title}</h3>
-          <p>${formattedDate}</p>
+          <p>Added: ${formattedDate}</p>  <!-- Added 'Added:' text before the date -->
           <a href="${fullpdfURL}" target="_blank">View PDF</a>
         `;
 
