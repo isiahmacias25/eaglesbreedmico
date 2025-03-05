@@ -38,8 +38,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
   try {
-    // Query meeting minutes collection for the selected year, ordered by date (newest first)
-    const q = query(collection(db, `MeetingMinutes/${selectedYear}`), orderBy("date", "desc"));
+    // Query meeting minutes for the selected year, sorted by date (newest first)
+    const q = query(collection(db, `MeetingMinutes/MeetingMinutes/${selectedYear}`), orderBy("date", "desc"));
     const querySnapshot = await getDocs(q);
 
     if (querySnapshot.empty) {
@@ -51,9 +51,9 @@ document.addEventListener("DOMContentLoaded", async function () {
       const minuteData = doc.data();
       const title = minuteData.title;
       const pdfURL = minuteData.pdfURL; // Firebase Storage path
-      const meetingDate = new Date(minuteData.date); // Convert stored date to JavaScript Date object
+      const meetingDate = minuteData.date.toDate(); // Convert Firestore timestamp to JavaScript Date object
 
-      // Format date (e.g., "February 10, 2025")
+      // Format date (e.g., "November 10, 2024")
       const formattedDate = meetingDate.toLocaleDateString("en-US", {
         year: "numeric",
         month: "long",
