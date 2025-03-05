@@ -1,6 +1,6 @@
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"; 
 import { getAuth } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+import { getFirestore, collection, getDocs, query } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 import { getStorage, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
 
 // Firebase configuration
@@ -54,11 +54,12 @@ document.addEventListener("DOMContentLoaded", async function () {
       const title = minuteData.title;
       const pdfURL = minuteData.pdfURL; // Firebase Storage path
       const meetingDate = minuteData.date.toDate(); // Convert Firestore timestamp to JavaScript Date object 
+      console.log("Raw meetingDate:", meetingDate); // Debug: Check raw date value
       meetingData.push({ title, pdfURL, meetingDate });
     });
 
-    // Sort the meetingData array manually by date in descending order
-    meetingData.sort((a, b) => b.meetingDate - a.meetingDate); // Sort in descending order
+    // Sort the meetingData array manually by date in descending order using raw timestamp value
+    meetingData.sort((a, b) => b.meetingDate.getTime() - a.meetingDate.getTime()); // Compare raw timestamps
 
     // Create a tile for each meeting minute and add it to the grid
     meetingData.forEach(async (data) => {
