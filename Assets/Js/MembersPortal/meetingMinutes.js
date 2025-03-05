@@ -54,10 +54,11 @@ document.addEventListener("DOMContentLoaded", async function () {
       const title = minuteData.title;
       const pdfURL = minuteData.pdfURL; // Firebase Storage path
       const meetingDate = minuteData.date.toDate(); // Convert Firestore timestamp to JavaScript Date object 
-      
-      console.log("Raw meetingDate (before sort):", meetingDate);
 
-      // If the date isn't a valid Date object, we need to log it here
+      // Log the raw meetingDate and type for debugging
+      console.log(`Raw meetingDate: ${meetingDate}, Type: ${typeof meetingDate}`);
+      
+      // Check if meetingDate is actually a valid Date object
       if (!(meetingDate instanceof Date)) {
         console.error(`Invalid date for document: ${doc.id}`, meetingDate);
       }
@@ -69,11 +70,12 @@ document.addEventListener("DOMContentLoaded", async function () {
     meetingData.sort((a, b) => {
       const dateA = a.meetingDate.getTime();
       const dateB = b.meetingDate.getTime();
-      console.log("Comparing:", dateA, dateB); // Log the raw timestamps to check
+      console.log(`Comparing dates: ${dateA} vs ${dateB}`); // Log the raw timestamps for comparison
       return dateB - dateA; // Sorting descending
     });
 
-    console.log("Sorted meetingData:", meetingData); // Log the sorted array
+    // Log the sorted meeting data for verification
+    console.log("Sorted meetingData:", meetingData);
 
     // Create a tile for each meeting minute and add it to the grid
     meetingData.forEach(async (data) => {
