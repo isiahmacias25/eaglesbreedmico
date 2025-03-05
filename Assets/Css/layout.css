@@ -11,7 +11,7 @@ body {
     background-size: cover;
     background-position: center;
     color: #333;
-    display: fixed;
+    display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
