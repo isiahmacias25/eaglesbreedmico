@@ -1,6 +1,6 @@
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"; 
-import { getAuth } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-import { getFirestore, collection, getDocs, query } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"; 
+import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"; 
 import { getStorage, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
 
 // Firebase configuration
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     console.error("Year not found in URL.");
     return;
   }
-
+  
   const year = currentYear[0];
   const gridContainer = document.getElementById(`${year}Minutes`);
 
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   try {
     // Query Firestore for meeting minutes in the selected year
-    const q = query(collection(db, `MeetingMinutes/MeetingMinutes/${year}`));
+    const q = query(collection(db, `MeetingMinutes/MeetingMinutes/${year}`), orderBy("date", "desc"));
     const querySnapshot = await getDocs(q);
 
     if (querySnapshot.empty) {
@@ -46,39 +46,30 @@ document.addEventListener("DOMContentLoaded", async function () {
       return;
     }
 
-    // Fetch all documents and store in an array
-    const meetingData = [];
+    let meetingData = [];
 
+    // Process each document and store in meetingData
     querySnapshot.forEach((doc) => {
       const minuteData = doc.data();
       const title = minuteData.title;
       const pdfURL = minuteData.pdfURL; // Firebase Storage path
       const meetingDate = minuteData.date.toDate(); // Convert Firestore timestamp to JavaScript Date object 
 
-      // Log the raw meetingDate and type for debugging
-      console.log(`Raw meetingDate: ${meetingDate}, Type: ${typeof meetingDate}`);
-      
-      // Check if meetingDate is actually a valid Date object
-      if (!(meetingDate instanceof Date)) {
-        console.error(`Invalid date for document: ${doc.id}`, meetingDate);
-      }
-
+      // Store meeting data
       meetingData.push({ title, pdfURL, meetingDate });
     });
 
-    // Sort the meetingData array by timestamp (most recent first)
-    meetingData.sort((a, b) => {
-      const dateA = a.meetingDate.getTime();
-      const dateB = b.meetingDate.getTime();
-      console.log(`Comparing dates: ${dateA} vs ${dateB}`); // Log the raw timestamps for comparison
-      return dateB - dateA; // Sorting descending
-    });
+    console.log("Raw meetingData:", meetingData); // Log raw meeting data
 
-    // Log the sorted meeting data for verification
-    console.log("Sorted meetingData:", meetingData);
+    // Sort the meetingData array based on date
+    meetingData.sort((a, b) => b.meetingDate - a.meetingDate);
 
-    // Create a tile for each meeting minute and add it to the grid
+    console.log("Sorted meetingData:", meetingData); // Log sorted meeting data
+
+    // For each document, display a tile in the grid
     meetingData.forEach(async (data) => {
+      console.log("Rendering tile:", data); // Log each tile before rendering
+
       const { title, pdfURL, meetingDate } = data;
 
       // Format date (e.g., "November 10, 2024")
