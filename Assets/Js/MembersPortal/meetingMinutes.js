@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   const year = currentYear[0];
   const minutesGrid = document.getElementById(`${year}Minutes`);
 
-  if (!grid-container) {
+  if (!minutes-grid) {
     console.error(`Grid for year ${year} not found.`);
     return;
   }
