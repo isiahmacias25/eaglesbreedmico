@@ -46,16 +46,26 @@ document.addEventListener("DOMContentLoaded", async function () {
       return;
     }
 
-    // For each document, display a tile in the grid
-    querySnapshot.forEach(async (doc) => {
+    // Fetch all documents and log them for debugging
+    const meetingData = [];
+
+    querySnapshot.forEach((doc) => {
       const minuteData = doc.data();
       const title = minuteData.title;
       const pdfURL = minuteData.pdfURL; // Firebase Storage path
       const meetingDate = minuteData.date.toDate(); // Convert Firestore timestamp to JavaScript Date object 
+      meetingData.push({ title, pdfURL, meetingDate });
+    });
 
-      // Debugging: Log the date and other details to check ordering
-      console.log("Meeting Date:", meetingDate);
-      console.log("Document Data:", minuteData);
+    // Debugging: Check the meetingData array to ensure it's correct
+    console.log("Raw Meeting Data:", meetingData);
+
+    // Manually sort the array by date (descending)
+    meetingData.sort((a, b) => b.meetingDate - a.meetingDate);
+
+    // Create a tile for each meeting minute and add it to the grid
+    meetingData.forEach(async (data) => {
+      const { title, pdfURL, meetingDate } = data;
 
       // Format date (e.g., "November 10, 2024")
       const formattedDate = meetingDate.toLocaleDateString("en-US", {
