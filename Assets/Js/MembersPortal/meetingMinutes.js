@@ -20,33 +20,33 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-// Extract year from URL (e.g., meetingMinutes_2025.html → "2025")
-const yearMatch = window.location.pathname.match(/(\d{4})/);
-const selectedYear = yearMatch ? yearMatch[0] : null;
-
 document.addEventListener("DOMContentLoaded", async function () {
-  const minutesGrid = document.getElementById("minutesGrid");
-
-  if (!minutesGrid) {
-    console.error("Meeting minutes grid is missing from the DOM.");
+  // Get the grid element for the current year (e.g., "2024Minutes" for 2024)
+  const currentYear = window.location.pathname.match(/(\d{4})/);
+  if (!currentYear) {
+    console.error("Year not found in URL.");
     return;
   }
+  
+  const year = currentYear[0];
+  const minutesGrid = document.getElementById(`${year}Minutes`);
 
-  if (!selectedYear) {
-    console.error("Year not found in URL. Ensure the page is named properly.");
+  if (!minutesGrid) {
+    console.error(`Grid for year ${year} not found.`);
     return;
   }
 
   try {
-    // Query the subcollection for the selected year (e.g., MeetingMinutes/MeetingMinutes/2024)
-    const q = query(collection(db, `MeetingMinutes/MeetingMinutes/${selectedYear}`), orderBy("date", "desc"));
+    // Query Firestore for meeting minutes in the selected year
+    const q = query(collection(db, `MeetingMinutes/MeetingMinutes/${year}`), orderBy("date", "desc"));
     const querySnapshot = await getDocs(q);
 
     if (querySnapshot.empty) {
-      minutesGrid.innerHTML = `<p>No meeting minutes found for ${selectedYear}.</p>`;
+      minutesGrid.innerHTML = `<p>No meeting minutes found for ${year}.</p>`;
       return;
     }
 
+    // For each document, display a tile in the grid
     querySnapshot.forEach(async (doc) => {
       const minuteData = doc.data();
       const title = minuteData.title;
@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         const pdfRef = ref(storage, pdfURL);
         const fullpdfURL = await getDownloadURL(pdfRef);
 
-        // Create a tile for each meeting minute
+        // Create a tile for each meeting minute and add it to the grid
         const tile = document.createElement("div");
         tile.classList.add("meeting-minute-tile");
         tile.innerHTML = `
