@@ -54,13 +54,22 @@ document.addEventListener("DOMContentLoaded", async function () {
       const minuteData = doc.data();
       const title = minuteData.title;
       const pdfURL = minuteData.pdfURL; // Firebase Storage path
-      const meetingDate = minuteData.date.toDate(); // Convert Firestore timestamp to JavaScript Date object
+      const meetingDate = minuteData.date; // Directly use the raw date from Firestore
+
+      // Log the raw date format for debugging
+      console.log("Raw meeting date from Firestore:", meetingDate);
 
       // Store meeting data
       meetingData.push({ title, pdfURL, meetingDate });
     });
 
-    console.log("Raw meetingData:", meetingData); // Log raw meeting data
+    // Check if the data is ordered correctly
+    console.log("Meeting Data before sorting:", meetingData);
+
+    // Manually sort by date in case Firestore query is not working as expected
+    meetingData.sort((a, b) => b.meetingDate.seconds - a.meetingDate.seconds); // Sort using Firestore Timestamp seconds
+
+    console.log("Sorted meetingData:", meetingData); // Log sorted meeting data
 
     // For each document, display a tile in the grid
     meetingData.forEach(async (data) => {
@@ -69,7 +78,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       const { title, pdfURL, meetingDate } = data;
 
       // Format date (e.g., "November 10, 2024")
-      const formattedDate = meetingDate.toLocaleDateString("en-US", {
+      const formattedDate = new Date(meetingDate.seconds * 1000).toLocaleDateString("en-US", {
         year: "numeric",
         month: "long",
         day: "numeric",
