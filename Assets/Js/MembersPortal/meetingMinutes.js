@@ -30,10 +30,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   const year = currentYear[0];
   const gridContainer = document.getElementById(`${year}Minutes`);
 
-  if (!gridContainer) {
-    console.error(`Grid for year ${year} not found in HTML.`);
-    return;
-  }
 
   try {
     // Query Firestore for meeting minutes in the selected year, ordered by date (descending)
