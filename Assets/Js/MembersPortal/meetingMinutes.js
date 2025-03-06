@@ -1,5 +1,4 @@
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"; 
-import { getAuth } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"; 
 import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"; 
 import { getStorage, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
 
@@ -16,7 +15,6 @@ const firebaseConfig = {
 
 // Prevent duplicate Firebase initialization
 const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
-const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
@@ -56,36 +54,33 @@ document.addEventListener("DOMContentLoaded", async function () {
       const pdfURL = minuteData.pdfURL; // Firebase Storage path
       const meetingDate = minuteData.date; // Directly use the raw date from Firestore
 
-      // Log the raw date format for debugging
-      console.log("Raw meeting date from Firestore:", meetingDate);
+      console.log("Document data:", minuteData); // Debugging the document data
 
-      // Store meeting data
-      meetingData.push({ title, pdfURL, meetingDate });
+      // Ensure meetingDate is a Timestamp and convert it to Date
+      if (meetingDate && meetingDate.seconds) {
+        const formattedDate = new Date(meetingDate.seconds * 1000).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        });
+
+        meetingData.push({ title, pdfURL, formattedDate });
+      } else {
+        console.error("Invalid date field in Firestore document:", minuteData);
+      }
     });
 
-    // Check if the data is ordered correctly
-    console.log("Meeting Data before sorting:", meetingData);
-
-    // Manually sort by date in case Firestore query is not working as expected
-    meetingData.sort((a, b) => b.meetingDate.seconds - a.meetingDate.seconds); // Sort using Firestore Timestamp seconds
-
-    console.log("Sorted meetingData:", meetingData); // Log sorted meeting data
+    if (meetingData.length === 0) {
+      gridContainer.innerHTML = `<p>No valid meeting minutes found for ${year}.</p>`;
+      return;
+    }
 
     // For each document, display a tile in the grid
     meetingData.forEach(async (data) => {
-      console.log("Rendering tile:", data); // Log each tile before rendering
+      const { title, pdfURL, formattedDate } = data;
 
-      const { title, pdfURL, meetingDate } = data;
-
-      // Correct the date formatting by converting Firestore Timestamp to JavaScript Date
-      const formattedDate = new Date(meetingDate.seconds * 1000).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      });
-
+      // Fetch actual download URL from Firebase Storage
       try {
-        // Fetch actual download URL from Firebase Storage
         const pdfRef = ref(storage, pdfURL);
         const fullpdfURL = await getDownloadURL(pdfRef);
 
@@ -97,8 +92,6 @@ document.addEventListener("DOMContentLoaded", async function () {
           <p>Added: ${formattedDate}</p>
           <a href="${fullpdfURL}" target="_blank">View PDF</a>
         `;
-
-        console.log("Tile created:", tile); // Log the tile creation
 
         gridContainer.appendChild(tile);
       } catch (error) {
