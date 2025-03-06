@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
       const { title, pdfURL, meetingDate } = data;
 
-      // Format date (e.g., "November 10, 2024")
+      // Correct the date formatting by converting Firestore Timestamp to JavaScript Date
       const formattedDate = new Date(meetingDate.seconds * 1000).toLocaleDateString("en-US", {
         year: "numeric",
         month: "long",
