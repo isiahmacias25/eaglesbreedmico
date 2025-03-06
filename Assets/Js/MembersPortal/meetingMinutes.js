@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
   try {
-    // Query Firestore for meeting minutes in the selected year
+    // Query Firestore for meeting minutes in the selected year, ordered by date (descending)
     const q = query(collection(db, `MeetingMinutes/MeetingMinutes/${year}`), orderBy("date", "desc"));
     const querySnapshot = await getDocs(q);
 
@@ -61,11 +61,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 
     console.log("Raw meetingData:", meetingData); // Log raw meeting data
-
-    // Sort the meetingData array based on date in descending order (newest first)
-    meetingData.sort((a, b) => b.meetingDate - a.meetingDate);
-
-    console.log("Sorted meetingData:", meetingData); // Log sorted meeting data
 
     // For each document, display a tile in the grid
     meetingData.forEach(async (data) => {
