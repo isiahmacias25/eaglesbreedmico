@@ -94,6 +94,8 @@ document.addEventListener("DOMContentLoaded", async function () {
           <a href="${fullpdfURL}" target="_blank">View PDF</a>
         `;
 
+        console.log("Tile created:", tile); // Log the tile creation
+
         gridContainer.appendChild(tile);
       } catch (error) {
         console.error("Error fetching download URL for:", pdfURL, error);
