@@ -189,3 +189,6 @@ nav ul li a.members-active {
     display: none; /* Hide by default */
 }
 
+#membersSubNav {
+  display: none;
+}
