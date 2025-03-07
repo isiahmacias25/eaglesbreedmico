@@ -16,40 +16,47 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
+// Function to update UI after login
+function updateUIAfterLogin(roadName) {
+  const membersContent = document.getElementById("membersContent");
+  const membersSubNav = document.getElementById("membersSubNav");
+  const welcomeMessage = document.getElementById("welcomeMessage");
+  const membersParagraph = document.querySelector("#membersContent p");
+
+  if (membersContent) membersContent.style.display = "block";
+  if (membersSubNav) membersSubNav.style.display = "block";
+  if (welcomeMessage) welcomeMessage.textContent = `Welcome, ${roadName}!`;
+  if (membersParagraph) membersParagraph.style.display = "block"; // Show <p> when logged in
+}
+
+// Function to update UI after logout
+function updateUIAfterLogout() {
+  sessionStorage.removeItem("token");
+  sessionStorage.removeItem("roadName");
+
+  const loginForm = document.getElementById("loginForm");
+  const membersContent = document.getElementById("membersContent");
+  const membersSubNav = document.getElementById("membersSubNav");
+  const membersParagraph = document.querySelector("#membersContent p");
+
+  if (loginForm) loginForm.style.display = "block";
+  if (membersContent) membersContent.style.display = "none";
+  if (membersSubNav) membersSubNav.style.display = "none";
+  if (membersParagraph) membersParagraph.style.display = "none"; // Hide <p> when logged out
+
+  window.location.href = "../../MembersPortal/membersPortal.html";
+}
+
 // Global logout function
 window.logout = function (event) {
-    event.preventDefault(); // Prevent default navigation
-
-    // Clear session data
-    sessionStorage.removeItem("token");
-    sessionStorage.removeItem("roadName");
-
-    // Hide members content and show login form
-    const loginForm = document.getElementById("loginForm");
-    const membersContent = document.getElementById("membersContent");
-
-    if (loginForm && membersContent) {
-        loginForm.style.display = "block";
-        membersContent.style.display = "none";
-    }
-
-    // Redirect after logout
-    window.location.href = "../../MembersPortal/membersPortal.html";
+  event.preventDefault(); // Prevent default navigation
+  updateUIAfterLogout();
 };
 
 // DOMContentLoaded event listener
 document.addEventListener("DOMContentLoaded", function () {
   const loginForm = document.getElementById("loginForm");
-  const membersContent = document.getElementById("membersContent");
-  const welcomeMessage = document.getElementById("welcomeMessage");
   const loginError = document.getElementById("loginError");
-  const membersSubNav = document.getElementById("membersSubNav");
-  const membersParagraph = document.querySelector("#membersContent p"); // Select the <p> tag
-
-  // Hide <p> by default
-  if (membersParagraph) {
-    membersParagraph.style.display = "none";
-  }
 
   if (loginForm) {
     loginForm.addEventListener("submit", async function (event) {
@@ -66,28 +73,33 @@ document.addEventListener("DOMContentLoaded", function () {
         sessionStorage.setItem("token", token);
         sessionStorage.setItem("roadName", roadName);
 
-        loginForm.style.display = "none";
-        membersContent.style.display = "block";
-        membersSubNav.style.display = "block";
-        welcomeMessage.textContent = `Welcome, ${roadName}!`;
-
-        if (membersParagraph) {
-          membersParagraph.style.display = "block"; // Show <p> when logged in
-        }
+        updateUIAfterLogin(roadName);
       } catch (error) {
         console.error("Login error:", error);
         let errorMessage = "An error occurred. Please try again.";
 
-        if (error.code === "auth/user-not-found") {
-          errorMessage = "No user found with that road name.";
-        } else if (error.code === "auth/wrong-password") {
-          errorMessage = "Incorrect password. Please try again.";
-        } else if (error.code === "auth/invalid-email") {
-          errorMessage = "Invalid email format. Please check your road name.";
+        switch (error.code) {
+          case "auth/user-not-found":
+            errorMessage = "No user found with that road name.";
+            break;
+          case "auth/wrong-password":
+            errorMessage = "Incorrect password. Please try again.";
+            break;
+          case "auth/invalid-email":
+            errorMessage = "Invalid email format. Please check your road name.";
+            break;
+          case "auth/user-disabled":
+            errorMessage = "This account has been disabled.";
+            break;
+          case "auth/too-many-requests":
+            errorMessage = "Too many failed attempts. Please try again later.";
+            break;
         }
 
-        loginError.textContent = errorMessage;
-        loginError.style.display = "block";
+        if (loginError) {
+          loginError.textContent = errorMessage;
+          loginError.style.display = "block";
+        }
       }
     });
 
@@ -96,22 +108,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const roadName = sessionStorage.getItem("roadName");
 
     if (token && roadName) {
-      loginForm.style.display = "none";
-      membersContent.style.display = "block";
-      membersSubNav.style.display = "block";
-      welcomeMessage.textContent = `Welcome, ${roadName}!`;
-
-      if (membersParagraph) {
-        membersParagraph.style.display = "block"; // Show <p> when logged in
-      }
+      updateUIAfterLogin(roadName);
     } else {
-      loginForm.style.display = "block";
-      membersContent.style.display = "none";
-      membersSubNav.style.display = "none";
-
-      if (membersParagraph) {
-        membersParagraph.style.display = "none"; // Hide <p> when logged out
-      }
+      updateUIAfterLogout();
     }
   }
 });
