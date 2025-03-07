@@ -184,3 +184,8 @@ nav ul li a.members-active {
     border-radius: 5px;
     padding: 5px 10px;
 }
+
+.membersContent {
+    display: none; /* Hide by default */
+}
+
