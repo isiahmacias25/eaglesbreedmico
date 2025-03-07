@@ -44,7 +44,10 @@ function updateUIAfterLogout() {
   if (membersSubNav) membersSubNav.style.display = "none";
   if (membersParagraph) membersParagraph.style.display = "none"; // Hide <p> when logged out
 
-  window.location.href = "../../MembersPortal/membersPortal.html";
+  // Prevent infinite reload loop
+  if (!window.location.href.includes("membersPortal.html")) {
+    window.location.href = "../../MembersPortal/membersPortal.html";
+  }
 }
 
 // Global logout function
