@@ -24,12 +24,16 @@ function updateUIAfterLogin(roadName) {
   const welcomeMessage = document.getElementById("welcomeMessage");
   const membersParagraph = document.querySelector("#membersContent p");
 
-  if (loginForm) loginForm.style.display = "none"; // Hide login form after login
+  if (loginForm) loginForm.style.display = "none";
   if (membersContent) membersContent.style.display = "block";
   if (membersSubNav) membersSubNav.style.display = "block";
-  if (welcomeMessage) welcomeMessage.textContent = `Welcome, ${roadName}!`;
-  if (welcomeMessage) welcomeMessage.style.display = "block"; // Ensure welcome message is visible
-  if (membersParagraph) membersParagraph.style.display = "block"; // Show <p> when logged in
+  if (welcomeMessage) {
+    welcomeMessage.textContent = `Welcome, ${roadName}!`;
+    welcomeMessage.style.display = "block";
+  }
+  if (membersParagraph) membersParagraph.style.display = "block";
+
+  console.log("User logged in:", roadName); // Debugging
 }
 
 // Function to update UI after logout
@@ -47,15 +51,16 @@ function updateUIAfterLogout() {
   if (membersSubNav) membersSubNav.style.display = "none";
   if (membersParagraph) membersParagraph.style.display = "none";
 
-  // Prevent reload loop
   if (!window.location.pathname.includes("membersPortal.html")) {
-    window.location.href = "../../MembersPortal/membersPortal.html";
+    setTimeout(() => {
+      window.location.href = "../../MembersPortal/membersPortal.html";
+    }, 500);
   }
 }
 
 // Global logout function
 window.logout = function (event) {
-  event.preventDefault(); // Prevent default navigation
+  event.preventDefault();
   updateUIAfterLogout();
 };
 
@@ -63,6 +68,14 @@ window.logout = function (event) {
 document.addEventListener("DOMContentLoaded", function () {
   const loginForm = document.getElementById("loginForm");
   const loginError = document.getElementById("loginError");
+  const token = sessionStorage.getItem("token");
+  const roadName = sessionStorage.getItem("roadName");
+
+  if (token && roadName) {
+    updateUIAfterLogin(roadName);
+  } else {
+    updateUIAfterLogout();
+  }
 
   if (loginForm) {
     loginForm.addEventListener("submit", async function (event) {
@@ -108,15 +121,17 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }
     });
+  }
+});
 
-    // Check if user is logged in
-    const token = sessionStorage.getItem("token");
-    const roadName = sessionStorage.getItem("roadName");
+// Ensure login state is checked on all members-only pages
+document.addEventListener("DOMContentLoaded", function () {
+  const token = sessionStorage.getItem("token");
+  const roadName = sessionStorage.getItem("roadName");
 
-    if (token && roadName) {
-      updateUIAfterLogin(roadName);
-    } else {
-      updateUIAfterLogout();
-    }
+  if (!token || !roadName) {
+    window.location.href = "../../MembersPortal/membersPortal.html";
+  } else {
+    updateUIAfterLogin(roadName);
   }
 });
