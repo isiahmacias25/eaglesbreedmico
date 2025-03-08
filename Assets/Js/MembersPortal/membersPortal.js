@@ -66,8 +66,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const roadName = sessionStorage.getItem("roadName");
 
   // Redirect to membersPortal.html if logged in and not already on the page
-  if (token && roadName && !window.location.pathname.endsWith("membersPortal.html") && !window.location.pathname.includes("MembersPortal/")) {
-    window.location.href = "MembersPortal/membersPortal.html";
+ if (!window.location.pathname.includes("membersPortal") && !window.location.pathname.endsWith("membersPortal.html")) {
+  window.location.href = "MembersPortal/membersPortal.html";
+}
+
   } else {
     // Update UI based on login status
     if (token && roadName) {
