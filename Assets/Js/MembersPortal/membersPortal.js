@@ -41,15 +41,16 @@ function updateUIAfterLogout() {
   const membersContent = document.getElementById("membersContent");
   const membersSubNav = document.getElementById("membersSubNav");
   const membersParagraph = document.querySelector("#membersContent p");
-  const welcomeMessage = document.getElementById("welcomeMessage");
 
   if (loginForm) loginForm.style.display = "block";
   if (membersContent) membersContent.style.display = "none";
   if (membersSubNav) membersSubNav.style.display = "none";
-  if (welcomeMessage) welcomeMessage.style.display = "none";
-  if (membersParagraph) membersParagraph.style.display = "none"; // Hide <p> when logged out
+  if (membersParagraph) membersParagraph.style.display = "none";
 
-  window.location.href = "../../MembersPortal/membersPortal.html";
+  // Prevent reload loop
+  if (!window.location.pathname.includes("membersPortal.html")) {
+    window.location.href = "../../MembersPortal/membersPortal.html";
+  }
 }
 
 // Global logout function
