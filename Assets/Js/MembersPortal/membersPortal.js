@@ -47,6 +47,7 @@ function updateUIAfterLogout() {
   if (membersSubNav) membersSubNav.style.display = "none";
   if (membersParagraph) membersParagraph.style.display = "none";
 
+  // Ensure not to redirect when already on the members portal
   if (!window.location.pathname.includes("membersPortal.html")) {
     window.location.href = "../../MembersPortal/membersPortal.html";
   }
@@ -64,25 +65,19 @@ document.addEventListener("DOMContentLoaded", function () {
   const token = sessionStorage.getItem("token");
   const roadName = sessionStorage.getItem("roadName");
 
-  if (token && roadName) {
-    updateUIAfterLogin(roadName);
+  // Only redirect if the user is logged in and not on the membersPortal page
+  if (token && roadName && window.location.pathname !== "membersPortal.html") {
+    window.location.href = "../../MembersPortal/membersPortal.html";
   } else {
-    updateUIAfterLogout();
+    // Update UI based on login status
+    if (token && roadName) {
+      updateUIAfterLogin(roadName);
+    } else {
+      updateUIAfterLogout();
+    }
   }
 
-  document.addEventListener("DOMContentLoaded", async () => {
-    const user = await checkLoginStatus(); // Ensure this function gets user data
-    const welcomeMessage = document.getElementById("welcomeMessage");
-    const welcomeContainer = document.getElementById("welcomeContainer");
-
-    if (user) {
-        welcomeMessage.textContent = `Welcome, ${user.roadName}!`;
-        welcomeContainer.style.display = "block";  // Make sure it's visible
-    } else {
-        welcomeContainer.style.display = "none";  // Hide if not logged in
-    }
-});
-
+  // Login form event listener
   if (loginForm) {
     loginForm.addEventListener("submit", async function (event) {
       event.preventDefault();
