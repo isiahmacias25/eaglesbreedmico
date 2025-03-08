@@ -70,6 +70,19 @@ document.addEventListener("DOMContentLoaded", function () {
     updateUIAfterLogout();
   }
 
+  document.addEventListener("DOMContentLoaded", async () => {
+    const user = await checkLoginStatus(); // Ensure this function gets user data
+    const welcomeMessage = document.getElementById("welcomeMessage");
+    const welcomeContainer = document.getElementById("welcomeContainer");
+
+    if (user) {
+        welcomeMessage.textContent = `Welcome, ${user.roadName}!`;
+        welcomeContainer.style.display = "block";  // Make sure it's visible
+    } else {
+        welcomeContainer.style.display = "none";  // Hide if not logged in
+    }
+});
+
   if (loginForm) {
     loginForm.addEventListener("submit", async function (event) {
       event.preventDefault();
