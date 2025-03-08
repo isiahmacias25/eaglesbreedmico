@@ -1,7 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyChVYbT54aRIbAHyy_HRsH7caRHyaZwWTA",
   authDomain: "eaglesbreedmico.firebaseapp.com",
@@ -12,12 +11,11 @@ const firebaseConfig = {
   measurementId: "G-ZR1P59C7BP"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Function to update UI after login
 function updateUIAfterLogin(roadName) {
+  console.log("Updating UI after login...");
   const loginForm = document.getElementById("loginForm");
   const membersContent = document.getElementById("membersContent");
   const membersSubNav = document.getElementById("membersSubNav");
@@ -32,12 +30,10 @@ function updateUIAfterLogin(roadName) {
     welcomeMessage.style.display = "block";
   }
   if (membersParagraph) membersParagraph.style.display = "block";
-
-  console.log("User logged in:", roadName); // Debugging
 }
 
-// Function to update UI after logout
 function updateUIAfterLogout() {
+  console.log("Updating UI after logout...");
   sessionStorage.removeItem("token");
   sessionStorage.removeItem("roadName");
 
@@ -52,20 +48,17 @@ function updateUIAfterLogout() {
   if (membersParagraph) membersParagraph.style.display = "none";
 
   if (!window.location.pathname.includes("membersPortal.html")) {
-    setTimeout(() => {
-      window.location.href = "../../MembersPortal/membersPortal.html";
-    }, 500);
+    window.location.href = "../../MembersPortal/membersPortal.html";
   }
 }
 
-// Global logout function
 window.logout = function (event) {
   event.preventDefault();
   updateUIAfterLogout();
 };
 
-// DOMContentLoaded event listener
 document.addEventListener("DOMContentLoaded", function () {
+  console.log("Checking session status...");
   const loginForm = document.getElementById("loginForm");
   const loginError = document.getElementById("loginError");
   const token = sessionStorage.getItem("token");
@@ -121,17 +114,5 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }
     });
-  }
-});
-
-// Ensure login state is checked on all members-only pages
-document.addEventListener("DOMContentLoaded", function () {
-  const token = sessionStorage.getItem("token");
-  const roadName = sessionStorage.getItem("roadName");
-
-  if (!token || !roadName) {
-    window.location.href = "../../MembersPortal/membersPortal.html";
-  } else {
-    updateUIAfterLogin(roadName);
   }
 });
