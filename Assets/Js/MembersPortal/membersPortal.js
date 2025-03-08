@@ -47,9 +47,9 @@ function updateUIAfterLogout() {
   if (membersSubNav) membersSubNav.style.display = "none";
   if (membersParagraph) membersParagraph.style.display = "none";
 
-  // Do not redirect if already on membersPortal.html
-  if (!window.location.pathname.includes("membersPortal.html")) {
-    window.location.href = "membersPortal.html";
+  // Check if the current page is not the members portal
+  if (!window.location.pathname.endsWith("membersPortal.html") && !window.location.pathname.includes("MembersPortal/")) {
+    window.location.href = "MembersPortal/membersPortal.html";
   }
 }
 
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const roadName = sessionStorage.getItem("roadName");
 
   // Redirect to membersPortal.html if logged in and not already on the page
-  if (token && roadName && !window.location.pathname.includes("membersPortal.html")) {
+  if (token && roadName && !window.location.pathname.endsWith("membersPortal.html") && !window.location.pathname.includes("MembersPortal/")) {
     window.location.href = "MembersPortal/membersPortal.html";
   } else {
     // Update UI based on login status
