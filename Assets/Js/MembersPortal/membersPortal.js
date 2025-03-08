@@ -18,14 +18,17 @@ const auth = getAuth(app);
 
 // Function to update UI after login
 function updateUIAfterLogin(roadName) {
+  const loginForm = document.getElementById("loginForm");
   const membersContent = document.getElementById("membersContent");
   const membersSubNav = document.getElementById("membersSubNav");
   const welcomeMessage = document.getElementById("welcomeMessage");
   const membersParagraph = document.querySelector("#membersContent p");
 
+  if (loginForm) loginForm.style.display = "none"; // Hide login form after login
   if (membersContent) membersContent.style.display = "block";
   if (membersSubNav) membersSubNav.style.display = "block";
   if (welcomeMessage) welcomeMessage.textContent = `Welcome, ${roadName}!`;
+  if (welcomeMessage) welcomeMessage.style.display = "block"; // Ensure welcome message is visible
   if (membersParagraph) membersParagraph.style.display = "block"; // Show <p> when logged in
 }
 
@@ -38,16 +41,15 @@ function updateUIAfterLogout() {
   const membersContent = document.getElementById("membersContent");
   const membersSubNav = document.getElementById("membersSubNav");
   const membersParagraph = document.querySelector("#membersContent p");
+  const welcomeMessage = document.getElementById("welcomeMessage");
 
   if (loginForm) loginForm.style.display = "block";
   if (membersContent) membersContent.style.display = "none";
   if (membersSubNav) membersSubNav.style.display = "none";
+  if (welcomeMessage) welcomeMessage.style.display = "none";
   if (membersParagraph) membersParagraph.style.display = "none"; // Hide <p> when logged out
 
-  // Prevent infinite reload loop
-  if (!window.location.href.includes("membersPortal.html")) {
-    window.location.href = "../../MembersPortal/membersPortal.html";
-  }
+  window.location.href = "../../MembersPortal/membersPortal.html";
 }
 
 // Global logout function
