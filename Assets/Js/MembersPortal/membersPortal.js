@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyChVYbT54aRIbAHyy_HRsH7caRHyaZwWTA",
@@ -16,20 +16,14 @@ const auth = getAuth(app);
 
 function updateUIAfterLogin(roadName) {
   console.log("Updating UI after login...");
-  const loginForm = document.getElementById("loginForm");
-  const membersContent = document.getElementById("membersContent");
-  const membersSubNav = document.getElementById("membersSubNav");
+  document.getElementById("loginForm")?.style.display = "none";
+  document.getElementById("membersContent")?.style.display = "block";
+  document.getElementById("membersSubNav")?.style.display = "block";
   const welcomeMessage = document.getElementById("welcomeMessage");
-  const membersParagraph = document.querySelector("#membersContent p");
-
-  if (loginForm) loginForm.style.display = "none";
-  if (membersContent) membersContent.style.display = "block";
-  if (membersSubNav) membersSubNav.style.display = "block";
   if (welcomeMessage) {
     welcomeMessage.textContent = `Welcome, ${roadName}!`;
     welcomeMessage.style.display = "block";
   }
-  if (membersParagraph) membersParagraph.style.display = "block";
 }
 
 function updateUIAfterLogout() {
@@ -37,24 +31,23 @@ function updateUIAfterLogout() {
   sessionStorage.removeItem("token");
   sessionStorage.removeItem("roadName");
 
-  const loginForm = document.getElementById("loginForm");
-  const membersContent = document.getElementById("membersContent");
-  const membersSubNav = document.getElementById("membersSubNav");
-  const membersParagraph = document.querySelector("#membersContent p");
+  document.getElementById("loginForm")?.style.display = "block";
+  document.getElementById("membersContent")?.style.display = "none";
+  document.getElementById("membersSubNav")?.style.display = "none";
 
-  if (loginForm) loginForm.style.display = "block";
-  if (membersContent) membersContent.style.display = "none";
-  if (membersSubNav) membersSubNav.style.display = "none";
-  if (membersParagraph) membersParagraph.style.display = "none";
-
-  // Check if the current page is not the members portal
-  if (!window.location.pathname.endsWith("membersPortal.html") && !window.location.pathname.includes("MembersPortal/")) {
+  if (!window.location.pathname.endsWith("membersPortal.html") &&
+      !window.location.pathname.includes("MembersPortal/")) {
     window.location.href = "MembersPortal/membersPortal.html";
   }
 }
 
-window.logout = function (event) {
+window.logout = async function (event) {
   event.preventDefault();
+  try {
+    await signOut(auth);
+  } catch (error) {
+    console.error("Error during logout:", error);
+  }
   updateUIAfterLogout();
 };
 
@@ -65,21 +58,17 @@ document.addEventListener("DOMContentLoaded", function () {
   const token = sessionStorage.getItem("token");
   const roadName = sessionStorage.getItem("roadName");
 
-  // Redirect to membersPortal.html if logged in and not already on the page
- if (!window.location.pathname.includes("membersPortal") && !window.location.pathname.endsWith("membersPortal.html")) {
-  window.location.href = "MembersPortal/membersPortal.html";
-}
+  if (token && roadName) {
+    updateUIAfterLogin(roadName);
 
-  } else {
-    // Update UI based on login status
-    if (token && roadName) {
-      updateUIAfterLogin(roadName);
-    } else {
-      updateUIAfterLogout();
+    if (!window.location.pathname.includes("membersPortal") &&
+        !window.location.pathname.endsWith("membersPortal.html")) {
+      window.location.href = "MembersPortal/membersPortal.html";
     }
+  } else {
+    updateUIAfterLogout();
   }
 
-  // Login form event listener
   if (loginForm) {
     loginForm.addEventListener("submit", async function (event) {
       event.preventDefault();
