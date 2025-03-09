@@ -23,7 +23,7 @@ function checkSession() {
   if (!token || !roadName) {
     // Only show the login form on membersPortal.html page if logged out
     if (!window.location.pathname.endsWith("membersPortal.html")) {
-      window.location.href = "home.html";  // Stay on home if not logged in
+      window.location.href = "membersPortal.html";  
     }
   } else {
     // If token exists, show members area
@@ -56,11 +56,6 @@ function updateUIAfterLogout() {
   document.getElementById("loginForm")?.classList.remove("hidden");
   document.getElementById("membersContent")?.classList.add("hidden");
   document.getElementById("membersSubNav")?.classList.add("hidden");
-
-  // Ensure you're only redirecting to home if not already there
-  if (!window.location.pathname.endsWith("home.html")) {
-    window.location.href = "home.html";
-  }
 }
 
 // Update the logout function to ensure the event is passed
