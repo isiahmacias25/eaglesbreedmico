@@ -47,15 +47,29 @@ function checkSession() {
 // Login function, adds session and redirects to members portal
 function updateUIAfterLogin(roadName) {
   console.log("User logged in. Updating UI...");
-  document.getElementById("loginForm")?.classList.add("hidden");
-  document.getElementById("membersContent")?.classList.remove("hidden");
-  document.getElementById("membersSubNav")?.classList.remove("hidden");
+
+  // Ensure elements exist before modifying them
+  const loginForm = document.getElementById("loginForm");
+  const membersContent = document.getElementById("membersContent");
+  const membersSubNav = document.getElementById("membersSubNav");
+
+  if (loginForm) {
+    loginForm.classList.add("hidden");
+  }
+  if (membersContent) {
+    membersContent.classList.remove("hidden");
+  }
+  if (membersSubNav) {
+    membersSubNav.classList.remove("hidden");
+  }
 
   const welcomeMessage = document.getElementById("welcomeMessage");
   if (welcomeMessage) {
     welcomeMessage.textContent = `Welcome, ${roadName}!`;
     welcomeMessage.style.display = "block";
   }
+
+  console.log("UI updated after login.");
 }
 
 // Logout function
@@ -76,6 +90,7 @@ window.logout = function (event) {
 
 document.addEventListener("DOMContentLoaded", function () {
   // Check session status on page load
+  console.log("Checking session on page load...");
   checkSession();
 
   const loginForm = document.getElementById("loginForm");
@@ -110,6 +125,7 @@ document.addEventListener("DOMContentLoaded", function () {
         sessionStorage.setItem("token", token);
         sessionStorage.setItem("roadName", roadName);
 
+        console.log("Login successful. Redirecting to members portal...");
         updateUIAfterLogin(roadName);
         window.location.href = "membersPortal.html";  // Redirect to members portal after login
       } catch (error) {
