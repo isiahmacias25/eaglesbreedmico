@@ -39,8 +39,9 @@ function updateUIAfterLogout() {
   }
 }
 
+// Update the logout function to ensure the event is passed
 window.logout = function (event) {
-  event.preventDefault();
+  event.preventDefault();  // Prevent the default action (e.g., form submission)
   updateUIAfterLogout();
   window.location.reload();
 };
@@ -118,6 +119,14 @@ document.addEventListener("DOMContentLoaded", function () {
         loginError.textContent = errorMessage;
         loginError.style.display = "block";
       }
+    });
+  }
+
+  // Ensure logout button has an event listener
+  const logoutButton = document.getElementById("logoutButton");
+  if (logoutButton) {
+    logoutButton.addEventListener("click", function(event) {
+      window.logout(event);  // Pass event to the logout function
     });
   }
 });
