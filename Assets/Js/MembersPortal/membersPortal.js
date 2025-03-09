@@ -34,8 +34,9 @@ function updateUIAfterLogout() {
   document.getElementById("membersContent")?.classList.add("hidden");
   document.getElementById("membersSubNav")?.classList.add("hidden");
 
-  if (!window.location.pathname.includes("MembersPortal")) {
-    window.location.href = "membersPortal.html";
+  // Fix: Prevent extra MembersPortal directory by checking the path
+  if (!window.location.pathname.includes("membersPortal")) {
+    window.location.href = "membersPortal.html";  // Updated to correct path without extra folder
   }
 }
 
