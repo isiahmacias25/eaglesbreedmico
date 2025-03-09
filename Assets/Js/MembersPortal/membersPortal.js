@@ -34,9 +34,9 @@ function updateUIAfterLogout() {
   document.getElementById("membersContent")?.classList.add("hidden");
   document.getElementById("membersSubNav")?.classList.add("hidden");
 
-  // Fix: Prevent extra MembersPortal directory by checking the path
-  if (!window.location.pathname.includes("membersPortal")) {
-    window.location.href = "membersPortal.html";  // Updated to correct path without extra folder
+  // Fix: Only redirect if not already on membersPortal
+  if (!window.location.pathname.endsWith("membersPortal.html")) {
+    window.location.href = "membersPortal.html";  // Correct redirect path
   }
 }
 
@@ -55,9 +55,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const token = sessionStorage.getItem("token");
   const roadName = sessionStorage.getItem("roadName");
 
+  // Fix: Prevent auto-redirect to membersPortal on every page
   if (token && roadName) {
-    if (!window.location.pathname.includes("membersPortal")) {
-      window.location.href = "MembersPortal/membersPortal.html";
+    if (!window.location.pathname.endsWith("membersPortal.html")) {
+      window.location.href = "membersPortal.html";  // Correct redirect to members portal page
     } else {
       updateUIAfterLogin(roadName);
     }
@@ -94,7 +95,7 @@ document.addEventListener("DOMContentLoaded", function () {
         sessionStorage.setItem("roadName", roadName);
 
         updateUIAfterLogin(roadName);
-        window.location.href = "MembersPortal/membersPortal.html";
+        window.location.href = "membersPortal.html";  // Correct redirect after login
       } catch (error) {
         console.error("Login error:", error);
         let errorMessage = "An error occurred. Please try again.";
