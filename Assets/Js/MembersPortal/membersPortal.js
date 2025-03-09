@@ -25,8 +25,6 @@ function updateUIAfterLogin(roadName) {
     welcomeMessage.textContent = `Welcome, ${roadName}!`;
     welcomeMessage.style.display = "block";
   }
-  
-  document.querySelector("#membersContent p")?.style.display = "block";
 }
 
 function updateUIAfterLogout() {
@@ -37,7 +35,6 @@ function updateUIAfterLogout() {
   document.getElementById("loginForm")?.style.display = "block";
   document.getElementById("membersContent")?.style.display = "none";
   document.getElementById("membersSubNav")?.style.display = "none";
-  document.querySelector("#membersContent p")?.style.display = "none";
 
   if (!window.location.pathname.endsWith("membersPortal.html") && !window.location.pathname.includes("MembersPortal/")) {
     window.location.href = "MembersPortal/membersPortal.html";
@@ -56,9 +53,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const token = sessionStorage.getItem("token");
   const roadName = sessionStorage.getItem("roadName");
 
-  // Redirect to membersPortal.html if logged in and not already on the page
+  // Redirect if already logged in
   if (token && roadName) {
-    if (!window.location.pathname.includes("membersPortal") && !window.location.pathname.endsWith("membersPortal.html")) {
+    if (!window.location.pathname.includes("membersPortal")) {
       window.location.href = "MembersPortal/membersPortal.html";
     } else {
       updateUIAfterLogin(roadName);
@@ -67,14 +64,26 @@ document.addEventListener("DOMContentLoaded", function () {
     updateUIAfterLogout();
   }
 
-  // Login form event listener
+  // Ensure login form doesn't submit via URL
   if (loginForm) {
     loginForm.addEventListener("submit", async function (event) {
-      event.preventDefault(); // **Prevents default form submission (fixes URL issue)**
+      event.preventDefault(); // **Stops the form from adding data to the URL**
+      console.log("Form submission intercepted.");
 
-      const roadName = document.getElementById("roadName").value.trim();
-      const password = document.getElementById("password").value.trim();
+      const roadNameInput = document.getElementById("roadName");
+      const passwordInput = document.getElementById("password");
+
+      if (!roadNameInput || !passwordInput) return;
+
+      const roadName = roadNameInput.value.trim();
+      const password = passwordInput.value.trim();
       const formattedRoadName = roadName.replace(/\s+/g, "-").toLowerCase();
+
+      if (!roadName || !password) {
+        loginError.textContent = "Please enter both your road name and password.";
+        loginError.style.display = "block";
+        return;
+      }
 
       try {
         const userCredential = await signInWithEmailAndPassword(auth, `${formattedRoadName}@eaglesbreedmico.com`, password);
@@ -85,7 +94,7 @@ document.addEventListener("DOMContentLoaded", function () {
         sessionStorage.setItem("roadName", roadName);
 
         updateUIAfterLogin(roadName);
-        window.location.href = "MembersPortal/membersPortal.html"; // **Redirect after successful login**
+        window.location.href = "MembersPortal/membersPortal.html"; // Redirect manually
       } catch (error) {
         console.error("Login error:", error);
         let errorMessage = "An error occurred. Please try again.";
@@ -95,16 +104,16 @@ document.addEventListener("DOMContentLoaded", function () {
             errorMessage = "No user found with that road name.";
             break;
           case "auth/wrong-password":
-            errorMessage = "Incorrect password. Please try again.";
+            errorMessage = "Incorrect password.";
             break;
           case "auth/invalid-email":
-            errorMessage = "Invalid email format. Please check your road name.";
+            errorMessage = "Invalid email format.";
             break;
           case "auth/user-disabled":
             errorMessage = "This account has been disabled.";
             break;
           case "auth/too-many-requests":
-            errorMessage = "Too many failed attempts. Please try again later.";
+            errorMessage = "Too many failed attempts. Try again later.";
             break;
         }
 
