@@ -1,6 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyChVYbT54aRIbAHyy_HRsH7caRHyaZwWTA",
   authDomain: "eaglesbreedmico.firebaseapp.com",
@@ -11,10 +12,11 @@ const firebaseConfig = {
   measurementId: "G-ZR1P59C7BP"
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Check session and decide whether to show login form or members content
+// Function to check session and determine if the user is logged in
 function checkSession() {
   const token = sessionStorage.getItem("token");
   const roadName = sessionStorage.getItem("roadName");
@@ -22,29 +24,25 @@ function checkSession() {
   console.log("Session token:", token);  // Debugging
   console.log("Road Name:", roadName);  // Debugging
 
-  // If no token or road name, show login form ONLY on membersPortal.html
   if (!token || !roadName) {
     if (window.location.pathname.endsWith("membersPortal.html")) {
       console.log("User is logged out. Showing login form.");
       document.getElementById("loginForm")?.classList.remove("hidden");
       document.getElementById("membersContent")?.classList.add("hidden");
       document.getElementById("membersSubNav")?.classList.add("hidden");
-    } else {
-      console.log("User is logged out. Not on membersPortal.html, no login form.");
     }
   } else {
     console.log("User is logged in. Showing members content.");
-    // If logged in, show members area and redirect away from membersPortal if needed
     if (window.location.pathname.endsWith("membersPortal.html")) {
       updateUIAfterLogin(roadName);
     } else if (!window.location.pathname.endsWith("home.html")) {
-      // Ensure that we only redirect to membersPortal if the user is not on home.html
+      // Ensure that we only redirect to membersPortal if not on home.html
       window.location.href = "membersPortal.html";  
     }
   }
 }
 
-// Login function, adds session and redirects to members portal
+// Function to update UI after login
 function updateUIAfterLogin(roadName) {
   console.log("User logged in. Updating UI...");
 
@@ -72,7 +70,7 @@ function updateUIAfterLogin(roadName) {
   console.log("UI updated after login.");
 }
 
-// Logout function
+// Function to update UI after logout
 function updateUIAfterLogout() {
   console.log("User logged out. Updating UI...");
   sessionStorage.clear();
@@ -81,22 +79,21 @@ function updateUIAfterLogout() {
   document.getElementById("membersSubNav")?.classList.add("hidden");
 }
 
-// Update the logout function to ensure the event is passed
+// Update the logout function to ensure event is passed
 window.logout = function (event) {
-  event.preventDefault();  // Prevent the default action (e.g., form submission)
+  event.preventDefault();  // Prevent default form submission
   updateUIAfterLogout();
-  window.location.reload();
+  window.location.reload(); // Reload the page after logout
 };
 
 document.addEventListener("DOMContentLoaded", function () {
-  // Check session status on page load
   console.log("Checking session on page load...");
   checkSession();
 
   const loginForm = document.getElementById("loginForm");
   const loginError = document.getElementById("loginError");
 
-  // Listen for login form submit
+  // Listen for login form submission
   if (loginForm) {
     loginForm.addEventListener("submit", async function (event) {
       event.preventDefault();
@@ -127,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         console.log("Login successful. Redirecting to members portal...");
         updateUIAfterLogin(roadName);
-        window.location.href = "membersPortal.html";  // Redirect to members portal after login
+        window.location.href = "membersPortal.html";  // Redirect after login
       } catch (error) {
         console.error("Login error:", error);
         let errorMessage = "An error occurred. Please try again.";
@@ -160,7 +157,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const logoutButton = document.getElementById("logoutButton");
   if (logoutButton) {
     logoutButton.addEventListener("click", function(event) {
-      window.logout(event);  // Pass event to the logout function
+      window.logout(event);  // Pass event to logout function
     });
   }
 });
