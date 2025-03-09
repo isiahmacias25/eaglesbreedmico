@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyChVYbT54aRIbAHyy_HRsH7caRHyaZwWTA",
@@ -19,11 +19,14 @@ function updateUIAfterLogin(roadName) {
   document.getElementById("loginForm")?.style.display = "none";
   document.getElementById("membersContent")?.style.display = "block";
   document.getElementById("membersSubNav")?.style.display = "block";
+  
   const welcomeMessage = document.getElementById("welcomeMessage");
   if (welcomeMessage) {
     welcomeMessage.textContent = `Welcome, ${roadName}!`;
     welcomeMessage.style.display = "block";
   }
+  
+  document.querySelector("#membersContent p")?.style.display = "block";
 }
 
 function updateUIAfterLogout() {
@@ -34,20 +37,15 @@ function updateUIAfterLogout() {
   document.getElementById("loginForm")?.style.display = "block";
   document.getElementById("membersContent")?.style.display = "none";
   document.getElementById("membersSubNav")?.style.display = "none";
+  document.querySelector("#membersContent p")?.style.display = "none";
 
-  if (!window.location.pathname.endsWith("membersPortal.html") &&
-      !window.location.pathname.includes("MembersPortal/")) {
+  if (!window.location.pathname.endsWith("membersPortal.html") && !window.location.pathname.includes("MembersPortal/")) {
     window.location.href = "MembersPortal/membersPortal.html";
   }
 }
 
-window.logout = async function (event) {
+window.logout = function (event) {
   event.preventDefault();
-  try {
-    await signOut(auth);
-  } catch (error) {
-    console.error("Error during logout:", error);
-  }
   updateUIAfterLogout();
 };
 
@@ -58,20 +56,22 @@ document.addEventListener("DOMContentLoaded", function () {
   const token = sessionStorage.getItem("token");
   const roadName = sessionStorage.getItem("roadName");
 
+  // Redirect to membersPortal.html if logged in and not already on the page
   if (token && roadName) {
-    updateUIAfterLogin(roadName);
-
-    if (!window.location.pathname.includes("membersPortal") &&
-        !window.location.pathname.endsWith("membersPortal.html")) {
+    if (!window.location.pathname.includes("membersPortal") && !window.location.pathname.endsWith("membersPortal.html")) {
       window.location.href = "MembersPortal/membersPortal.html";
+    } else {
+      updateUIAfterLogin(roadName);
     }
   } else {
     updateUIAfterLogout();
   }
 
+  // Login form event listener
   if (loginForm) {
     loginForm.addEventListener("submit", async function (event) {
-      event.preventDefault();
+      event.preventDefault(); // **Prevents default form submission (fixes URL issue)**
+
       const roadName = document.getElementById("roadName").value.trim();
       const password = document.getElementById("password").value.trim();
       const formattedRoadName = roadName.replace(/\s+/g, "-").toLowerCase();
@@ -85,6 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
         sessionStorage.setItem("roadName", roadName);
 
         updateUIAfterLogin(roadName);
+        window.location.href = "MembersPortal/membersPortal.html"; // **Redirect after successful login**
       } catch (error) {
         console.error("Login error:", error);
         let errorMessage = "An error occurred. Please try again.";
