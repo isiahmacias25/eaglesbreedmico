@@ -37,8 +37,8 @@ function checkSession() {
     // If logged in, show members area and redirect away from membersPortal if needed
     if (window.location.pathname.endsWith("membersPortal.html")) {
       updateUIAfterLogin(roadName);
-    } else {
-      // Ensure that we redirect to membersPortal.html if the user is logged in
+    } else if (!window.location.pathname.endsWith("home.html")) {
+      // Ensure that we only redirect to membersPortal if the user is not on home.html
       window.location.href = "membersPortal.html";  
     }
   }
