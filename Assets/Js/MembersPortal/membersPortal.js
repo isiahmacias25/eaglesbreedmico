@@ -14,20 +14,21 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Check session and decide whether to redirect to login or members portal
+// Check session and decide whether to show login form or members content
 function checkSession() {
   const token = sessionStorage.getItem("token");
   const roadName = sessionStorage.getItem("roadName");
 
-  // If no token, redirect to login
+  // If no token and road name, user is logged out
   if (!token || !roadName) {
-    if (!window.location.pathname.endsWith("login.html")) {
-      window.location.href = "login.html";
+    // Only show the login form on membersPortal.html page if logged out
+    if (!window.location.pathname.endsWith("membersPortal.html")) {
+      window.location.href = "home.html";  // Stay on home if not logged in
     }
   } else {
-    // If token exists, update UI and redirect to members portal if not already there
+    // If token exists, show members area
     if (!window.location.pathname.endsWith("membersPortal.html")) {
-      window.location.href = "membersPortal.html";
+      window.location.href = "membersPortal.html";  // Redirect to membersPortal if logged in
     } else {
       updateUIAfterLogin(roadName);
     }
@@ -56,9 +57,9 @@ function updateUIAfterLogout() {
   document.getElementById("membersContent")?.classList.add("hidden");
   document.getElementById("membersSubNav")?.classList.add("hidden");
 
-  // Ensure you're only redirecting to login if not already on the login page
-  if (!window.location.pathname.endsWith("login.html")) {
-    window.location.href = "login.html";
+  // Ensure you're only redirecting to home if not already there
+  if (!window.location.pathname.endsWith("home.html")) {
+    window.location.href = "home.html";
   }
 }
 
@@ -106,7 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
         sessionStorage.setItem("roadName", roadName);
 
         updateUIAfterLogin(roadName);
-        window.location.href = "membersPortal.html";  // Correct redirect to members portal after login
+        window.location.href = "membersPortal.html";  // Redirect to members portal after login
       } catch (error) {
         console.error("Login error:", error);
         let errorMessage = "An error occurred. Please try again.";
