@@ -34,9 +34,9 @@ function updateUIAfterLogout() {
   document.getElementById("membersContent")?.classList.add("hidden");
   document.getElementById("membersSubNav")?.classList.add("hidden");
 
-  // Fix: Only redirect if not already on membersPortal
-  if (!window.location.pathname.endsWith("membersPortal.html")) {
-    window.location.href = "membersPortal.html";  // Correct redirect path
+  // Only redirect to login page if we're not on the login page
+  if (!window.location.pathname.endsWith("login.html") && !window.location.pathname.endsWith("membersPortal.html")) {
+    window.location.href = "login.html";  // Redirect to login page if not already on it
   }
 }
 
@@ -55,12 +55,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const token = sessionStorage.getItem("token");
   const roadName = sessionStorage.getItem("roadName");
 
-  // Fix: Prevent auto-redirect to membersPortal on every page
+  // If the user is logged in, check if they are on the login page or members portal
   if (token && roadName) {
     if (!window.location.pathname.endsWith("membersPortal.html")) {
-      window.location.href = "membersPortal.html";  // Correct redirect to members portal page
+      // Only redirect to the members portal if not already there
+      window.location.href = "membersPortal.html";  
     } else {
-      updateUIAfterLogin(roadName);
+      updateUIAfterLogin(roadName);  // Update UI if already logged in on the members portal page
     }
   } else {
     updateUIAfterLogout();
@@ -95,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
         sessionStorage.setItem("roadName", roadName);
 
         updateUIAfterLogin(roadName);
-        window.location.href = "membersPortal.html";  // Correct redirect after login
+        window.location.href = "membersPortal.html";  // Correct redirect to members portal after login
       } catch (error) {
         console.error("Login error:", error);
         let errorMessage = "An error occurred. Please try again.";
