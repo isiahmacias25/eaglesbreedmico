@@ -19,18 +19,21 @@ function checkSession() {
   const token = sessionStorage.getItem("token");
   const roadName = sessionStorage.getItem("roadName");
 
-  // If no token and road name, user is logged out
+  // If no token or road name, show login form ONLY on membersPortal.html
   if (!token || !roadName) {
-    // Only show the login form on membersPortal.html page if logged out
-    if (!window.location.pathname.endsWith("membersPortal.html")) {
-      window.location.href = "membersPortal.html";  
+    if (window.location.pathname.endsWith("membersPortal.html")) {
+      // If on membersPortal, show login form
+      document.getElementById("loginForm")?.classList.remove("hidden");
+      document.getElementById("membersContent")?.classList.add("hidden");
+      document.getElementById("membersSubNav")?.classList.add("hidden");
     }
   } else {
-    // If token exists, show members area
-    if (!window.location.pathname.endsWith("membersPortal.html")) {
-      window.location.href = "membersPortal.html";  // Redirect to membersPortal if logged in
-    } else {
+    // If logged in, show members area and redirect away from membersPortal if needed
+    if (window.location.pathname.endsWith("membersPortal.html")) {
       updateUIAfterLogin(roadName);
+    } else {
+      // Ensure that we redirect to membersPortal.html if the user is logged in
+      window.location.href = "membersPortal.html";  
     }
   }
 }
