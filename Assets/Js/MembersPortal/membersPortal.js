@@ -35,7 +35,7 @@ function updateUIAfterLogout() {
   document.getElementById("membersSubNav")?.classList.add("hidden");
 
   if (!window.location.pathname.includes("MembersPortal")) {
-    window.location.href = "MembersPortal/membersPortal.html";
+    window.location.href = "membersPortal.html";
   }
 }
 
