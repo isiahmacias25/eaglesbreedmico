@@ -15,11 +15,11 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 function updateUIAfterLogin(roadName) {
-  console.log("Updating UI after login...");
-  document.getElementById("loginForm")?.style.display = "none";
-  document.getElementById("membersContent")?.style.display = "block";
-  document.getElementById("membersSubNav")?.style.display = "block";
-  
+  console.log("User logged in. Updating UI...");
+  document.getElementById("loginForm")?.classList.add("hidden");
+  document.getElementById("membersContent")?.classList.remove("hidden");
+  document.getElementById("membersSubNav")?.classList.remove("hidden");
+
   const welcomeMessage = document.getElementById("welcomeMessage");
   if (welcomeMessage) {
     welcomeMessage.textContent = `Welcome, ${roadName}!`;
@@ -28,15 +28,13 @@ function updateUIAfterLogin(roadName) {
 }
 
 function updateUIAfterLogout() {
-  console.log("Updating UI after logout...");
-  sessionStorage.removeItem("token");
-  sessionStorage.removeItem("roadName");
+  console.log("User logged out. Updating UI...");
+  sessionStorage.clear();
+  document.getElementById("loginForm")?.classList.remove("hidden");
+  document.getElementById("membersContent")?.classList.add("hidden");
+  document.getElementById("membersSubNav")?.classList.add("hidden");
 
-  document.getElementById("loginForm")?.style.display = "block";
-  document.getElementById("membersContent")?.style.display = "none";
-  document.getElementById("membersSubNav")?.style.display = "none";
-
-  if (!window.location.pathname.endsWith("membersPortal.html") && !window.location.pathname.includes("MembersPortal/")) {
+  if (!window.location.pathname.includes("MembersPortal")) {
     window.location.href = "MembersPortal/membersPortal.html";
   }
 }
@@ -44,16 +42,17 @@ function updateUIAfterLogout() {
 window.logout = function (event) {
   event.preventDefault();
   updateUIAfterLogout();
+  window.location.reload();
 };
 
 document.addEventListener("DOMContentLoaded", function () {
   console.log("Checking session status...");
   const loginForm = document.getElementById("loginForm");
   const loginError = document.getElementById("loginError");
+
   const token = sessionStorage.getItem("token");
   const roadName = sessionStorage.getItem("roadName");
 
-  // Redirect if already logged in
   if (token && roadName) {
     if (!window.location.pathname.includes("membersPortal")) {
       window.location.href = "MembersPortal/membersPortal.html";
@@ -64,11 +63,10 @@ document.addEventListener("DOMContentLoaded", function () {
     updateUIAfterLogout();
   }
 
-  // Ensure login form doesn't submit via URL
   if (loginForm) {
     loginForm.addEventListener("submit", async function (event) {
-      event.preventDefault(); // **Stops the form from adding data to the URL**
-      console.log("Form submission intercepted.");
+      event.preventDefault();
+      console.log("Intercepted form submission.");
 
       const roadNameInput = document.getElementById("roadName");
       const passwordInput = document.getElementById("password");
@@ -94,7 +92,7 @@ document.addEventListener("DOMContentLoaded", function () {
         sessionStorage.setItem("roadName", roadName);
 
         updateUIAfterLogin(roadName);
-        window.location.href = "MembersPortal/membersPortal.html"; // Redirect manually
+        window.location.href = "MembersPortal/membersPortal.html";
       } catch (error) {
         console.error("Login error:", error);
         let errorMessage = "An error occurred. Please try again.";
@@ -117,10 +115,8 @@ document.addEventListener("DOMContentLoaded", function () {
             break;
         }
 
-        if (loginError) {
-          loginError.textContent = errorMessage;
-          loginError.style.display = "block";
-        }
+        loginError.textContent = errorMessage;
+        loginError.style.display = "block";
       }
     });
   }
