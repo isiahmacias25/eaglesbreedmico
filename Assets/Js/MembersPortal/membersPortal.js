@@ -14,6 +14,27 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
+// Check session and decide whether to redirect to login or members portal
+function checkSession() {
+  const token = sessionStorage.getItem("token");
+  const roadName = sessionStorage.getItem("roadName");
+
+  // If no token, redirect to login
+  if (!token || !roadName) {
+    if (!window.location.pathname.endsWith("login.html")) {
+      window.location.href = "login.html";
+    }
+  } else {
+    // If token exists, update UI and redirect to members portal if not already there
+    if (!window.location.pathname.endsWith("membersPortal.html")) {
+      window.location.href = "membersPortal.html";
+    } else {
+      updateUIAfterLogin(roadName);
+    }
+  }
+}
+
+// Login function, adds session and redirects to members portal
 function updateUIAfterLogin(roadName) {
   console.log("User logged in. Updating UI...");
   document.getElementById("loginForm")?.classList.add("hidden");
@@ -27,6 +48,7 @@ function updateUIAfterLogin(roadName) {
   }
 }
 
+// Logout function
 function updateUIAfterLogout() {
   console.log("User logged out. Updating UI...");
   sessionStorage.clear();
@@ -34,9 +56,9 @@ function updateUIAfterLogout() {
   document.getElementById("membersContent")?.classList.add("hidden");
   document.getElementById("membersSubNav")?.classList.add("hidden");
 
-  // Only redirect to login page if we're not on the login page
-  if (!window.location.pathname.endsWith("login.html") && !window.location.pathname.endsWith("membersPortal.html")) {
-    window.location.href = "login.html";  // Redirect to login page if not already on it
+  // Ensure you're only redirecting to login if not already on the login page
+  if (!window.location.pathname.endsWith("login.html")) {
+    window.location.href = "login.html";
   }
 }
 
@@ -48,25 +70,13 @@ window.logout = function (event) {
 };
 
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("Checking session status...");
+  // Check session status on page load
+  checkSession();
+
   const loginForm = document.getElementById("loginForm");
   const loginError = document.getElementById("loginError");
 
-  const token = sessionStorage.getItem("token");
-  const roadName = sessionStorage.getItem("roadName");
-
-  // If the user is logged in, check if they are on the login page or members portal
-  if (token && roadName) {
-    if (!window.location.pathname.endsWith("membersPortal.html")) {
-      // Only redirect to the members portal if not already there
-      window.location.href = "membersPortal.html";  
-    } else {
-      updateUIAfterLogin(roadName);  // Update UI if already logged in on the members portal page
-    }
-  } else {
-    updateUIAfterLogout();
-  }
-
+  // Listen for login form submit
   if (loginForm) {
     loginForm.addEventListener("submit", async function (event) {
       event.preventDefault();
