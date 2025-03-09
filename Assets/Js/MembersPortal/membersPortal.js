@@ -19,15 +19,21 @@ function checkSession() {
   const token = sessionStorage.getItem("token");
   const roadName = sessionStorage.getItem("roadName");
 
+  console.log("Session token:", token);  // Debugging
+  console.log("Road Name:", roadName);  // Debugging
+
   // If no token or road name, show login form ONLY on membersPortal.html
   if (!token || !roadName) {
     if (window.location.pathname.endsWith("membersPortal.html")) {
-      // If on membersPortal, show login form
+      console.log("User is logged out. Showing login form.");
       document.getElementById("loginForm")?.classList.remove("hidden");
       document.getElementById("membersContent")?.classList.add("hidden");
       document.getElementById("membersSubNav")?.classList.add("hidden");
+    } else {
+      console.log("User is logged out. Not on membersPortal.html, no login form.");
     }
   } else {
+    console.log("User is logged in. Showing members content.");
     // If logged in, show members area and redirect away from membersPortal if needed
     if (window.location.pathname.endsWith("membersPortal.html")) {
       updateUIAfterLogin(roadName);
