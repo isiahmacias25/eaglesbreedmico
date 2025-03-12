@@ -16,88 +16,19 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Function to check session and determine if the user is logged in
-function checkSession() {
-  const token = sessionStorage.getItem("token");
-  const roadName = sessionStorage.getItem("roadName");
-
-  console.log("Session token:", token);  // Debugging
-  console.log("Road Name:", roadName);  // Debugging
-
-  if (!token || !roadName) {
-    if (window.location.pathname.endsWith("membersPortal.html")) {
-      console.log("User is logged out. Showing login form.");
-      document.getElementById("loginForm")?.classList.remove("hidden");
-      document.getElementById("membersContent")?.classList.add("hidden");
-      document.getElementById("membersSubNav")?.classList.add("hidden");
-    }
-  } else {
-    console.log("User is logged in. Showing members content.");
-    if (window.location.pathname.endsWith("membersPortal.html")) {
-      updateUIAfterLogin(roadName);
-    } else if (!window.location.pathname.endsWith("home.html")) {
-      // Ensure that we only redirect to membersPortal if not on home.html
-      window.location.href = "membersPortal.html";  
-    }
-  }
-}
-
-// Function to update UI after login
-function updateUIAfterLogin(roadName) {
-  console.log("User logged in. Updating UI...");
-
-  // Ensure elements exist before modifying them
-  const loginForm = document.getElementById("loginForm");
-  const membersContent = document.getElementById("membersContent");
-  const membersSubNav = document.getElementById("membersSubNav");
-
-  if (loginForm) {
-    loginForm.classList.add("hidden");
-  }
-  if (membersContent) {
-    membersContent.classList.remove("hidden");
-  }
-  if (membersSubNav) {
-    membersSubNav.classList.remove("hidden");
-  }
-
-  const welcomeMessage = document.getElementById("welcomeMessage");
-  if (welcomeMessage) {
-    welcomeMessage.textContent = `Welcome, ${roadName}!`;
-    welcomeMessage.style.display = "block";
-  }
-
-  console.log("UI updated after login.");
-}
-
-// Function to update UI after logout
-function updateUIAfterLogout() {
-  console.log("User logged out. Updating UI...");
-  sessionStorage.clear();
-  document.getElementById("loginForm")?.classList.remove("hidden");
-  document.getElementById("membersContent")?.classList.add("hidden");
-  document.getElementById("membersSubNav")?.classList.add("hidden");
-}
-
-// Update the logout function to ensure event is passed
-window.logout = function (event) {
-  event.preventDefault();  // Prevent default form submission
-  updateUIAfterLogout();
-  window.location.reload(); // Reload the page after logout
-};
-
+// Check session on page load and show/hide content accordingly
 document.addEventListener("DOMContentLoaded", function () {
   console.log("Checking session on page load...");
   checkSession();
 
+  // Set up login form submission
   const loginForm = document.getElementById("loginForm");
   const loginError = document.getElementById("loginError");
 
-  // Listen for login form submission
   if (loginForm) {
     loginForm.addEventListener("submit", async function (event) {
       event.preventDefault();
-      console.log("Intercepted form submission.");
+      console.log("Intercepted login form submission.");
 
       const roadNameInput = document.getElementById("roadName");
       const passwordInput = document.getElementById("password");
@@ -119,12 +50,12 @@ document.addEventListener("DOMContentLoaded", function () {
         const user = userCredential.user;
         const token = await user.getIdToken();
 
-        sessionStorage.setItem("token", token);
-        sessionStorage.setItem("roadName", roadName);
+        // Store token and roadName in localStorage (persistent across reloads)
+        localStorage.setItem("token", token);
+        localStorage.setItem("roadName", roadName);
 
         console.log("Login successful. Redirecting to members portal...");
-        updateUIAfterLogin(roadName);
-        window.location.href = "membersPortal.html";  // Redirect after login
+        window.location.href = "membersPortal.html"; // Redirect to members area
       } catch (error) {
         console.error("Login error:", error);
         let errorMessage = "An error occurred. Please try again.";
@@ -153,11 +84,46 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Ensure logout button has an event listener
+  // Set up logout button
   const logoutButton = document.getElementById("logoutButton");
   if (logoutButton) {
-    logoutButton.addEventListener("click", function(event) {
-      window.logout(event);  // Pass event to logout function
+    logoutButton.addEventListener("click", function (event) {
+      event.preventDefault();
+      console.log("Logging out...");
+      localStorage.clear(); // Clear session
+      window.location.href = "home.html"; // Redirect to home
     });
   }
 });
+
+// Function to check session and update UI
+function checkSession() {
+  const token = localStorage.getItem("token");
+  const roadName = localStorage.getItem("roadName");
+
+  console.log("Session token:", token);
+  console.log("Road Name:", roadName);
+
+  // Elements
+  const loginForm = document.getElementById("loginForm");
+  const membersContent = document.getElementById("membersContent");
+  const membersSubNav = document.getElementById("membersSubNav");
+  const welcomeMessage = document.getElementById("welcomeMessage");
+
+  if (!token || !roadName) {
+    console.log("User is not logged in. Showing login form.");
+    if (loginForm) loginForm.classList.remove("hidden");
+    if (membersContent) membersContent.classList.add("hidden");
+    if (membersSubNav) membersSubNav.classList.add("hidden");
+    if (welcomeMessage) welcomeMessage.style.display = "none";
+  } else {
+    console.log("User is logged in. Showing members content.");
+    if (loginForm) loginForm.classList.add("hidden");
+    if (membersContent) membersContent.classList.remove("hidden");
+    if (membersSubNav) membersSubNav.classList.remove("hidden");
+    if (welcomeMessage) {
+      welcomeMessage.textContent = `Welcome, ${roadName}!`;
+      welcomeMessage.style.display = "block";
+    }
+  }
+}
