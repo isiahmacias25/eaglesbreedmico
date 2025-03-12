@@ -33,8 +33,6 @@ document.addEventListener("DOMContentLoaded", function () {
       const roadNameInput = document.getElementById("roadName");
       const passwordInput = document.getElementById("password");
 
-      if (!roadNameInput || !passwordInput) return;
-
       const roadName = roadNameInput.value.trim();
       const password = passwordInput.value.trim();
       const formattedRoadName = roadName.replace(/\s+/g, "-").toLowerCase();
@@ -55,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.setItem("roadName", roadName);
 
         console.log("Login successful. Redirecting to members portal...");
-        window.location.href = "membersPortal.html"; // Redirect to members area
+        window.location.href = "membersPortal.html";
       } catch (error) {
         console.error("Login error:", error);
         let errorMessage = "An error occurred. Please try again.";
@@ -90,8 +88,8 @@ document.addEventListener("DOMContentLoaded", function () {
     logoutButton.addEventListener("click", function (event) {
       event.preventDefault();
       console.log("Logging out...");
-      localStorage.clear(); // Clear session
-      window.location.href = "home.html"; // Redirect to home
+      localStorage.clear();
+      window.location.href = "../home.html"; // Redirect to home
     });
   }
 });
@@ -104,7 +102,6 @@ function checkSession() {
   console.log("Session token:", token);
   console.log("Road Name:", roadName);
 
-  // Elements
   const loginForm = document.getElementById("loginForm");
   const membersContent = document.getElementById("membersContent");
   const membersSubNav = document.getElementById("membersSubNav");
@@ -112,18 +109,16 @@ function checkSession() {
 
   if (!token || !roadName) {
     console.log("User is not logged in. Showing login form.");
-    if (loginForm) loginForm.classList.remove("hidden");
-    if (membersContent) membersContent.classList.add("hidden");
-    if (membersSubNav) membersSubNav.classList.add("hidden");
-    if (welcomeMessage) welcomeMessage.style.display = "none";
+    loginForm?.classList.remove("hidden");
+    membersContent?.classList.add("hidden");
+    membersSubNav?.classList.add("hidden");
+    welcomeMessage.style.display = "none";
   } else {
     console.log("User is logged in. Showing members content.");
-    if (loginForm) loginForm.classList.add("hidden");
-    if (membersContent) membersContent.classList.remove("hidden");
-    if (membersSubNav) membersSubNav.classList.remove("hidden");
-    if (welcomeMessage) {
-      welcomeMessage.textContent = `Welcome, ${roadName}!`;
-      welcomeMessage.style.display = "block";
-    }
+    loginForm?.classList.add("hidden");
+    membersContent?.classList.remove("hidden");
+    membersSubNav?.classList.remove("hidden");
+    welcomeMessage.textContent = `Welcome, ${roadName}!`;
+    welcomeMessage.style.display = "block";
   }
 }
