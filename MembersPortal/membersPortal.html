@@ -24,45 +24,47 @@
           <li><a href="../About/about.html">About Us</a></li>
           <li><a href="../Events/events.html">Events</a></li>
           <li><a href="#">Supporter Menu</a></li>
-          <li><a href="../MembersPortal/membersPortal.html" class= "active" >Members Portal</a></li>
+          <li><a href="../MembersPortal/membersPortal.html" class="active">Members Portal</a></li>
         </ul>
     </nav>  
+
     <!-- Login Form -->
-  <form id="loginForm">
-    <div class="form-group">
-      <label for="roadName">Road Name:</label>
-      <input type="text" id="roadName" name="roadName" placeholder="Enter your road name" required>
-    </div>
-  
-    <div class="form-group">
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password" placeholder="Enter your password" required>
-    </div>
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="roadName">Road Name:</label>
+        <input type="text" id="roadName" name="roadName" placeholder="Enter your road name" required>
+      </div>
+    
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+      </div>
+      <button type="submit" class="login-btn">Login</button>
+    </form>
 
-  <button type="submit" class="login-btn">Login</button>
-  </form>
+    <div id="loginError" style="color: red; display: none;"></div>
 
-  <div id="loginError" style="color: red; display: none;"></div>
-
-     <div id="membersContent" class="membersContent">
-      <div id="membersSubNav" class="members-sub-nav">
+    <!-- Members Area -->
+    <div id="membersContent" class="membersContent hidden">
+      <div id="membersSubNav" class="members-sub-nav hidden">
           <ul>
             <li><a href="../MembersPortal/settings.html">Settings</a></li>
             <li><a href="../MembersPortal/MeetingMinutes/meetingMinutes.html">Meeting Minutes</a></li>
             <li><a href="../MembersPortal/EventManager/eventManager.html">Event Manager</a></li>
             <li><a href="../MembersPortal/SupportersManager/supportersManager.html">Supporters Manager</a></li>
-            <li><a href="#" onclick="logout(event)">Logout</a></li>
+            <li><a href="#" id="logoutButton">Logout</a></li>
           </ul>
       </div>
 
-   <!-- Welcome Content (Fix ID Conflict) -->
-  <div id="welcomeContainer">
-        <h2 id="welcomeMessage"></h2>
-        <p>Introducing the Eagles Breed Brotherhood Members Portal.</p>
-   </div>
-     </div>
+      <!-- Welcome Content -->
+      <div id="welcomeContainer">
+          <h2 id="welcomeMessage"></h2>
+          <p>Introducing the Eagles Breed Brotherhood Members Portal.</p>
+      </div>
+    </div>
     
-</div>
+  </div>
+
   <footer class="footer">
     <div class="footer-content">
       <p>Facebook: 
@@ -75,6 +77,5 @@
       <p id="timer"></p>
     </div>
   </footer>
-
 </body>
 </html>
