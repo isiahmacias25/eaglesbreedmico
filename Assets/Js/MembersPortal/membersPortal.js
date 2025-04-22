@@ -30,37 +30,37 @@ document.addEventListener("DOMContentLoaded", function () {
       event.preventDefault();
       console.log("Intercepted login form submission.");
 
-      const roadNameInput = document.getElementById("roadName");
+      const usernameInput = document.getElementById("roadName"); // Renamed to 'username'
       const passwordInput = document.getElementById("password");
 
-      const roadName = roadNameInput.value.trim();
+      const username = usernameInput.value.trim();
       const password = passwordInput.value.trim();
-      const formattedRoadName = roadName.replace(/\s+/g, "-").toLowerCase();
+      const formattedUsername = username.replace(/\s+/g, "-").toLowerCase(); // Using 'formattedUsername' instead of roadName
 
-      if (!roadName || !password) {
-        loginError.textContent = "Please enter both your road name and password.";
+      if (!username || !password) {
+        loginError.textContent = "Please enter both your username and password.";
         loginError.style.display = "block";
         return;
       }
 
       try {
-        const userCredential = await signInWithEmailAndPassword(auth, `${formattedRoadName}@eaglesbreedmico.com`, password);
+        const userCredential = await signInWithEmailAndPassword(auth, `${formattedUsername}@eaglesbreedmico.com`, password);
         const user = userCredential.user;
         const token = await user.getIdToken();
 
-        // Store token and roadName in localStorage (persistent across reloads)
+        // Store token and username in localStorage (persistent across reloads)
         localStorage.setItem("token", token);
-        localStorage.setItem("roadName", roadName);
+        localStorage.setItem("username", username); // Renamed to 'username'
 
         console.log("Login successful. Redirecting to members portal...");
-        window.location.href = "membersPortal.html";
+        window.location.href = "membersPortal.html"; // Redirect to members portal page after successful login
       } catch (error) {
         console.error("Login error:", error);
         let errorMessage = "An error occurred. Please try again.";
 
         switch (error.code) {
           case "auth/user-not-found":
-            errorMessage = "No user found with that road name.";
+            errorMessage = "No user found with that username.";
             break;
           case "auth/wrong-password":
             errorMessage = "Incorrect password.";
@@ -97,17 +97,22 @@ document.addEventListener("DOMContentLoaded", function () {
 // Function to check session and update UI
 function checkSession() {
   const token = localStorage.getItem("token");
-  const roadName = localStorage.getItem("roadName");
+  const username = localStorage.getItem("username"); // Renamed to 'username'
 
   console.log("Session token:", token);
-  console.log("Road Name:", roadName);
+  console.log("Username:", username);
 
   const loginForm = document.getElementById("loginForm");
   const membersContent = document.getElementById("membersContent");
   const membersSubNav = document.getElementById("membersSubNav");
   const welcomeMessage = document.getElementById("welcomeMessage");
 
-  if (!token || !roadName) {
+  // If the user is already logged in, redirect them from the login page to members portal
+  if (window.location.pathname === "/login.html" && token && username) {
+    window.location.href = "membersPortal.html"; // Redirect to members portal if logged in
+  }
+
+  if (!token || !username) {
     console.log("User is not logged in. Showing login form.");
     loginForm?.classList.remove("hidden");
     membersContent?.classList.add("hidden");
@@ -118,7 +123,7 @@ function checkSession() {
     loginForm?.classList.add("hidden");
     membersContent?.classList.remove("hidden");
     membersSubNav?.classList.remove("hidden");
-    welcomeMessage.textContent = `Welcome, ${roadName}!`;
+    welcomeMessage.textContent = `Welcome, ${username}!`; // Renamed to 'username'
     welcomeMessage.style.display = "block";
   }
 }
