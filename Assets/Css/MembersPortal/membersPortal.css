@@ -57,11 +57,9 @@ h2 {
 }
 
 .membersContent {
-    width: 800px !important;
-    max-width: 800px !important;
-    min-width: 800px !important;
-    padding: 0 !important;
-    border: none !important;
-    box-sizing: border-box !important;
-    overflow: hidden; /* Prevents hidden content from expanding it */
+    width: 100%; /* Allow it to scale with the screen */
+    max-width: 800px; /* Still cap it for large screens */
+    padding: 0;
+    border: none;
+    box-sizing: border-box;
 }
