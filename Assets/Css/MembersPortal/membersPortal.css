@@ -60,12 +60,8 @@ h2 {
     width: 800px !important;
     max-width: 800px !important;
     min-width: 800px !important;
-    overflow: hidden; /* Prevents hidden content from expanding it */
-}
-
-.membersContent {
     padding: 0 !important;
     border: none !important;
     box-sizing: border-box !important;
+    overflow: hidden; /* Prevents hidden content from expanding it */
 }
-
