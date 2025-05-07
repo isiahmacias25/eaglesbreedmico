@@ -185,12 +185,13 @@ nav ul li a.members-active {
     max-width: 1200px;
 }
 
-/* Members content visibility */
+/* Members content visibility 
 .membersContent {
-    display: none; /* Hide by default */
+    display: none; /* Hide by default 
 }
 
-/* Sub-nav visibility */
+/* Sub-nav visibility 
 #membersSubNav {
     display: none;
-}
+}      
+*/
