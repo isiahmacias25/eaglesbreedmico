@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // Function to check session and update UI
 function checkSession() {
   const token = localStorage.getItem("token");
-  const username = localStorage.getItem("username"); // Renamed to 'username'
+  const username = localStorage.getItem("username");
 
   console.log("Session token:", token);
   console.log("Username:", username);
@@ -107,25 +107,21 @@ function checkSession() {
   const membersSubNav = document.getElementById("membersSubNav");
   const welcomeMessage = document.getElementById("welcomeMessage");
 
-  // If the user is already logged in, redirect them from the login page to members portal
-  if (window.location.pathname === "../MembersPortal/membersPortal.html" && token && username) {
-    window.location.href = "../MembersPortal/membersPortal.html"; // Redirect to members portal if logged in
-  }
-
   if (!token || !username) {
     console.log("User is not logged in. Showing login form.");
-    loginForm?.classList.toggle("hidden", false); // Show
-    membersContent?.classList.toggle("hidden", true); // Hide
-    membersSubNav?.classList.toggle("hidden", true); // Hide
-    welcomeMessage.classList.toggle("hidden", true); // Hide
-
+    loginForm?.classList.remove("hidden");
+    membersContent?.classList.add("hidden");
+    membersSubNav?.classList.add("hidden");
+    welcomeMessage?.classList.add("hidden");
   } else {
     console.log("User is logged in. Showing members content.");
     loginForm?.classList.add("hidden");
     membersContent?.classList.remove("hidden");
     membersSubNav?.classList.remove("hidden");
-    welcomeMessage.textContent = `Welcome, ${username}!`;
-    welcomeMessage.classList.remove("hidden");
 
+    if (welcomeMessage) {
+      welcomeMessage.textContent = `Welcome, ${username}!`;
+      welcomeMessage.classList.remove("hidden");
+    }
   }
 }
