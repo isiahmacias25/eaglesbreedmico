@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-// Firebase config
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyChVYbT54aRIbAHyy_HRsH7caRHyaZwWTA",
   authDomain: "eaglesbreedmico.firebaseapp.com",
@@ -16,10 +16,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
+// Check session on page load and show/hide content accordingly
 document.addEventListener("DOMContentLoaded", function () {
   console.log("Checking session on page load...");
   checkSession();
 
+  // Set up login form submission
   const loginForm = document.getElementById("loginForm");
   const loginError = document.getElementById("loginError");
 
@@ -33,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const username = usernameInput.value.trim();
       const password = passwordInput.value.trim();
-      const formattedUsername = username.replace(/\s+/g, "-").toLowerCase();
+      const formattedUsername = username.replace(/\s+/g, "-").toLowerCase(); // Using 'formattedUsername' instead of roadName
 
       if (!username || !password) {
         loginError.textContent = "Please enter both your username and password.";
@@ -46,11 +48,12 @@ document.addEventListener("DOMContentLoaded", function () {
         const user = userCredential.user;
         const token = await user.getIdToken();
 
+        // Store token and username in localStorage (persistent across reloads)
         localStorage.setItem("token", token);
-        localStorage.setItem("username", username);
+        localStorage.setItem("username", username); // Renamed to 'username'
 
         console.log("Login successful. Redirecting to members portal...");
-        window.location.href = "../MembersPortal/membersPortal.html";
+        window.location.href = "../MembersPortal/membersPortal.html"; // Redirect to members portal page after successful login
       } catch (error) {
         console.error("Login error:", error);
         let errorMessage = "An error occurred. Please try again.";
@@ -79,6 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // Set up logout button
   const logoutButton = document.getElementById("logoutButton");
   if (logoutButton) {
     logoutButton.addEventListener("click", function (event) {
@@ -90,33 +94,34 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-// Session checker to toggle visibility
+// Function to check session and update UI
 function checkSession() {
   const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
+
+  console.log("Session token:", token);
+  console.log("Username:", username);
 
   const loginForm = document.getElementById("loginForm");
   const membersContent = document.getElementById("membersContent");
   const membersSubNav = document.getElementById("membersSubNav");
   const welcomeMessage = document.getElementById("welcomeMessage");
 
-  const hide = el => el && el.classList.add("hidden");
-  const show = el => el && el.classList.remove("hidden");
-
   if (!token || !username) {
-    console.log("User not logged in. Showing login form.");
-    show(loginForm);
-    hide(membersContent);
-    hide(membersSubNav);
-    hide(welcomeMessage);
+    console.log("User is not logged in. Showing login form.");
+    loginForm?.classList.remove("hidden");
+    membersContent?.classList.add("hidden");
+    membersSubNav?.classList.add("hidden");
+    welcomeMessage?.classList.add("hidden");
   } else {
-    console.log("User logged in. Showing members content.");
-    hide(loginForm);
-    show(membersContent);
-    show(membersSubNav);
+    console.log("User is logged in. Showing members content.");
+    loginForm?.classList.add("hidden");
+    membersContent?.classList.remove("hidden");
+    membersSubNav?.classList.remove("hidden");
+
     if (welcomeMessage) {
       welcomeMessage.textContent = `Welcome, ${username}!`;
-      show(welcomeMessage);
+      welcomeMessage.classList.remove("hidden");
     }
   }
 }
