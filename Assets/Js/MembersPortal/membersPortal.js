@@ -108,8 +108,8 @@ function checkSession() {
   const welcomeMessage = document.getElementById("welcomeMessage");
 
   // If the user is already logged in, redirect them from the login page to members portal
-  if (window.location.pathname === "/login.html" && token && username) {
-    window.location.href = "membersPortal.html"; // Redirect to members portal if logged in
+  if (window.location.pathname === "../MembersPortal/membersPortal.html" && token && username) {
+    window.location.href = "../MembersPortal/membersPortal.html"; // Redirect to members portal if logged in
   }
 
   if (!token || !username) {
