@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
       event.preventDefault();
       console.log("Intercepted login form submission.");
 
-      const usernameInput = document.getElementById("roadName"); // Renamed to 'username'
+      const usernameInput = document.getElementById("roadName");
       const passwordInput = document.getElementById("password");
 
       const username = usernameInput.value.trim();
@@ -114,16 +114,18 @@ function checkSession() {
 
   if (!token || !username) {
     console.log("User is not logged in. Showing login form.");
-    loginForm?.classList.remove("hidden");
-    membersContent?.classList.add("hidden");
-    membersSubNav?.classList.add("hidden");
-    welcomeMessage.style.display = "none";
+    loginForm?.classList.toggle("hidden", false); // Show
+    membersContent?.classList.toggle("hidden", true); // Hide
+    membersSubNav?.classList.toggle("hidden", true); // Hide
+    welcomeMessage.classList.toggle("hidden", true); // Hide
+
   } else {
     console.log("User is logged in. Showing members content.");
     loginForm?.classList.add("hidden");
     membersContent?.classList.remove("hidden");
     membersSubNav?.classList.remove("hidden");
-    welcomeMessage.textContent = `Welcome, ${username}!`; // Renamed to 'username'
-    welcomeMessage.style.display = "block";
+    welcomeMessage.textContent = `Welcome, ${username}!`;
+    welcomeMessage.classList.remove("hidden");
+
   }
 }
