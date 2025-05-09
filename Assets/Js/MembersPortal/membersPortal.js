@@ -125,3 +125,21 @@ function checkSession() {
     }
   }
 }
+
+function toggleIfLoggedIn() {
+  const username = localStorage.getItem("username");
+  const token = localStorage.getItem("token"); // or 'password' if you're using that instead
+
+  const loggedInElement = document.getElementById("ifLoggedIn");
+
+  if (loggedInElement) {
+    if (username && token) {
+      loggedInElement.classList.remove("hidden");
+    } else {
+      loggedInElement.classList.add("hidden");
+    }
+  }
+}
+
+// Run it on page load
+document.addEventListener("DOMContentLoaded", toggleIfLoggedIn);
