@@ -126,42 +126,37 @@ function checkSession() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  console.log("Checking session on page load...");
 
+document.addEventListener("DOMContentLoaded", () => {
   const username = localStorage.getItem("username");
   const token = localStorage.getItem("token");
+
+  const loginForm = document.getElementById("loginForm"); 
+  if (loginForm) {
+    if (username && token) {
+      loginForm.style.display = "none";
+    } else {
+      loginForm.style.display = "block";
+    }
+  }
 
   console.log("Username from localStorage:", username);
   console.log("Token from localStorage:", token);
 
-  const loggedInSection = document.getElementById("ifLoggedIn");
-  const loginForm = document.getElementById("loginForm");
+  const element = document.getElementById("ifLoggedIn");
 
-  // SHOW/HIDE LOGGED-IN SECTION
-  if (loggedInSection) {
-    if (username && token) {
-      loggedInSection.classList.remove("hidden");
-      console.log("User is logged in. Showing member section.");
-    } else {
-      loggedInSection.classList.add("hidden");
-      console.log("User not logged in. Hiding member section.");
-    }
-  } else {
+  if (!element) {
     console.warn("Element with ID 'ifLoggedIn' not found.");
+    return;
   }
 
-  // SHOW/HIDE LOGIN FORM
-  if (loginForm) {
-    if (username && token) {
-      loginForm.classList.add("hidden");
-      console.log("User is logged in. Hiding login form.");
-    } else {
-      loginForm.classList.remove("hidden");
-      console.log("User not logged in. Showing login form.");
-    }
+  if (username && token) {
+    element.style.display = "block"; // Or remove 'hidden' class if you're using Tailwind
+    console.log("User is logged in. Showing element.");
   } else {
-    console.warn("Element with ID 'loginForm' not found.");
+    element.style.display = "none"; // Or add 'hidden' class
+    console.log("User not logged in. Hiding element.");
   }
 });
+
 
