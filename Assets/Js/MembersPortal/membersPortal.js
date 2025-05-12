@@ -116,7 +116,7 @@ function checkSession() {
   } else {
     console.log("User is logged in. Showing members content.");
     loginForm?.classList.add("hidden");
-    membersContent?.classList.remove("hidden");
+    membersContent.classList.remove("hidden");
     membersSubNav?.classList.remove("hidden");
 
     if (welcomeMessage) {
