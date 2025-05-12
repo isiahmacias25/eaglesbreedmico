@@ -110,13 +110,13 @@ function checkSession() {
   if (!token || !username) {
     console.log("User is not logged in. Showing login form.");
     loginForm?.classList.remove("hidden");
-    membersContent.classList.add("hidden");
+    membersContent?.classList.add("hidden");
     membersSubNav?.classList.add("hidden");
     welcomeMessage?.classList.add("hidden");
   } else {
     console.log("User is logged in. Showing members content.");
     loginForm?.classList.add("hidden");
-    membersContent.classList.remove("hidden");
+    membersContent?.classList.remove("hidden");
     membersSubNav?.classList.remove("hidden");
 
     if (welcomeMessage) {
