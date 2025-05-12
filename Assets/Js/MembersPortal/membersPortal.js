@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
       event.preventDefault();
       console.log("Logging out...");
       localStorage.clear();
-      window.location.href = "../MembersPortal/membersPortal.html";
+      window.location.href = "../../../MembersPortal/membersPortal.html";
     });
   }
 });
