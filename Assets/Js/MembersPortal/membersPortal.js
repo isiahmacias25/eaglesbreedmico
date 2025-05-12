@@ -126,20 +126,28 @@ function checkSession() {
   }
 }
 
-function toggleIfLoggedIn() {
+document.addEventListener("DOMContentLoaded", () => {
   const username = localStorage.getItem("username");
-  const token = localStorage.getItem("token"); // or 'password' if you're using that instead
+  const token = localStorage.getItem("token");
 
-  const loggedInElement = document.getElementById("ifLoggedIn");
+  console.log("Username from localStorage:", username);
+  console.log("Token from localStorage:", token);
 
-  if (loggedInElement) {
-    if (username && token) {
-      loggedInElement.classList.remove("hidden");
-    } else {
-      loggedInElement.classList.add("hidden");
-    }
+  const element = document.getElementById("ifLoggedIn");
+
+  if (!element) {
+    console.warn("Element with ID 'ifLoggedIn' not found.");
+    return;
   }
-}
+
+  if (username && token) {
+    element.style.display = "block"; // Or remove 'hidden' class if you're using Tailwind
+    console.log("User is logged in. Showing element.");
+  } else {
+    element.style.display = "none"; // Or add 'hidden' class
+    console.log("User not logged in. Hiding element.");
+  }
+});
 
 // Run it on page load
 document.addEventListener("DOMContentLoaded", toggleIfLoggedIn);
