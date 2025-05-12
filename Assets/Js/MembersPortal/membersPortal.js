@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.setItem("username", username); // Renamed to 'username'
 
         console.log("Login successful. Redirecting to members portal...");
-        window.location.href = "../MembersPortal/membersPortal.html"; // Redirect to members portal page after successful login
+        window.location.href = "../../../MembersPortal/membersPortal.html"; // Redirect to members portal page after successful login
       } catch (error) {
         console.error("Login error:", error);
         let errorMessage = "An error occurred. Please try again.";
