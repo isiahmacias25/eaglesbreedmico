@@ -148,6 +148,3 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("User not logged in. Hiding element.");
   }
 });
-
-// Run it on page load
-document.addEventListener("DOMContentLoaded", toggleIfLoggedIn);
