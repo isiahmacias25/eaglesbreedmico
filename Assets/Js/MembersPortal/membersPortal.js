@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-// Firebase config
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyChVYbT54aRIbAHyy_HRsH7caRHyaZwWTA",
   authDomain: "eaglesbreedmico.firebaseapp.com",
@@ -12,23 +12,21 @@ const firebaseConfig = {
   measurementId: "G-ZR1P59C7BP"
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// DOM Ready
-document.addEventListener("DOMContentLoaded", () => {
-  console.log("🌐 DOM loaded, checking session...");
-  checkSession();
+document.addEventListener("DOMContentLoaded", async () => {
+  const isLoggedIn = checkSession(); // Handle UI show/hide here
 
   const loginForm = document.getElementById("loginForm");
   const loginError = document.getElementById("loginError");
   const logoutButton = document.getElementById("logoutButton");
 
-  // 🔐 Login Handler
-  if (loginForm) {
-    loginForm.addEventListener("submit", async (event) => {
+  if (loginForm && !isLoggedIn) {
+    loginForm.addEventListener("submit", async function (event) {
       event.preventDefault();
-      console.log("🔑 Login attempt...");
+      console.log("Login attempt...");
 
       const usernameInput = document.getElementById("roadName");
       const passwordInput = document.getElementById("password");
@@ -43,73 +41,67 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       try {
-        const userCredential = await signInWithEmailAndPassword(
-          auth,
-          `${formattedUsername}@eaglesbreedmico.com`,
-          password
-        );
-
+        const userCredential = await signInWithEmailAndPassword(auth, `${formattedUsername}@eaglesbreedmico.com`, password);
         const user = userCredential.user;
         const token = await user.getIdToken();
 
         localStorage.setItem("token", token);
         localStorage.setItem("username", username);
 
-        console.log("✅ Login success. Redirecting...");
+        console.log("Login successful.");
         window.location.href = "../../../MembersPortal/membersPortal.html";
       } catch (error) {
-        console.error("❌ Login failed:", error);
-        let message = "An error occurred. Please try again.";
+        console.error("Login error:", error);
+        let errorMessage = "An error occurred. Please try again.";
 
         switch (error.code) {
-          case "auth/user-not-found": message = "No user found with that username."; break;
-          case "auth/wrong-password": message = "Incorrect password."; break;
-          case "auth/invalid-email": message = "Invalid email format."; break;
-          case "auth/user-disabled": message = "This account has been disabled."; break;
-          case "auth/too-many-requests": message = "Too many failed attempts. Try again later."; break;
+          case "auth/user-not-found":
+            errorMessage = "No user found with that username.";
+            break;
+          case "auth/wrong-password":
+            errorMessage = "Incorrect password.";
+            break;
+          case "auth/invalid-email":
+            errorMessage = "Invalid email format.";
+            break;
+          case "auth/user-disabled":
+            errorMessage = "This account has been disabled.";
+            break;
+          case "auth/too-many-requests":
+            errorMessage = "Too many failed attempts. Try again later.";
+            break;
         }
 
-        loginError.textContent = message;
+        loginError.textContent = errorMessage;
         loginError.style.display = "block";
       }
     });
   }
 
-  // 🚪 Logout Handler
   if (logoutButton) {
-    logoutButton.addEventListener("click", (event) => {
-      event.preventDefault();
-      console.log("🚪 Logging out...");
-
-      localStorage.removeItem("username");
-      localStorage.removeItem("token");
-
-      updateUI(false);
-      window.location.reload(); // Optional: force reload to reset everything
+    logoutButton.addEventListener("click", () => {
+      console.log("Logging out...");
+      localStorage.clear();
+      window.location.href = "../../../MembersPortal/membersPortal.html";
     });
   }
 });
 
-// 🧠 Session Check + UI update
+// Function to check session and show/hide UI accordingly
 function checkSession() {
   const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
 
-  console.log("🔍 Checking session...");
-  console.log("Token:", token);
+  console.log("Session token:", token);
   console.log("Username:", username);
 
-  const loggedIn = token && username;
-  updateUI(loggedIn, username);
-}
-
-// 🎨 Update UI Based on Session
-function updateUI(isLoggedIn, username = "") {
   const loginForm = document.getElementById("loginForm");
   const membersContent = document.getElementById("membersContent");
   const membersSubNav = document.getElementById("membersSubNav");
   const welcomeMessage = document.getElementById("welcomeMessage");
   const ifLoggedIn = document.getElementById("ifLoggedIn");
+
+  const isLoggedIn = token && username;
 
   if (isLoggedIn) {
     loginForm?.classList.add("hidden");
@@ -121,15 +113,13 @@ function updateUI(isLoggedIn, username = "") {
       welcomeMessage.textContent = `Welcome, ${username}!`;
       welcomeMessage.classList.remove("hidden");
     }
-
-    console.log("👋 Logged in. Members-only content visible.");
   } else {
     loginForm?.classList.remove("hidden");
     membersContent?.classList.add("hidden");
     membersSubNav?.classList.add("hidden");
-    welcomeMessage?.classList.add("hidden");
     ifLoggedIn?.classList.add("hidden");
-
-    console.log("🙅 Not logged in. Members-only content hidden.");
+    welcomeMessage?.classList.add("hidden");
   }
+
+  return !!isLoggedIn;
 }
