@@ -16,23 +16,26 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-document.addEventListener("DOMContentLoaded", async () => {
-  const isLoggedIn = checkSession(); // Handle UI show/hide here
+// Check session on page load and show/hide content accordingly
+document.addEventListener("DOMContentLoaded", function () {
+  console.log("Checking session on page load...");
+  checkSession();
 
+  // Set up login form submission
   const loginForm = document.getElementById("loginForm");
   const loginError = document.getElementById("loginError");
-  const logoutButton = document.getElementById("logoutButton");
 
-  if (loginForm && !isLoggedIn) {
+  if (loginForm) {
     loginForm.addEventListener("submit", async function (event) {
       event.preventDefault();
-      console.log("Login attempt...");
+      console.log("Intercepted login form submission.");
 
       const usernameInput = document.getElementById("roadName");
       const passwordInput = document.getElementById("password");
+
       const username = usernameInput.value.trim();
       const password = passwordInput.value.trim();
-      const formattedUsername = username.replace(/\s+/g, "-").toLowerCase();
+      const formattedUsername = username.replace(/\s+/g, "-").toLowerCase(); // Using 'formattedUsername' instead of roadName
 
       if (!username || !password) {
         loginError.textContent = "Please enter both your username and password.";
@@ -41,15 +44,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
       try {
-        const userCredential = await signInWithEmailAndPassword(auth, `${formattedUsername}@eaglesbreedmico.com`, password);
+        const userCredential = await signInWithEmailAndPassword(auth, ${formattedUsername}@eaglesbreedmico.com, password);
         const user = userCredential.user;
         const token = await user.getIdToken();
 
+        // Store token and username in localStorage (persistent across reloads)
         localStorage.setItem("token", token);
-        localStorage.setItem("username", username);
+        localStorage.setItem("username", username); // Renamed to 'username'
 
-        console.log("Login successful.");
-        window.location.href = "../../../MembersPortal/membersPortal.html";
+        console.log("Login successful. Redirecting to members portal...");
+        window.location.href = "../../../MembersPortal/membersPortal.html"; // Redirect to members portal page after successful login
       } catch (error) {
         console.error("Login error:", error);
         let errorMessage = "An error occurred. Please try again.";
@@ -78,8 +82,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
+  // Set up logout button
+  const logoutButton = document.getElementById("logoutButton");
   if (logoutButton) {
-    logoutButton.addEventListener("click", () => {
+    logoutButton.addEventListener("click", function (event) {
+      event.preventDefault();
       console.log("Logging out...");
       localStorage.clear();
       window.location.href = "../../../MembersPortal/membersPortal.html";
@@ -87,7 +94,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 });
 
-// Function to check session and show/hide UI accordingly
+// Function to check session and update UI
 function checkSession() {
   const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
@@ -99,27 +106,55 @@ function checkSession() {
   const membersContent = document.getElementById("membersContent");
   const membersSubNav = document.getElementById("membersSubNav");
   const welcomeMessage = document.getElementById("welcomeMessage");
-  const ifLoggedIn = document.getElementById("ifLoggedIn");
 
-  const isLoggedIn = token && username;
-
-  if (isLoggedIn) {
-    loginForm?.classList.add("hidden");
-    membersContent?.classList.remove("hidden");
-    membersSubNav?.classList.remove("hidden");
-    ifLoggedIn?.classList.remove("hidden");
-
-    if (welcomeMessage) {
-      welcomeMessage.textContent = `Welcome, ${username}!`;
-      welcomeMessage.classList.remove("hidden");
-    }
-  } else {
+  if (!token || !username) {
+    console.log("User is not logged in. Showing login form.");
     loginForm?.classList.remove("hidden");
     membersContent?.classList.add("hidden");
     membersSubNav?.classList.add("hidden");
-    ifLoggedIn?.classList.add("hidden");
     welcomeMessage?.classList.add("hidden");
+  } else {
+    console.log("User is logged in. Showing members content.");
+    loginForm?.classList.add("hidden");
+    membersContent?.classList.remove("hidden");
+    membersSubNav?.classList.remove("hidden");
+
+    if (welcomeMessage) {
+      welcomeMessage.textContent = Welcome, ${username}!;
+      welcomeMessage.classList.remove("hidden");
+    }
+  }
+}
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const username = localStorage.getItem("username");
+  const token = localStorage.getItem("token");
+
+  const loginForm = document.getElementById("loginForm"); 
+  if (loginForm) {
+    if (username && token) {
+      loginForm.style.display = "none";
+    } else {
+      loginForm.style.display = "block";
+    }
   }
 
-  return !!isLoggedIn;
-}
+  console.log("Username from localStorage:", username);
+  console.log("Token from localStorage:", token);
+
+  const element = document.getElementById("ifLoggedIn");
+
+  if (!element) {
+    console.warn("Element with ID 'ifLoggedIn' not found.");
+    return;
+  }
+
+  if (username && token) {
+    element.style.display = "block"; // Or remove 'hidden' class if you're using Tailwind
+    console.log("User is logged in. Showing element.");
+  } else {
+    element.style.display = "none"; // Or add 'hidden' class
+    console.log("User not logged in. Hiding element.");
+  }
+});
