@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       try {
-        const userCredential = await signInWithEmailAndPassword(auth, ${formattedUsername}@eaglesbreedmico.com, password);
+        const userCredential = await signInWithEmailAndPassword(auth, `${formattedUsername}@eaglesbreedmico.com`, password);
         const user = userCredential.user;
         const token = await user.getIdToken();
 
