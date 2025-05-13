@@ -120,7 +120,7 @@ function checkSession() {
     membersSubNav?.classList.remove("hidden");
 
     if (welcomeMessage) {
-      welcomeMessage.textContent = Welcome, ${username}!;
+      welcomeMessage.textContent = `Welcome, ${username}!`;
       welcomeMessage.classList.remove("hidden");
     }
   }
