@@ -134,13 +134,6 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("Username from localStorage:", username);
   console.log("Token from localStorage:", token);
 
-  const element = document.getElementById("ifLoggedIn");
-
-  if (!element) {
-    console.warn("Element with ID 'ifLoggedIn' not found.");
-    return;
-  }
-
   if (username && token) {
     element.style.display = "block"; // Or remove 'hidden' class if you're using Tailwind
     console.log("User is logged in. Showing element.");
