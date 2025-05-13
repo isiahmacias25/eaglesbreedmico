@@ -133,4 +133,3 @@ document.addEventListener("DOMContentLoaded", () => {
   
   console.log("Username from localStorage:", username);
   console.log("Token from localStorage:", token);
-
