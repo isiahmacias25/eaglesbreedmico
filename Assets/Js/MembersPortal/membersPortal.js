@@ -126,12 +126,11 @@ function checkSession() {
   }
 }
 
-
 document.addEventListener("DOMContentLoaded", () => {
   const username = localStorage.getItem("username");
   const token = localStorage.getItem("token");
 
-  const loginForm = document.getElementById("loginForm"); 
+   const loginForm = document.getElementById("loginForm"); 
   if (loginForm) {
     if (username && token) {
       loginForm.style.display = "none";
@@ -139,7 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
       loginForm.style.display = "block";
     }
   }
-
+  
   console.log("Username from localStorage:", username);
   console.log("Token from localStorage:", token);
 
