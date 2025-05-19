@@ -105,18 +105,21 @@ function checkSession() {
   const welcomeContainer = document.getElementById("welcomeContainer");
   const welcomeMessage = document.getElementById("welcomeMessage");
 
-  if (!token || !username) {
-    loginForm?.classList.remove("hidden");
-    membersContent?.classList.add("hidden");
-    membersSubNav?.classList.add("hidden");
-    welcomeContainer?.classList.add("hidden"); // was missing
-  } else {
-    loginForm?.classList.add("hidden");
-    membersContent?.classList.remove("hidden");
-    membersSubNav?.classList.remove("hidden");
+ if (!token || !username) {
+  loginForm?.classList.remove("hidden");
+  membersContent?.classList.add("hidden");
+  membersSubNav?.classList.add("hidden");
+  welcomeMessage?.classList.add("hidden");
+} else {
+  loginForm?.classList.add("hidden");
+  membersContent?.classList.remove("hidden");
+  membersSubNav?.classList.remove("hidden");
+  if (welcomeMessage) {
     welcomeMessage.textContent = `Welcome, ${username}!`;
-    welcomeContainer?.classList.remove("hidden"); // was missing
+    welcomeMessage.classList.remove("hidden");
   }
+}
+
 }
 
 
