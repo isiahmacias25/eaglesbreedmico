@@ -102,21 +102,23 @@ function checkSession() {
   const loginForm = document.getElementById("loginForm");
   const membersContent = document.getElementById("membersContent");
   const membersSubNav = document.getElementById("membersSubNav");
+  const welcomeContainer = document.getElementById("welcomeContainer");
   const welcomeMessage = document.getElementById("welcomeMessage");
 
   if (!token || !username) {
     loginForm?.classList.remove("hidden");
     membersContent?.classList.add("hidden");
     membersSubNav?.classList.add("hidden");
-    welcomeMessage?.classList.add("hidden");
+    welcomeContainer?.classList.add("hidden"); // was missing
   } else {
     loginForm?.classList.add("hidden");
     membersContent?.classList.remove("hidden");
     membersSubNav?.classList.remove("hidden");
     welcomeMessage.textContent = `Welcome, ${username}!`;
-    welcomeMessage?.classList.remove("hidden");
+    welcomeContainer?.classList.remove("hidden"); // was missing
   }
 }
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const username = localStorage.getItem("username");
