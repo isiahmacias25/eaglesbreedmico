@@ -118,6 +118,7 @@ function checkSession() {
     if (welcomeMessage) {
       welcomeMessage.textContent = `Welcome, ${username}!`;
       welcomeMessage.classList.remove("hidden");
+      welcomeContainer?.classList.remove("hidden");
     }
   }
 }
