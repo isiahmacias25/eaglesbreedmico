@@ -105,22 +105,25 @@ function checkSession() {
   const welcomeContainer = document.getElementById("welcomeContainer");
   const welcomeMessage = document.getElementById("welcomeMessage");
 
- if (!token || !username) {
-  loginForm?.classList.remove("hidden");
-  membersContent?.classList.add("hidden");
-  membersSubNav?.classList.add("hidden");
-  welcomeMessage?.classList.add("hidden");
-} else {
-  loginForm?.classList.add("hidden");
-  membersContent?.classList.remove("hidden");
-  membersSubNav?.classList.remove("hidden");
-  if (welcomeMessage) {
-    welcomeMessage.textContent = `Welcome, ${username}!`;
-    welcomeMessage.classList.remove("hidden");
+if (!token || !username) {
+    console.log("User is not logged in. Showing login form.");
+    loginForm?.classList.remove("hidden");
+    membersContent?.classList.add("hidden");
+    membersSubNav?.classList.add("hidden");
+    welcomeMessage?.classList.add("hidden");
+  } else {
+    console.log("User is logged in. Showing members content.");
+    loginForm?.classList.add("hidden");
+    membersContent?.classList.remove("hidden");
+    membersSubNav?.classList.remove("hidden");
+
+    if (welcomeMessage) {
+      welcomeMessage.textContent = `Welcome, ${username}!`;
+      welcomeMessage.classList.remove("hidden");
+    }
   }
 }
 
-}
 
 
 document.addEventListener("DOMContentLoaded", () => {
