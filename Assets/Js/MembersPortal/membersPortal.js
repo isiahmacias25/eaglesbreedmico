@@ -104,6 +104,7 @@ function checkSession() {
   const membersSubNav = document.getElementById("membersSubNav");
   const welcomeContainer = document.getElementById("welcomeContainer");
   const welcomeMessage = document.getElementById("welcomeMessage");
+  const mustLogin = document.getElementById("mustLogin");
 
   if (!token || !username) {
     loginForm?.classList.remove("hidden");
