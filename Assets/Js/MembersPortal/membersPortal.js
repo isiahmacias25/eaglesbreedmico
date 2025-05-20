@@ -114,8 +114,10 @@ function checkSession() {
     loginForm?.classList.add("hidden");
     membersContent?.classList.remove("hidden");
     membersSubNav?.classList.remove("hidden");
-    welcomeMessage.textContent = `Welcome, ${username}!`;
-    welcomeContainer?.classList.remove("hidden"); // was missing
+    
+    if (welcomeMessage) {
+      welcomeMessage.textContent = `Welcome, ${username}!`;
+      welcomeMessage.classList.remove("hidden");
   }
 }
 
