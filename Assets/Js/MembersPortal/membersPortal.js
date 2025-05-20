@@ -118,9 +118,9 @@ function checkSession() {
     if (welcomeMessage) {
       welcomeMessage.textContent = `Welcome, ${username}!`;
       welcomeMessage.classList.remove("hidden");
+    }
   }
 }
-
 
 
 document.addEventListener("DOMContentLoaded", () => {
