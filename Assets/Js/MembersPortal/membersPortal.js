@@ -107,11 +107,13 @@ function checkSession() {
 
   if (!token || !username) {
     loginForm?.classList.remove("hidden");
+    mustLogin?.classList.remove("hidden");
     membersContent?.classList.add("hidden");
     membersSubNav?.classList.add("hidden");
     welcomeContainer?.classList.add("hidden"); // was missing
   } else {
     loginForm?.classList.add("hidden");
+    mustLogin?.classList.add("hidden");
     membersContent?.classList.remove("hidden");
     membersSubNav?.classList.remove("hidden");
     
