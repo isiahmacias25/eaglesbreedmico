@@ -1,32 +1,24 @@
-.grid-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 per row */
-  gap: 20px;
-  margin: 20px auto;
-  padding: 10px;
-  max-width: 960px; /* 3 tiles x ~300px */
+ .grid-container { 
+    display: grid;
+    grid-template-columns: repeat(3, minmax(250px, 1fr)); 
+    gap: 20px;
+    margin-top: 20px;
+    padding: 10px;
+    width: 100%; /* Ensure it uses full width */
+    max-width: 1200px; /* Adjust as needed */
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .meeting-minute-tile {
-  background-color: #f8f9fa;
-  padding: 20px;
-  border-radius: 8px;
-  border: 2px solid #000;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-  width: 100%;
-  max-width: 250px; /* limit tile size */
-  aspect-ratio: 1 / 1; /* keeps it square */
-  margin: auto; /* center tile in grid cell */
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+    background-color: #f8f9fa; /* Light gray background */
+    padding: 20px;
+    border-radius: 8px;
+    border: 2px solid #000; /* Added black border for contrast */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
 
 .meeting-minute-tile h3 {
     font-size: 1.2em;
