@@ -126,12 +126,12 @@ function checkSession() {
       welcomeMessage.classList.remove("hidden");
       welcomeContainer?.classList.remove("hidden");
     }
-      if (mustLogin) {
-        mustLogin?.classList.add("hidden");
-      }
+    if (mustLogin) {
+      mustLogin?.classList.add("hidden");
     }
   }
 }
+
 
 
 document.addEventListener("DOMContentLoaded", () => {
