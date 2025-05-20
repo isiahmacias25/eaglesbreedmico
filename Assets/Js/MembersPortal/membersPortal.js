@@ -107,13 +107,17 @@ function checkSession() {
 
   if (!token || !username) {
     loginForm?.classList.remove("hidden");
-    mustLogin?.classList.remove("hidden");
     membersContent?.classList.add("hidden");
     membersSubNav?.classList.add("hidden");
     welcomeContainer?.classList.add("hidden"); // was missing
+
+    if (mustLogin) {
+      mustLogin?.classList.remove("hidden");
+    }
+
+      
   } else {
     loginForm?.classList.add("hidden");
-    mustLogin?.classList.add("hidden");
     membersContent?.classList.remove("hidden");
     membersSubNav?.classList.remove("hidden");
     
@@ -121,6 +125,10 @@ function checkSession() {
       welcomeMessage.textContent = `Welcome, ${username}!`;
       welcomeMessage.classList.remove("hidden");
       welcomeContainer?.classList.remove("hidden");
+    }
+      if (mustLogin) {
+        mustLogin?.classList.add("hidden");
+      }
     }
   }
 }
