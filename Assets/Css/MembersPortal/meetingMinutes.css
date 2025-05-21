@@ -19,7 +19,7 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    width: 200px;
+    width: 20px;
 }
 
 .meeting-minute-tile h3 {
