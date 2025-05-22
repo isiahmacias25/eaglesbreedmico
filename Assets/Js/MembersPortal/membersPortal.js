@@ -16,10 +16,36 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
+// Function to log out and clear localStorage
+function logoutUser() {
+  console.log("Logging out due to inactivity...");
+  localStorage.clear();
+  window.location.href = "../../../MembersPortal/membersPortal.html";
+}
+
+// Function to update last activity timestamp
+function updateLastActivity() {
+  localStorage.setItem("lastActivity", Date.now().toString());
+}
+
+// Function to check for inactivity
+function checkInactivity() {
+  const lastActivity = localStorage.getItem("lastActivity");
+  if (lastActivity) {
+    const now = Date.now();
+    const diff = now - parseInt(lastActivity, 10);
+    const thirtyMinutes = 30 * 60 * 1000;
+    if (diff > thirtyMinutes) {
+      logoutUser();
+    }
+  }
+}
+
 // Check session on page load and show/hide content accordingly
 document.addEventListener("DOMContentLoaded", function () {
   console.log("Checking session on page load...");
   checkSession();
+  checkInactivity(); // Check immediately on page load
 
   // Set up login form submission
   const loginForm = document.getElementById("loginForm");
@@ -35,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const username = usernameInput.value.trim();
       const password = passwordInput.value.trim();
-      const formattedUsername = username.replace(/\s+/g, "-").toLowerCase(); // Using 'formattedUsername' instead of roadName
+      const formattedUsername = username.replace(/\s+/g, "-").toLowerCase();
 
       if (!username || !password) {
         loginError.textContent = "Please enter both your username and password.";
@@ -48,12 +74,12 @@ document.addEventListener("DOMContentLoaded", function () {
         const user = userCredential.user;
         const token = await user.getIdToken();
 
-        // Store token and username in localStorage (persistent across reloads)
         localStorage.setItem("token", token);
-        localStorage.setItem("username", username); // Renamed to 'username'
+        localStorage.setItem("username", username);
+        updateLastActivity();
 
         console.log("Login successful. Redirecting to members portal...");
-        window.location.href = "../../../MembersPortal/membersPortal.html"; // Redirect to members portal page after successful login
+        window.location.href = "../../../MembersPortal/membersPortal.html";
       } catch (error) {
         console.error("Login error:", error);
         let errorMessage = "An error occurred. Please try again.";
@@ -82,16 +108,21 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Set up logout button
   const logoutButton = document.getElementById("logoutButton");
   if (logoutButton) {
     logoutButton.addEventListener("click", function (event) {
       event.preventDefault();
-      console.log("Logging out...");
-      localStorage.clear();
-      window.location.href = "../../../MembersPortal/membersPortal.html";
+      logoutUser();
     });
   }
+
+  // Track activity
+  ["click", "mousemove", "keydown", "scroll", "touchstart"].forEach((event) => {
+    window.addEventListener(event, updateLastActivity);
+  });
+
+  // Check inactivity every minute
+  setInterval(checkInactivity, 60 * 1000);
 });
 
 // Function to check session and update UI
@@ -110,46 +141,34 @@ function checkSession() {
     loginForm?.classList.remove("hidden");
     membersContent?.classList.add("hidden");
     membersSubNav?.classList.add("hidden");
-    welcomeContainer?.classList.add("hidden"); // was missing
-
-    if (mustLogin) {
-      mustLogin?.classList.remove("hidden");
-    }
-
-      
+    welcomeContainer?.classList.add("hidden");
+    mustLogin?.classList.remove("hidden");
   } else {
     loginForm?.classList.add("hidden");
     membersContent?.classList.remove("hidden");
     membersSubNav?.classList.remove("hidden");
-    
     if (welcomeMessage) {
       welcomeMessage.textContent = `Welcome, ${username}!`;
       welcomeMessage.classList.remove("hidden");
       welcomeContainer?.classList.remove("hidden");
     }
-    if (mustLogin) {
-      mustLogin?.classList.add("hidden");
-    }
+    mustLogin?.classList.add("hidden");
   }
 }
-
-
 
 document.addEventListener("DOMContentLoaded", () => {
   const username = localStorage.getItem("username");
   const token = localStorage.getItem("token");
 
-    const loginForm = document.getElementById("loginForm"); 
-    if (loginForm) {
-      if (username && token) {
-        loginForm.style.display = "none";
-      } else {
-        loginForm.style.display = "block";
-      }
+  const loginForm = document.getElementById("loginForm");
+  if (loginForm) {
+    if (username && token) {
+      loginForm.style.display = "none";
+    } else {
+      loginForm.style.display = "block";
     }
-  
+  }
+
   console.log("Username from localStorage:", username);
   console.log("Token from localStorage:", token);
-  
-})
-                  
+});
