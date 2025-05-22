@@ -190,7 +190,7 @@ nav ul li a.members-active {
 }
 
 
-.mustLogin {
+.mustLoginBtn {
   background-color: #333;
   color: white;
   padding: 12px 24px;
@@ -208,3 +208,9 @@ nav ul li a.members-active {
   vertical-align: middle; /* Ensures the button aligns correctly vertically */
 }
     
+.mustLoginBtn:hover {
+  background-color: #fff;
+  color: #333;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
