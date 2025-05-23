@@ -22,3 +22,17 @@
   transform: translateY(-3px);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
+
+.officerPortrait {
+  width: 200px;           /* Keeps it a good size */
+  height: auto;           /* Keeps aspect ratio */
+  border-radius: 12px;    /* Smooth rounded corners */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25); /* Soft shadow */
+  object-fit: cover;      /* Keeps it cropped nicely */
+  margin: 1rem;           /* Space around image */
+  transition: transform 0.3s ease; /* Smooth hover effect */
+}
+
+.officerPortrait:hover {
+  transform: scale(1.05); /* Little zoom on hover */
+}
