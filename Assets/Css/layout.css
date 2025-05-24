@@ -84,7 +84,7 @@ header p {
 
 /* Footer styling */
 .footer {
-  background-color: rgba(128, 128, 128, 0.8); /* soft gray w/ transparency */
+  background-color: rgba(51, 51, 51, 0.8); /* gray w/ transparency */
   padding: 40px 20px 20px;
   color: #fff;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
