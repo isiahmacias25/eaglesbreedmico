@@ -9,4 +9,5 @@
   setInterval(updateTimer, 1000);
   updateTimer(); // Initial call to display the timer immediately
 
+document.getElementById("year").textContent = new Date().getFullYear();
 
