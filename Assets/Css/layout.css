@@ -83,68 +83,79 @@ header p {
 }
 
 /* Footer styling */
-footer {
-  background-color: rgba(30, 30, 30, 0.85); /* transparent dark gray */
-  color: #eee;
-  padding: 2rem 1rem;
-  font-family: sans-serif;
+.footer {
+  background-color: rgba(128, 128, 128, 0.8); /* soft gray w/ transparency */
+  padding: 40px 20px 20px;
+  color: #fff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  backdrop-filter: blur(5px);
 }
 
 .footer-container {
   display: flex;
-  align-items: center;
-  justify-content: space-around;
   flex-wrap: wrap;
-  max-width: 1000px;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 40px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
-.footer-left {
+.footer-left,
+.footer-middle,
+.footer-right {
   flex: 1;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 1rem;
-}
-
-.footer-logo {
-  width: 100px;
-  height: auto;
-  border-radius: 0.5rem;
-}
-
-.footer-center {
-  flex: 2;
-  text-align: left;
   min-width: 250px;
 }
 
+.footer-logo {
+  max-width: 120px;
+  border-radius: 12px;
+}
+
 .footer-title {
-  font-size: 1.5rem;
+  font-size: 24px;
   font-weight: bold;
-  margin-bottom: 0.3rem;
+  margin-bottom: 8px;
+}
+
+.footer-subtitle {
+  font-size: 18px;
+  font-style: italic;
+  margin-bottom: 8px;
 }
 
 .footer-motto {
-  font-size: 1.1rem;
+  font-size: 16px;
+  margin-bottom: 12px;
+  opacity: 0.9;
+}
+
+.footer-right p {
+  margin: 6px 0;
+}
+
+.footer a {
+  color: #add8e6; /* light blue */
+  text-decoration: underline;
   font-style: italic;
-  margin-bottom: 1rem;
-  color: #ccc;
+  transition: color 0.3s ease;
 }
 
-.footer-center p {
-  margin: 0.3rem 0;
-  font-size: 1rem;
+.footer a:hover {
+  color: #ffffff;
+  text-decoration: underline;
 }
 
-.footer-center a {
-  color: #ccc;
-  text-decoration: none;
-  transition: color 0.2s ease;
+.footer-bottom {
+  margin-top: 40px;
+  text-align: center;
+  font-size: 14px;
+  border-top: 1px solid #ccc;
+  padding-top: 15px;
+  opacity: 0.9;
 }
 
-.footer-center a:hover {
-  color: #fff;
-}
 
 /* Navigation bar */
 nav {
