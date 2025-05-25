@@ -33,11 +33,6 @@
   background: rgba(32, 32, 32, 0.2);
 }
 
-.sisterhood p {
-  font-style: italic;
-  color: #ccc;
-}
-
 .officerPortrait {
   width: 200px;           /* Keeps it a good size */
   height: auto;           /* Keeps aspect ratio */
