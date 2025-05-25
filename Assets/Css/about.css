@@ -1,7 +1,7 @@
 /* Mission, History, Leadership */
 .mission, .history, .leadership, .sisterhood {
   margin-bottom: 40px;
-  background-color: rgba(20, 20, 20, 0.9);
+  background-color: rgba(20, 20, 20, 0.2);
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 15px rgba(0,0,0,0.3);
@@ -29,7 +29,7 @@
 
 /* Sisterhood Section Additions */
 .sisterhood {
-  background: rgba(32, 32, 32, 0.9);
+  background: rgba(32, 32, 32, 0.2);
 }
 
 .sisterhood p {
