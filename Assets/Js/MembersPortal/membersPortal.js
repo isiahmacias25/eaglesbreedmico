@@ -168,8 +168,10 @@ onAuthStateChanged(auth, async (user) => {
     try {
       const userRef = doc(db, "Users", uid);
       const docSnap = await getDoc(userRef);
-
+      console.log("Checking user doc with UID:", uid);
+      console.log("Doc exists?", docSnap.exists());
       if (docSnap.exists()) {
+        console.log("Doc data:", docSnap.data());
         const data = docSnap.data();
         const role = data.role?.toLowerCase();
 
