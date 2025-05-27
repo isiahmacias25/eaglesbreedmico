@@ -155,6 +155,56 @@ function checkSession() {
     mustLogin?.classList.add("hidden");
   }
 }
+firebase.auth().onAuthStateChanged(async (user) => {
+  if (user) {
+    const uid = user.uid;
+
+    try {
+      const doc = await firebase.firestore().collection("users").doc(uid).get();
+
+      if (doc.exists) {
+        const data = doc.data();
+        const role = data.role?.toLowerCase();
+
+        switch (role) {
+          case "officer":
+            console.log("✅ Full access granted to officer.");
+            break;
+
+          case "sister":
+            console.warn("🟡 Limited access (sister). Redirecting if needed...");
+            if (window.location.pathname === "MembersPortal/SupportersManager/supportersManager.html") {
+              window.location.href = "/unauthorized.html";
+            }
+            break;
+
+          case "brother":
+            console.warn("🔴 Basic access (brother). Redirecting if needed...");
+            if (
+              ["MembersPortal/EventManager/eventManager.html", "MembersPortal/SupportersManager/supportersManager.html"].includes(window.location.pathname)
+            ) {
+              window.location.href = "/unauthorized.html";
+            }
+            break;
+
+          default:
+            console.warn("❌ Unknown role. Redirecting...");
+            window.location.href = "/unauthorized.html";
+        }
+      } else {
+        console.warn("⚠️ No user doc found");
+        window.location.href = "/unauthorized.html";
+      }
+    } catch (err) {
+      console.error("🔥 Error checking user role:", err);
+      window.location.href = "/404.html";
+    }
+
+  } else {
+    // not logged in
+    window.location.href = "/MembersPortal/membersPortal.html";
+  }
+});
 
 document.addEventListener("DOMContentLoaded", () => {
   const username = localStorage.getItem("username");
