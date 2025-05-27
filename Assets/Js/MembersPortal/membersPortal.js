@@ -155,15 +155,18 @@ function checkSession() {
     mustLogin?.classList.add("hidden");
   }
 }
-firebase.auth().onAuthStateChanged(async (user) => {
+const db = getFirestore(app);
+
+onAuthStateChanged(auth, async (user) => {
   if (user) {
     const uid = user.uid;
 
     try {
-      const doc = await firebase.firestore().collection("users").doc(uid).get();
+      const userRef = doc(db, "users", uid);
+      const docSnap = await getDoc(userRef);
 
-      if (doc.exists) {
-        const data = doc.data();
+      if (docSnap.exists()) {
+        const data = docSnap.data();
         const role = data.role?.toLowerCase();
 
         switch (role) {
@@ -173,7 +176,7 @@ firebase.auth().onAuthStateChanged(async (user) => {
 
           case "sister":
             console.warn("🟡 Limited access (sister). Redirecting if needed...");
-            if (window.location.pathname === "MembersPortal/SupportersManager/supportersManager.html") {
+            if (window.location.pathname.includes("SupportersManager")) {
               window.location.href = "/unauthorized.html";
             }
             break;
@@ -181,7 +184,8 @@ firebase.auth().onAuthStateChanged(async (user) => {
           case "brother":
             console.warn("🔴 Basic access (brother). Redirecting if needed...");
             if (
-              ["MembersPortal/EventManager/eventManager.html", "MembersPortal/SupportersManager/supportersManager.html"].includes(window.location.pathname)
+              window.location.pathname.includes("EventManager") ||
+              window.location.pathname.includes("SupportersManager")
             ) {
               window.location.href = "/unauthorized.html";
             }
@@ -201,10 +205,10 @@ firebase.auth().onAuthStateChanged(async (user) => {
     }
 
   } else {
-    // not logged in
     window.location.href = "/MembersPortal/membersPortal.html";
   }
 });
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const username = localStorage.getItem("username");
