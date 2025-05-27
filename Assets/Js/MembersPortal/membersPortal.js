@@ -159,7 +159,7 @@ function checkSession() {
     mustLogin?.classList.add("hidden");
   }
 }
-const db = getFirestore(app);
+
 
 onAuthStateChanged(auth, async (user) => {
   if (user) {
