@@ -15,7 +15,6 @@ const firebaseConfig = {
 
 // Prevent duplicate Firebase initialization
 const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
-const db = getFirestore(app);
 const storage = getStorage(app);
 
 document.addEventListener("DOMContentLoaded", async function () {
