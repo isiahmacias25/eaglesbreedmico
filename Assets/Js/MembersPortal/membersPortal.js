@@ -160,7 +160,7 @@ function checkSession() {
   }
 }
 
-/*
+
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     const uid = user.uid;
@@ -214,7 +214,7 @@ onAuthStateChanged(auth, async (user) => {
     window.location.href = "/MembersPortal/membersPortal.html";
   }
 });
-*/
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const username = localStorage.getItem("username");
