@@ -13,7 +13,6 @@ form.form-grid {
 .form-section {
   display: flex;
   flex-direction: column;
-  margin: 25px;
 }
 
 h2 {
@@ -63,7 +62,7 @@ button:hover {
 
 .extra-section {
   max-width: 1000px;
-  margin: 2rem auto 0 auto;
+  margin: 25px
   background: #fff;
   padding: 1.5rem 2rem;
   border-radius: 12px;
