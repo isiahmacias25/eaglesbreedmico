@@ -1,29 +1,36 @@
-form {
-  max-width: 700px;
+form.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.08);
+  max-width: 1000px;
   margin: auto;
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.1);
 }
 
-form h2 {
-  margin-top: 1.5rem;
+.form-section {
+  display: flex;
+  flex-direction: column;
+}
+
+h2 {
   font-size: 1.2rem;
-  color: #444;
+  margin-top: 1rem;
   border-bottom: 1px solid #ccc;
   padding-bottom: 0.3rem;
 }
 
 label {
-  display: block;
   margin-top: 1rem;
+  font-weight: 500;
 }
 
 input[type="text"],
 input[type="date"],
-input[type="time"],
-input[type="file"],
-select,
-textarea {
+textarea,
+select {
   width: 100%;
   padding: 0.7rem;
   margin-top: 0.3rem;
@@ -51,4 +58,13 @@ button {
 
 button:hover {
   background: #1a252f;
+}
+
+.extra-section {
+  max-width: 1000px;
+  margin: 2rem auto 0 auto;
+  background: #fff;
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
 }
