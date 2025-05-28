@@ -39,63 +39,73 @@
               <li><a href="../../MembersPortal/membersPortal.html" id="logoutButton">Logout</a></li>
             </ul>
         </div>  
-     
-      <form id="eventForm">
-
-        <h2>Who?</h2>
-        <label>Responsible Person:
-          <input type="text" id="responsiblePerson" required>
-        </label>
+           
+      <form id="eventForm" class="form-grid">
       
-        <h2>Why?</h2>
-        <label>Purpose / Situation:
-          <textarea id="reason" rows="3" placeholder="Why are we hosting this? What's the occasion?" required></textarea>
-        </label>
+        <!-- LEFT SIDE -->
+        <div class="form-section">
+          <h2>Who?</h2>
+          <label>Responsible Person:
+            <input type="text" id="responsiblePerson" required>
+          </label>
       
-        <h2>What?</h2>
-        <label>Type of Event:
-          <input type="text" id="eventType" placeholder="e.g., Poker Run, Meeting, Bike Night" required>
-        </label>
+          <h2>Why?</h2>
+          <label>Purpose / Situation:
+            <textarea id="reason" rows="3" placeholder="Why are we doing this?" required></textarea>
+          </label>
       
-        <label>Description / Agenda:
-          <textarea id="description" rows="4" placeholder="Full details, schedule, etc." required></textarea>
-        </label>
+          <h2>What?</h2>
+          <label>Type of Event:
+            <input type="text" id="eventType" placeholder="Meeting, Poker Run, etc." required>
+          </label>
       
-        <h2>When?</h2>
-        <label>Event Date:
-          <input type="date" id="date" required>
-        </label>
+          <label>Description:
+            <textarea id="description" rows="4" placeholder="Schedule, details, etc." required></textarea>
+          </label>
+        </div>
       
-        <label>Event Time(s):
-          <input type="text" id="time" placeholder="e.g., Registration 10–12, KSU 12:30" required>
-        </label>
+        <!-- RIGHT SIDE -->
+        <div class="form-section">
+          <h2>When?</h2>
+          <label>Date:
+            <input type="date" id="date" required>
+          </label>
       
-        <h2>Where?</h2>
-        <label>Location(s):
-          <textarea id="location" rows="2" placeholder="Address or multiple stops" required></textarea>
-        </label>
+          <label>Time(s):
+            <input type="text" id="time" placeholder="e.g., 10-12 reg, KSU 12:30" required>
+          </label>
       
-        <h2>Event Visibility</h2>
-        <label>Who can see this?
-          <select id="type" required>
-            <option value="public">Public (Black)</option>
-            <option value="members">Members Only (Blue)</option>
-            <option value="officers">Officers Only (Red)</option>
-          </select>
-        </label>
+          <h2>Where?</h2>
+          <label>Location(s):
+            <textarea id="location" rows="3" placeholder="Address or route" required></textarea>
+          </label>
       
-        <h2>Extras</h2>
-        <label>Flyer Upload:
-          <input type="file" id="flyerUpload" accept="image/*,.pdf">
-        </label>
+          <h2>Visibility</h2>
+          <label>Access:
+            <select id="type" required>
+              <option value="public">Public (Black)</option>
+              <option value="members">Members Only (Blue)</option>
+              <option value="officers">Officers Only (Red)</option>
+            </select>
+          </label>
       
-        <label>Additional Notes:
-          <textarea id="notes" rows="3" placeholder="Any extra notes or reminders?"></textarea>
-        </label>
-      
-        <button type="submit">Post Event</button>
-      
+          <button type="submit">Post Event</button>
+        </div>
       </form>
+
+<!-- Flyer + Notes come *after* the main form -->
+<div class="extra-section">
+  <h2>Extras</h2>
+
+  <label>Upload Flyer:
+    <input type="file" id="flyerUpload" accept="image/*,.pdf">
+  </label>
+
+  <label>Additional Notes:
+    <textarea id="notes" rows="3" placeholder="Anything else to mention?"></textarea>
+  </label>
+</div>
+
 
 
    </div>      
