@@ -60,6 +60,12 @@ button:hover {
   background: #1a252f;
 }
 
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
 .extra-section {
   max-width: 1000px;
   margin: 25px;
