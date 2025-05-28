@@ -1,11 +1,11 @@
-eventForm {
+form {
   max-width: 700px;
   margin: auto;
   border-radius: 10px;
   box-shadow: 0 0 15px rgba(0,0,0,0.1);
 }
 
-eventForm h2 {
+form h2 {
   margin-top: 1.5rem;
   font-size: 1.2rem;
   color: #444;
@@ -37,7 +37,7 @@ textarea {
   resize: vertical;
 }
 
-sumbitButton {
+button {
   margin-top: 2rem;
   background: #2c3e50;
   color: white;
@@ -49,6 +49,6 @@ sumbitButton {
   transition: 0.3s ease;
 }
 
-sumbitButton:hover {
+button:hover {
   background: #1a252f;
 }
