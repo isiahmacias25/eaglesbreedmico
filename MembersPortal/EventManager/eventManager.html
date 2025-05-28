@@ -37,10 +37,49 @@
               <li><a href="../../MembersPortal/SupportersManager/supportersManager.html">Supporters Manager</a></li>
               <li><a href="../../MembersPortal/membersPortal.html" id="logoutButton">Logout</a></li>
             </ul>
+        </div>  
+     
+      <form id="eventForm">
+        <label>Title:
+          <input type="text" id="title" required>
+        </label>
+    
+        <label>Date:
+          <input type="date" id="date" required>
+        </label>
+    
+        <label>Time:
+          <input type="time" id="time" required>
+        </label>
+    
+        <label>Location:
+          <input type="text" id="location" required>
+        </label>
+    
+        <label>Description:
+          <textarea id="description" rows="4" required></textarea>
+        </label>
+    
+        <label>Event Type:
+          <select id="type" required>
+            <option value="public">Public (black)</option>
+            <option value="members">Members Only (blue)</option>
+            <option value="officers">Officers Only (red)</option>
+          </select>
+        </label>
+    
+        <label>
+          <input type="checkbox" id="isMeeting"> Is this a Meeting?
+        </label>
+    
+        <div id="meetingDetails" style="display: none;">
+          <label>Meeting Notes:
+            <textarea id="meetingNotes" rows="3"></textarea>
+          </label>
         </div>
     
-    
-      <h1>Page has not yet began construction. Stay tuned! </h1>
+        <button type="submit">Post Event</button>
+      </form>
 
    </div>      
 </div>
