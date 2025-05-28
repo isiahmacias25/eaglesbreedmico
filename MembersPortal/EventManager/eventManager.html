@@ -40,46 +40,62 @@
         </div>  
      
       <form id="eventForm">
-        <label>Title:
-          <input type="text" id="title" required>
+
+        <h2>Who?</h2>
+        <label>Responsible Person:
+          <input type="text" id="responsiblePerson" required>
         </label>
-    
-        <label>Date:
+      
+        <h2>Why?</h2>
+        <label>Purpose / Situation:
+          <textarea id="reason" rows="3" placeholder="Why are we hosting this? What's the occasion?" required></textarea>
+        </label>
+      
+        <h2>What?</h2>
+        <label>Type of Event:
+          <input type="text" id="eventType" placeholder="e.g., Poker Run, Meeting, Bike Night" required>
+        </label>
+      
+        <label>Description / Agenda:
+          <textarea id="description" rows="4" placeholder="Full details, schedule, etc." required></textarea>
+        </label>
+      
+        <h2>When?</h2>
+        <label>Event Date:
           <input type="date" id="date" required>
         </label>
-    
-        <label>Time:
-          <input type="time" id="time" required>
+      
+        <label>Event Time(s):
+          <input type="text" id="time" placeholder="e.g., Registration 10–12, KSU 12:30" required>
         </label>
-    
-        <label>Location:
-          <input type="text" id="location" required>
+      
+        <h2>Where?</h2>
+        <label>Location(s):
+          <textarea id="location" rows="2" placeholder="Address or multiple stops" required></textarea>
         </label>
-    
-        <label>Description:
-          <textarea id="description" rows="4" required></textarea>
-        </label>
-    
-        <label>Event Type:
+      
+        <h2>Event Visibility</h2>
+        <label>Who can see this?
           <select id="type" required>
-            <option value="public">Public (black)</option>
-            <option value="members">Members Only (blue)</option>
-            <option value="officers">Officers Only (red)</option>
+            <option value="public">Public (Black)</option>
+            <option value="members">Members Only (Blue)</option>
+            <option value="officers">Officers Only (Red)</option>
           </select>
         </label>
-    
-        <label>
-          <input type="checkbox" id="isMeeting"> Is this a Meeting?
+      
+        <h2>Extras</h2>
+        <label>Flyer Upload:
+          <input type="file" id="flyerUpload" accept="image/*,.pdf">
         </label>
-    
-        <div id="meetingDetails" style="display: none;">
-          <label>Meeting Notes:
-            <textarea id="meetingNotes" rows="3"></textarea>
-          </label>
-        </div>
-    
+      
+        <label>Additional Notes:
+          <textarea id="notes" rows="3" placeholder="Any extra notes or reminders?"></textarea>
+        </label>
+      
         <button type="submit">Post Event</button>
+      
       </form>
+
 
    </div>      
 </div>
