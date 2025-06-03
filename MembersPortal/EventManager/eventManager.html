@@ -40,118 +40,119 @@
             </ul>
         </div>  
            
-        <!-- EVENT CREATION FORM -->
-        <form id="eventForm" class="form-grid">
-          <!-- LEFT SIDE -->
+        <!-- CREATE EVENT FORM -->
+        <form id="createEventForm" class="form-grid">
           <div class="form-section">
             <h2>Who?</h2>
             <label>The Person:
-              <input type="text" id="responsiblePerson" required>
+              <input type="text" id="createResponsiblePerson" name="responsiblePerson" required>
             </label>
-        
             <h2>Why?</h2>
             <label>Purpose / Situation:
-              <textarea id="reason" rows="3" placeholder="Why are we doing this?" required></textarea>
+              <textarea id="createReason" name="reason" rows="3" placeholder="Why are we doing this?" required></textarea>
             </label>
-        
             <h2>What?</h2>
             <label>Type of Event:
-              <input type="text" id="eventType" placeholder="Meeting, Poker Run, etc." required>
+              <input type="text" id="createEventType" name="eventType" placeholder="Meeting, Poker Run, etc." required>
             </label>
-        
             <label>Description:
-              <textarea id="description" rows="4" placeholder="Schedule, details, etc." required></textarea>
+              <textarea id="createDescription" name="description" rows="4" placeholder="Schedule, details, etc." required></textarea>
             </label>
           </div>
-        
-          <!-- RIGHT SIDE -->
           <div class="form-section">
             <h2>When?</h2>
             <label>Date:
-              <input type="date" id="date" required>
+              <input type="date" id="createDate" name="date" required>
             </label>
-        
             <label>Time(s):
-              <textarea id="time" rows="3" placeholder="e.g.&#10;Registration: 10–12&#10;KSU: 12:30" required></textarea>
+              <textarea id="createTime" name="time" rows="3" placeholder="e.g.&#10;Registration: 10–12&#10;KSU: 12:30" required></textarea>
             </label>
-        
             <h2>Where?</h2>
             <label>Location(s):
-              <textarea id="location" rows="3" placeholder="Address or route" required></textarea>
+              <textarea id="createLocation" name="location" rows="3" placeholder="Address or route" required></textarea>
             </label>
-        
             <h2>Visibility</h2>
             <label>Access:
-              <select id="type" required>
+              <select id="createType" name="type" required>
                 <option value="public">Public (Black)</option>
                 <option value="members">Members Only (Blue)</option>
                 <option value="officers">Officers Only (Red)</option>
               </select>
             </label>
           </div>
+          <div class="grand-button">
+            <button type="submit">Post Event</button>
+          </div>
         </form>
         
-        <div class="grand-button">
-          <button type="submit" form="eventForm">Post Event</button>
-        </div>
-        
-        <!-- EXTRAS SECTION -->
-        <div class="extra-section">
-          <h2>Extras</h2>
-        
-          <label>Upload Flyer:
-            <input type="file" id="flyerUpload" accept="image/*,.pdf">
+        <!-- UPDATE EVENT FORM -->
+        <form id="updateEventForm" class="form-grid" style="margin-top:40px;">
+          <label style="display:none;">
+            Event ID:
+            <input type="text" id="updateEventId" name="eventId" readonly>
           </label>
-        
-          <label>Upload Event Photos:
-            <input type="file" id="photoUpload" multiple accept="image/*">
-          </label>
-        
-          <label>Additional Notes:
-            <textarea id="noteInput" rows="3" placeholder="Anything else to mention?"></textarea>
-          </label>
-          <button id="addNoteBtn" type="button">Add Note</button>
-        
-          <div id="notesList">
-            <h3>Event Notes:</h3>
-            <ul id="noteDisplay"></ul>
+          <div class="form-section">
+            <h2>Who?</h2>
+            <label>The Person:
+              <input type="text" id="updateResponsiblePerson" name="responsiblePerson" required>
+            </label>
+            <h2>Why?</h2>
+            <label>Purpose / Situation:
+              <textarea id="updateReason" name="reason" rows="3" required></textarea>
+            </label>
+            <h2>What?</h2>
+            <label>Type of Event:
+              <input type="text" id="updateEventType" name="eventType" required>
+            </label>
+            <label>Description:
+              <textarea id="updateDescription" name="description" rows="4" required></textarea>
+            </label>
           </div>
-
-      <!-- UPDATE EVENT SECTION -->
-      <hr style="margin: 2rem 0;">
-      <h2>Update or Archive an Event</h2>
-      
-      <form id="updateForm" class="form-section">
-        <label>Event ID:
-          <input type="text" id="eventIdUpdate" placeholder="Enter event ID to update or archive" required>
-        </label>
-      
-        <label>Field to Update:
-          <select id="updateField">
-            <option value="responsiblePerson">Person Responsible</option>
-            <option value="reason">Purpose / Situation</option>
-            <option value="eventType">Type of Event</option>
-            <option value="description">Description</option>
-            <option value="date">Date</option>
-            <option value="time">Time(s)</option>
-            <option value="location">Location(s)</option>
-            <option value="type">Access</option>
-          </select>
-        </label>
-      
-        <label>New Value:
-          <textarea id="newValue" rows="3" placeholder="Enter the updated content here"></textarea>
-        </label>
-      
-        <label>
-          <input type="checkbox" id="archiveEvent"> Archive This Event
-        </label>
-      
-        <div class="grand-button">
-          <button type="submit">Update Event</button>
-        </div>
-      </form>
-      </div>
+          <div class="form-section">
+            <h2>When?</h2>
+            <label>Date:
+              <input type="date" id="updateDate" name="date" required>
+            </label>
+            <label>Time(s):
+              <textarea id="updateTime" name="time" rows="3" required></textarea>
+            </label>
+            <h2>Where?</h2>
+            <label>Location(s):
+              <textarea id="updateLocation" name="location" rows="3" required></textarea>
+            </label>
+            <h2>Visibility</h2>
+            <label>Access:
+              <select id="updateType" name="type" required>
+                <option value="public">Public (Black)</option>
+                <option value="members">Members Only (Blue)</option>
+                <option value="officers">Officers Only (Red)</option>
+              </select>
+            </label>
+            <label>
+              <input type="checkbox" id="archiveEvent" name="archiveEvent"> Archive This Event
+            </label>
+          </div>
+          <div class="extra-section">
+            <h2>Extras</h2>
+            <label>Upload Flyer:
+              <input type="file" id="flyerUpload" name="flyerUpload" accept="image/*,.pdf">
+            </label>
+            <label>Upload Event Photos:
+              <input type="file" id="photoUpload" name="photoUpload" multiple accept="image/*">
+            </label>
+            <label>Additional Notes:
+              <textarea id="noteInput" name="noteInput" rows="3" placeholder="Anything else to mention?"></textarea>
+            </label>
+            <button id="addNoteBtn" type="button">Add Note</button>
+            <div id="notesList">
+              <h3>Event Notes:</h3>
+              <ul id="noteDisplay"></ul>
+            </div>
+          </div>
+          <div class="grand-button">
+            <button type="submit">Update Event</button>
+          </div>
+        </form>
     </div>
   </div>
   
