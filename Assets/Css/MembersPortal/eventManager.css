@@ -1,13 +1,14 @@
-form.form-grid {
+.form-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 2rem;
-  background: #fff;
-  padding: 2rem;
+  background: #f7f7f7;
+  padding: 2.5rem;
   border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.08);
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.08);
   max-width: 1000px;
-  margin: 25px;
+  margin: 2rem auto;
+  font-family: 'Segoe UI', sans-serif;
 }
 
 .form-section {
@@ -16,15 +17,18 @@ form.form-grid {
 }
 
 h2 {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   margin-top: 1rem;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 0.3rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 2px solid #444;
+  padding-bottom: 0.4rem;
+  color: #222;
 }
 
 label {
   margin-top: 1rem;
-  font-weight: 500;
+  font-weight: 600;
+  color: #333;
 }
 
 input[type="text"],
@@ -32,12 +36,20 @@ input[type="date"],
 textarea,
 select {
   width: 100%;
-  padding: 0.7rem;
-  margin-top: 0.3rem;
-  border: 1px solid #ccc;
+  padding: 0.75rem;
+  margin-top: 0.4rem;
+  border: 1px solid #bbb;
   border-radius: 6px;
   font-size: 1rem;
-  box-sizing: border-box;
+  background-color: #fff;
+  transition: border 0.2s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #2c3e50;
+  outline: none;
 }
 
 textarea {
@@ -48,7 +60,7 @@ textarea {
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: 2rem;
+  margin: 2rem auto 0;
 }
 
 .grand-button button {
@@ -56,24 +68,41 @@ textarea {
   color: white;
   padding: 1rem 2.5rem;
   font-size: 1.2rem;
+  font-weight: bold;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   transition: 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .grand-button button:hover {
   background: #1a252f;
-  transform: scale(1.03);
+  transform: scale(1.04);
 }
-
 
 .extra-section {
   max-width: 1000px;
-  margin: 25px;
-  background: #fff;
-  padding: 1.5rem 2rem;
+  margin: 2rem auto;
+  background: #f7f7f7;
+  padding: 2rem;
   border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.06);
+}
+
+.extra-section label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: 600;
+}
+
+.extra-section input[type="file"],
+.extra-section textarea {
+  margin-top: 0.4rem;
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: #fff;
 }
