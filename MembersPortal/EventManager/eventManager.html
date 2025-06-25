@@ -16,7 +16,8 @@
   </header>
 
   <div class="content-container">
-    <h1>Event Manager</h1> 
+    <h1>Event Manager</h1>
+
     <nav>
       <ul>
         <li><a href="../../home.html">Home Page</a></li>
@@ -30,6 +31,7 @@
     <a href="../../MembersPortal/membersPortal.html" id="mustLogin" class="mustLoginBtn hidden">Log In</a>
 
     <div id="membersContent" class="membersContent">
+
       <div id="membersSubNav" class="members-sub-nav">
         <ul>
           <li><a href="../../MembersPortal/settings.html">Settings</a></li>
@@ -40,38 +42,31 @@
         </ul>
       </div>
 
-      <!-- CREATE EVENT FORM -->
+      <!-- CREATE EVENT -->
       <form id="createEventForm" class="form-grid">
+        <h2>Create New Event</h2>
         <div class="form-section">
-          <h2>Who?</h2>
           <label>The Person:
             <input type="text" id="createResponsiblePerson" name="responsiblePerson" required />
           </label>
-          <h2>Why?</h2>
           <label>Purpose / Situation:
             <textarea id="createReason" name="reason" rows="3" placeholder="Why are we doing this?" required></textarea>
           </label>
-          <h2>What?</h2>
           <label>Type of Event:
             <input type="text" id="createEventType" name="eventType" placeholder="Meeting, Poker Run, etc." required />
           </label>
           <label>Description:
             <textarea id="createDescription" name="description" rows="4" placeholder="Schedule, details, etc." required></textarea>
           </label>
-        </div>
-        <div class="form-section">
-          <h2>When?</h2>
           <label>Date:
             <input type="date" id="createDate" name="date" required />
           </label>
           <label>Time(s):
-            <textarea id="createTime" name="time" rows="3" placeholder="e.g.&#10;Registration: 10–12&#10;KSU: 12:30" required></textarea>
+            <textarea id="createTime" name="time" rows="3" required></textarea>
           </label>
-          <h2>Where?</h2>
           <label>Location(s):
-            <textarea id="createLocation" name="location" rows="3" placeholder="Address or route" required></textarea>
+            <textarea id="createLocation" name="location" rows="3" required></textarea>
           </label>
-          <h2>Visibility</h2>
           <label>Access:
             <select id="createType" name="type" required>
               <option value="public">Public (Black)</option>
@@ -85,39 +80,37 @@
         </div>
       </form>
 
-      <!-- UPDATE EVENT FORM -->
+      <!-- UPDATE EVENT -->
       <form id="updateEventForm" class="form-grid" style="margin-top:40px;">
-        <input type="hidden" id="updateEventId" name="eventId" />
+        <h2>Update Existing Event</h2>
+        <label>Select Event to Edit:
+          <select id="eventSelector" name="eventSelector" required>
+            <option value="">-- Select an Event --</option>
+            <!-- Fill these with JS -->
+          </select>
+        </label>
         <div class="form-section">
-          <h2>Who?</h2>
           <label>The Person:
             <input type="text" id="updateResponsiblePerson" name="responsiblePerson" required />
           </label>
-          <h2>Why?</h2>
           <label>Purpose / Situation:
             <textarea id="updateReason" name="reason" rows="3" required></textarea>
           </label>
-          <h2>What?</h2>
           <label>Type of Event:
             <input type="text" id="updateEventType" name="eventType" required />
           </label>
           <label>Description:
             <textarea id="updateDescription" name="description" rows="4" required></textarea>
           </label>
-        </div>
-        <div class="form-section">
-          <h2>When?</h2>
           <label>Date:
             <input type="date" id="updateDate" name="date" required />
           </label>
           <label>Time(s):
             <textarea id="updateTime" name="time" rows="3" required></textarea>
           </label>
-          <h2>Where?</h2>
           <label>Location(s):
             <textarea id="updateLocation" name="location" rows="3" required></textarea>
           </label>
-          <h2>Visibility</h2>
           <label>Access:
             <select id="updateType" name="type" required>
               <option value="public">Public (Black)</option>
@@ -128,9 +121,6 @@
           <label>
             <input type="checkbox" id="archiveEvent" name="archiveEvent" /> Archive This Event
           </label>
-        </div>
-        <div class="extra-section">
-          <h2>Extras</h2>
           <label>Upload Flyer:
             <input type="file" id="flyerUpload" name="flyerUpload" accept="image/*,.pdf" />
           </label>
@@ -138,7 +128,7 @@
             <input type="file" id="photoUpload" name="photoUpload" multiple accept="image/*" />
           </label>
           <label>Additional Notes:
-            <textarea id="noteInput" name="noteInput" rows="3" placeholder="Anything else to mention?"></textarea>
+            <textarea id="noteInput" name="noteInput" rows="3"></textarea>
           </label>
           <button id="addNoteBtn" type="button">Add Note</button>
           <div id="notesList">
@@ -150,6 +140,7 @@
           <button type="submit">Update Event</button>
         </div>
       </form>
+
     </div>
   </div>
 
