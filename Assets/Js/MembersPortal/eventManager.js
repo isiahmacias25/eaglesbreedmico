@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   const fieldSelector = document.getElementById('fieldSelector');
-  const eventSearchInput = document.getElementById('eventSearchInput');
-  const eventList = document.getElementById('eventList');
+  const eventSelector = document.getElementById('eventSelector');
 
   const fields = {
     beneficiary: document.getElementById('beneficiaryField'),
@@ -21,19 +20,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const addNoteBtn = document.getElementById('addNoteBtn');
   const noteList = document.getElementById('noteList');
 
+  // Populate eventSelector dropdown
   const exampleEvents = [
     { id: 'evt1', name: 'Poker Run 2025' },
     { id: 'evt2', name: 'Charity Ride July' },
     { id: 'evt3', name: 'Monthly Meeting August' },
     { id: 'evt4', name: 'Spring Rally' }
   ];
-
-  // Populate datalist
   exampleEvents.forEach(event => {
     const opt = document.createElement('option');
-    opt.value = event.name;
-    opt.dataset.id = event.id;
-    eventList.appendChild(opt);
+    opt.value = event.id;
+    opt.textContent = event.name;
+    eventSelector.appendChild(opt);
   });
 
   function hideAllFields() {
@@ -61,15 +59,9 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('updateEventForm').addEventListener('submit', e => {
     e.preventDefault();
 
-    const selectedEventName = eventSearchInput.value.trim();
-    if (!selectedEventName) {
+    const selectedEventId = eventSelector.value;
+    if (!selectedEventId) {
       alert('Please select an event.');
-      return;
-    }
-
-    const selectedEvent = exampleEvents.find(ev => ev.name === selectedEventName);
-    if (!selectedEvent) {
-      alert('Selected event not found.');
       return;
     }
 
@@ -79,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    const updateData = { eventId: selectedEvent.id };
+    const updateData = { eventId: selectedEventId };
 
     switch (selectedField) {
       case 'beneficiary':
@@ -122,6 +114,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     console.log('Update payload:', updateData);
-    alert(`Updating ${selectedField} for event: ${selectedEvent.name}`);
+    alert(`Updating ${selectedField} for event ID ${selectedEventId}`);
   });
 });
