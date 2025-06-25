@@ -62,6 +62,7 @@ textarea {
   display: flex;
   justify-content: center;
   margin: 2rem auto 0;
+  align-items: center;
 }
 
 .grand-button button {
@@ -75,6 +76,9 @@ textarea {
   cursor: pointer;
   transition: 0.3s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  min-width: 140px;
+  max-width: 300px;
+  white-space: nowrap;
 }
 
 .grand-button button:hover {
