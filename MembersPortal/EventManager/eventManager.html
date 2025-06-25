@@ -83,11 +83,11 @@
       <form id="updateEventForm" class="form-grid" style="margin-top: 3rem;">
         <div class="form-section">
           <h2>Update Event</h2>
-          <label>Select Event:
-            <select id="eventSelector" required>
-              <option value="">-- Select an Event --</option>
-            </select>
-          </label>
+          <label for="eventInput">Select Event:</label>
+            <input list="eventList" id="eventInput" name="eventInput" placeholder="Start typing to search..." required />
+            <datalist id="eventList">
+              <!-- options inserted dynamically by JS -->
+            </datalist>
 
           <label>What do you want to update?
             <select id="fieldSelector" required>
