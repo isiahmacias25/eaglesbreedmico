@@ -45,8 +45,8 @@
       <form id="createEventForm" class="form-grid">
         <div class="form-section">
           <h2>Create Event</h2>
-          <label>The Person:
-            <input type="text" id="createResponsiblePerson" name="responsiblePerson" required>
+          <label>The Beneficiary:
+            <input type="text" id="createWho" name="who" required>
           </label>
           <label>Purpose / Situation:
             <textarea id="createReason" name="reason" rows="3" required></textarea>
@@ -108,11 +108,11 @@
             </select>
           </label>
       
-          <div id="responsiblePersonField" class="hidden">
-            <label>New Person Responsible:
-              <input type="text" id="updateResponsiblePerson" />
-            </label>
-          </div>
+        <div id="whoField" class="hidden">
+          <label>Who is it for (Beneficiary):
+            <input type="text" id="updateWho" />
+          </label>
+        </div>
       
           <div id="reasonField" class="hidden">
             <label>New Purpose / Situation:
