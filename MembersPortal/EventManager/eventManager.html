@@ -83,33 +83,88 @@
       <form id="updateEventForm" class="form-grid" style="margin-top: 3rem;">
         <div class="form-section">
           <h2>Update Event</h2>
+      
           <label for="eventInput">Select Event:</label>
-            <input list="eventList" id="eventInput" name="eventInput" placeholder="Start typing to search..." required />
-            <datalist id="eventList">
-              <!-- options inserted dynamically by JS -->
-            </datalist>
-
+          <input list="eventList" id="eventInput" name="eventInput" placeholder="Start typing to search..." required />
+          <datalist id="eventList">
+            <!-- dynamically populated -->
+          </datalist>
+      
           <label>What do you want to update?
             <select id="fieldSelector" required>
               <option value="">-- Select Field --</option>
+              <option value="responsiblePerson">Who (Person Responsible)</option>
+              <option value="reason">Why (Purpose)</option>
+              <option value="eventType">What (Type of Event)</option>
+              <option value="description">What (Description)</option>
+              <option value="date">When (Date)</option>
+              <option value="time">When (Time)</option>
               <option value="location">Where (Location)</option>
+              <option value="type">Visibility (Access)</option>
               <option value="flyer">Upload Flyer</option>
               <option value="notes">Add Notes</option>
+              <option value="archive">Archive Event</option>
             </select>
           </label>
-
+      
+          <div id="responsiblePersonField" class="hidden">
+            <label>New Person Responsible:
+              <input type="text" id="updateResponsiblePerson" />
+            </label>
+          </div>
+      
+          <div id="reasonField" class="hidden">
+            <label>New Purpose / Situation:
+              <textarea id="updateReason" rows="3"></textarea>
+            </label>
+          </div>
+      
+          <div id="eventTypeField" class="hidden">
+            <label>New Type of Event:
+              <input type="text" id="updateEventType" />
+            </label>
+          </div>
+      
+          <div id="descriptionField" class="hidden">
+            <label>New Description:
+              <textarea id="updateDescription" rows="4"></textarea>
+            </label>
+          </div>
+      
+          <div id="dateField" class="hidden">
+            <label>New Date:
+              <input type="date" id="updateDate" />
+            </label>
+          </div>
+      
+          <div id="timeField" class="hidden">
+            <label>New Time(s):
+              <textarea id="updateTime" rows="2"></textarea>
+            </label>
+          </div>
+      
           <div id="locationField" class="hidden">
             <label>New Location:
               <textarea id="updateLocation" rows="2"></textarea>
             </label>
           </div>
-
-          <div id="flyerField" class="hidden">
-            <label>Upload New Flyer:
-              <input type="file" id="flyerUpload" accept="image/*,.pdf">
+      
+          <div id="typeField" class="hidden">
+            <label>New Visibility (Access):
+              <select id="updateType">
+                <option value="public">Public (Black)</option>
+                <option value="members">Members Only (Blue)</option>
+                <option value="officers">Officers Only (Red)</option>
+              </select>
             </label>
           </div>
-
+      
+          <div id="flyerField" class="hidden">
+            <label>Upload New Flyer:
+              <input type="file" id="flyerUpload" accept="image/*,.pdf" />
+            </label>
+          </div>
+      
           <div id="notesField" class="hidden">
             <label>Additional Notes:
               <textarea id="noteInput" rows="3"></textarea>
@@ -117,7 +172,15 @@
             <button type="button" id="addNoteBtn">Add Note</button>
             <ul id="noteList"></ul>
           </div>
+      
+          <div id="archiveField" class="hidden">
+            <label>
+              <input type="checkbox" id="archiveEvent" />
+              Archive This Event
+            </label>
+          </div>
         </div>
+      
         <div class="grand-button">
           <button type="submit">Update Event</button>
         </div>
