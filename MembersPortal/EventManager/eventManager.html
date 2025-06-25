@@ -84,11 +84,12 @@
         <div class="form-section">
           <h2>Update Event</h2>
       
-          <label for="eventInput">Select Event:</label>
-          <input list="eventList" id="eventInput" name="eventInput" placeholder="Start typing to search..." required />
-          <datalist id="eventList">
-            <!-- dynamically populated -->
-          </datalist>
+          <label>Select Event:
+            <input type="text" id="eventSearchInput" placeholder="Search event..." list="eventList" required />
+            <datalist id="eventList">
+              <!-- Filled dynamically by JS -->
+            </datalist>
+          </label>
       
           <label>What do you want to update?
             <select id="fieldSelector" required>
