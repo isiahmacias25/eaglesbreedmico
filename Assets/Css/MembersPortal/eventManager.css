@@ -1,6 +1,6 @@
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
   background: #f7f7f7;
   padding: 2.5rem;
@@ -9,6 +9,7 @@
   max-width: 1000px;
   margin: 2rem auto;
   font-family: 'Segoe UI', sans-serif;
+  align-items: start;
 }
 
 .form-section {
@@ -59,9 +60,10 @@ textarea {
 
 .grand-button {
   width: 100%;
+  grid-column: 1 / -1;
   display: flex;
   justify-content: center;
-  margin: 2rem auto 0;
+  margin: 2rem;
   align-items: center;
 }
 
