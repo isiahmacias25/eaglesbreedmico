@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
   const fieldSelector = document.getElementById('fieldSelector');
-  const eventSelector = document.getElementById('eventSelector');
+  const eventSearchInput = document.getElementById('eventSearchInput');
+  const eventList = document.getElementById('eventList');
 
-  // All update fields divs, keyed by fieldSelector values
   const fields = {
-    responsiblePerson: document.getElementById('responsiblePersonField'),
+    beneficiary: document.getElementById('beneficiaryField'),
     reason: document.getElementById('reasonField'),
     eventType: document.getElementById('eventTypeField'),
     description: document.getElementById('descriptionField'),
@@ -21,25 +21,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const addNoteBtn = document.getElementById('addNoteBtn');
   const noteList = document.getElementById('noteList');
 
-  // Populate events (replace with your DB call)
   const exampleEvents = [
     { id: 'evt1', name: 'Poker Run 2025' },
     { id: 'evt2', name: 'Charity Ride July' },
-    { id: 'evt3', name: 'Monthly Meeting August' }
+    { id: 'evt3', name: 'Monthly Meeting August' },
+    { id: 'evt4', name: 'Spring Rally' }
   ];
+
+  // Populate datalist
   exampleEvents.forEach(event => {
     const opt = document.createElement('option');
-    opt.value = event.id;
-    opt.textContent = event.name;
-    eventSelector.appendChild(opt);
+    opt.value = event.name;
+    opt.dataset.id = event.id;
+    eventList.appendChild(opt);
   });
 
-  // Hide all fields helper
   function hideAllFields() {
     Object.values(fields).forEach(el => el.classList.add('hidden'));
   }
 
-  // Show/hide fields based on selection
   fieldSelector.addEventListener('change', () => {
     hideAllFields();
     const val = fieldSelector.value;
@@ -48,7 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Add note button handler
   addNoteBtn.addEventListener('click', () => {
     const text = noteInput.value.trim();
     if (text) {
@@ -59,24 +58,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Submit handler
   document.getElementById('updateEventForm').addEventListener('submit', e => {
     e.preventDefault();
 
-    const selectedEvent = eventSelector.value;
-    const selectedField = fieldSelector.value;
-
-    if (!selectedEvent || !selectedField) {
-      alert('Please select an event and what you want to update.');
+    const selectedEventName = eventSearchInput.value.trim();
+    if (!selectedEventName) {
+      alert('Please select an event.');
       return;
     }
 
-    // Build data object based on selected field
-    const updateData = { eventId: selectedEvent };
+    const selectedEvent = exampleEvents.find(ev => ev.name === selectedEventName);
+    if (!selectedEvent) {
+      alert('Selected event not found.');
+      return;
+    }
+
+    const selectedField = fieldSelector.value;
+    if (!selectedField) {
+      alert('Please select what you want to update.');
+      return;
+    }
+
+    const updateData = { eventId: selectedEvent.id };
 
     switch (selectedField) {
-      case 'responsiblePerson':
-        updateData.responsiblePerson = document.getElementById('updateResponsiblePerson').value.trim();
+      case 'beneficiary':
+        updateData.beneficiary = document.getElementById('updateBeneficiary').value.trim();
         break;
       case 'reason':
         updateData.reason = document.getElementById('updateReason').value.trim();
@@ -100,11 +107,9 @@ document.addEventListener('DOMContentLoaded', () => {
         updateData.type = document.getElementById('updateType').value;
         break;
       case 'flyer':
-        // handle file upload separately in real impl
         updateData.flyer = document.getElementById('flyerUpload').files[0] || null;
         break;
       case 'notes':
-        // collect notes from list items
         const notes = [];
         noteList.querySelectorAll('li').forEach(li => notes.push(li.textContent));
         updateData.notes = notes;
@@ -116,10 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
         break;
     }
 
-    // Debug output — replace with your backend call or Firebase logic
     console.log('Update payload:', updateData);
-    alert(`Updating ${selectedField} for event ID ${selectedEvent}`);
-
-    // Clear inputs for that field after update (optional)
+    alert(`Updating ${selectedField} for event: ${selectedEvent.name}`);
   });
 });
