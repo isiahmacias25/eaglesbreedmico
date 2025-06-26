@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+import { getFirestore, collection, getDocs, addDoc, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
 
 // Firebase config & init
@@ -56,14 +56,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   const addNoteBtn = document.getElementById('addNoteBtn');
   const noteList = document.getElementById('noteList');
 
-  // Clear all options before populating (important if you reload)
   function clearOptions() {
     eventList.innerHTML = '';
     eventSelector.innerHTML = '<option value="">-- Select an Event --</option>';
     viewEventSelector.innerHTML = '<option value="">-- Select an Event --</option>';
   }
 
-  // Populate datalist and selects with event data
   async function loadEvents() {
     clearOptions();
     try {
@@ -72,24 +70,21 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.log("No events found.");
         return;
       }
-      snapshot.forEach(doc => {
-        const event = doc.data();
+      snapshot.forEach(docSnap => {
+        const event = docSnap.data();
         const title = event.title || 'Untitled Event';
-        const id = doc.id;
+        const id = docSnap.id;
 
-        // datalist option
         const opt = document.createElement('option');
         opt.value = title;
         opt.dataset.id = id;
         eventList.appendChild(opt);
 
-        // select option for update form
         const selOpt = document.createElement('option');
         selOpt.value = id;
         selOpt.textContent = title;
         eventSelector.appendChild(selOpt);
 
-        // select option for view form
         const viewOpt = document.createElement('option');
         viewOpt.value = id;
         viewOpt.textContent = title;
@@ -103,12 +98,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   await loadEvents();
 
-  // Hide all field update sections
   function hideAllFields() {
     Object.values(fields).forEach(el => el.classList.add('hidden'));
   }
 
-  // Show only selected update field section
   fieldSelector.addEventListener('change', () => {
     hideAllFields();
     const val = fieldSelector.value;
@@ -125,11 +118,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  // Handle update event form submission
-  document.getElementById('updateEventForm').addEventListener('submit', e => {
+  // **Updated Update Event Form Handler**
+  document.getElementById('updateEventForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // Prefer selecting event by dropdown if available; else use datalist input
+    // Prefer dropdown select, fallback to datalist input
     const selectedEventId = eventSelector.value.trim() || (() => {
       const selectedEventName = eventSearchInput.value.trim();
       const option = Array.from(eventList.options).find(opt => opt.value === selectedEventName);
@@ -147,7 +140,18 @@ document.addEventListener('DOMContentLoaded', async () => {
       return;
     }
 
-    const updateData = { eventId: selectedEventId };
+    // Fetch event doc to get current title for user-friendly alert
+    let eventTitle = 'the event';
+    try {
+      const eventDocSnap = await getDoc(doc(db, "Events", selectedEventId));
+      if (eventDocSnap.exists()) {
+        eventTitle = eventDocSnap.data().title || eventTitle;
+      }
+    } catch (err) {
+      console.warn("Couldn't fetch event title for alert", err);
+    }
+
+    const updateData = {};
 
     switch (selectedField) {
       case 'title':
@@ -178,22 +182,35 @@ document.addEventListener('DOMContentLoaded', async () => {
         updateData.type = document.getElementById('updateType').value;
         break;
       case 'flyer':
-        updateData.flyer = document.getElementById('flyerUpload').files[0] || null;
-        break;
+        alert('Flyer update not implemented yet.');
+        return;
       case 'notes':
         const notes = [];
         noteList.querySelectorAll('li').forEach(li => notes.push(li.textContent));
         updateData.notes = notes;
         break;
       case 'archive':
-        updateData.archive = document.getElementById('archiveEvent').checked;
+        updateData.archived = document.getElementById('archiveEvent').checked;
         break;
       default:
-        break;
+        alert('Unknown update field.');
+        return;
     }
 
-    console.log('Update payload:', updateData);
-    alert(`Updating ${selectedField} for event ID ${selectedEventId}`);
+    if (Object.keys(updateData).length === 0) {
+      alert('Nothing to update.');
+      return;
+    }
+
+    try {
+      const eventRef = doc(db, "Events", selectedEventId);
+      await updateDoc(eventRef, updateData);
+      alert(`Successfully updated ${selectedField} for "${eventTitle}".`);
+      console.log(`Updated ${selectedField} for event ID: ${selectedEventId}`, updateData);
+    } catch (error) {
+      console.error("Error updating event:", error);
+      alert("Failed to update event. Check console for details.");
+    }
   });
 
   // Create event form submission (unchanged)
@@ -263,7 +280,5 @@ document.addEventListener('DOMContentLoaded', async () => {
       alert("Error creating event. Check console for details.");
     }
   });
-
-  // You can add code here to handle viewing event details with viewEventSelector + viewEventBtn if needed
 
 });
