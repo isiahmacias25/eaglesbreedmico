@@ -1,9 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
   const fieldSelector = document.getElementById('fieldSelector');
-  const eventSelector = document.getElementById('eventSelector');
+  const eventSearchInput = document.getElementById('eventSearchInput');
+  const eventList = document.getElementById('eventList');
 
   const fields = {
-    beneficiary: document.getElementById('beneficiaryField'),
+    beneficiary: document.getElementById('whoField'),
     reason: document.getElementById('reasonField'),
     eventType: document.getElementById('eventTypeField'),
     description: document.getElementById('descriptionField'),
@@ -20,18 +21,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const addNoteBtn = document.getElementById('addNoteBtn');
   const noteList = document.getElementById('noteList');
 
-  // Populate eventSelector dropdown
+  // Example events for datalist
   const exampleEvents = [
     { id: 'evt1', name: 'Poker Run 2025' },
     { id: 'evt2', name: 'Charity Ride July' },
     { id: 'evt3', name: 'Monthly Meeting August' },
     { id: 'evt4', name: 'Spring Rally' }
   ];
+
+  // Populate datalist for event search
   exampleEvents.forEach(event => {
     const opt = document.createElement('option');
-    opt.value = event.id;
-    opt.textContent = event.name;
-    eventSelector.appendChild(opt);
+    opt.value = event.name;
+    opt.dataset.id = event.id;
+    eventList.appendChild(opt);
   });
 
   function hideAllFields() {
@@ -59,11 +62,13 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('updateEventForm').addEventListener('submit', e => {
     e.preventDefault();
 
-    const selectedEventId = eventSelector.value;
-    if (!selectedEventId) {
-      alert('Please select an event.');
+    const selectedEventName = eventSearchInput.value.trim();
+    const eventMatch = Array.from(eventList.options).find(opt => opt.value === selectedEventName);
+    if (!eventMatch) {
+      alert('Please select a valid event.');
       return;
     }
+    const selectedEventId = eventMatch.dataset.id;
 
     const selectedField = fieldSelector.value;
     if (!selectedField) {
@@ -75,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     switch (selectedField) {
       case 'beneficiary':
-        updateData.beneficiary = document.getElementById('updateBeneficiary').value.trim();
+        updateData.beneficiary = document.getElementById('updateWho').value.trim();
         break;
       case 'reason':
         updateData.reason = document.getElementById('updateReason').value.trim();
