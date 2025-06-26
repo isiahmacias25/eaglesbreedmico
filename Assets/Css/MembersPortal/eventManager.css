@@ -171,6 +171,13 @@ textarea {
   display: none;
 }
 
+/* UPDATE FORM - override to one column ONLY for updateEventForm */
+#updateEventForm.form-grid {
+  grid-template-columns: 1fr !important;
+  max-width: 600px;
+  margin: 2rem auto;
+}
+
 /* UPDATE FORM LEFT SIDE PACK */
 .update-left {
   display: flex;
