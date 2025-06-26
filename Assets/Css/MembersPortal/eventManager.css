@@ -1,7 +1,7 @@
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2rem;  /* Increased gap so columns don’t touch */
+  gap: 2rem; /* increased gap so columns don’t touch */
   background: #f7f7f7;
   padding: 2.5rem;
   border-radius: 10px;
@@ -25,6 +25,7 @@
 .form-section {
   display: flex;
   flex-direction: column;
+  width: 100%; /* make sure it fills the column */
 }
 
 label {
@@ -182,7 +183,7 @@ textarea {
   margin: 1rem 0 0 0;
 }
 
-/* Make it stack nicely on mobile */
+/* Responsive */
 @media (max-width: 700px) {
   .form-grid {
     grid-template-columns: 1fr;
