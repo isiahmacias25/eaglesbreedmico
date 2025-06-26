@@ -1,6 +1,20 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 
-const db = getFirestore();
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyChVYbT54aRIbAHyy_HRsH7caRHyaZwWTA",
+  authDomain: "eaglesbreedmico.firebaseapp.com",
+  projectId: "eaglesbreedmico",
+  storageBucket: "eaglesbreedmico.appspot.com",
+  messagingSenderId: "258146487149",
+  appId: "1:258146487149:web:c443a6f9af1c929cb6e864",
+  measurementId: "G-ZR1P59C7BP"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 document.addEventListener('DOMContentLoaded', () => {
   // FIELD SELECTOR LOGIC
