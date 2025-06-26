@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 
-// Firebase configuration
+// Firebase config & init
 const firebaseConfig = {
   apiKey: "AIzaSyChVYbT54aRIbAHyy_HRsH7caRHyaZwWTA",
   authDomain: "eaglesbreedmico.firebaseapp.com",
@@ -12,16 +12,15 @@ const firebaseConfig = {
   measurementId: "G-ZR1P59C7BP"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 document.addEventListener('DOMContentLoaded', () => {
-  // FIELD SELECTOR LOGIC
+  // Cached DOM elements
   const fieldSelector = document.getElementById('fieldSelector');
   const eventSearchInput = document.getElementById('eventSearchInput');
   const eventList = document.getElementById('eventList');
-
+  
   const fields = {
     who: document.getElementById('whoField'),
     reason: document.getElementById('reasonField'),
@@ -41,6 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const addNoteBtn = document.getElementById('addNoteBtn');
   const noteList = document.getElementById('noteList');
 
+  // Example events for datalist autocomplete
   const exampleEvents = [
     { id: 'evt1', name: 'Poker Run 2025' },
     { id: 'evt2', name: 'Charity Ride July' },
@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
     { id: 'evt4', name: 'Spring Rally' }
   ];
 
+  // Populate eventList datalist options
   if (eventList) {
     exampleEvents.forEach(event => {
       const opt = document.createElement('option');
@@ -57,18 +58,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Hide all field update sections
   function hideAllFields() {
     Object.values(fields).forEach(el => el.classList.add('hidden'));
   }
 
+  // Show only selected update field section
   fieldSelector.addEventListener('change', () => {
     hideAllFields();
     const val = fieldSelector.value;
-    if (fields[val]) {
-      fields[val].classList.remove('hidden');
-    }
+    if (fields[val]) fields[val].classList.remove('hidden');
   });
 
+  // Add note to notes list
   addNoteBtn.addEventListener('click', () => {
     const text = noteInput.value.trim();
     if (text) {
@@ -79,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // UPDATE EVENT SUBMIT
+  // UPDATE EVENT FORM SUBMIT
   document.getElementById('updateEventForm').addEventListener('submit', e => {
     e.preventDefault();
 
@@ -146,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
     alert(`Updating ${selectedField} for event ID ${selectedEventId}`);
   });
 
-  // CREATE EVENT SUBMIT
+  // CREATE EVENT FORM SUBMIT
   document.getElementById('createEventForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -191,4 +193,5 @@ document.addEventListener('DOMContentLoaded', () => {
       alert("Error creating event. Check console for details.");
     }
   });
+
 });
