@@ -1,5 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
 
 // Firebase config & init
 const firebaseConfig = {
@@ -14,6 +15,22 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
+
+let currentUser = null;
+
+// Wait for auth state before enabling event creation
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    currentUser = user;
+    console.log("User is signed in:", user.uid);
+  } else {
+    currentUser = null;
+    console.log("No user signed in. Redirecting to login...");
+    alert("Please log in to access the event manager.");
+    window.location.href = "/MembersPortal/membersPortal.html";
+  }
+});
 
 document.addEventListener('DOMContentLoaded', () => {
   // Cached DOM elements
@@ -152,6 +169,12 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('createEventForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
+    // Make sure user is logged in
+    if (!currentUser) {
+      alert("You must be logged in to create events.");
+      return;
+    }
+
     const title = document.getElementById('createTitle').value.trim();
     const who = document.getElementById('createWho').value.trim();
     const reason = document.getElementById('createReason').value.trim();
@@ -184,7 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     try {
-      const docRef = await addDoc(collection(db, "events"), newEvent);
+      const docRef = await addDoc(collection(db, "Events"), newEvent);
       console.log("Event created with ID: ", docRef.id);
       alert(`Event "${title}" created successfully!`);
       document.getElementById('createEventForm').reset();
