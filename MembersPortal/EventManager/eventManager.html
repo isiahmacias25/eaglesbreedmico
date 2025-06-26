@@ -89,15 +89,17 @@
       <form id="updateEventForm" class="form-grid" style="margin-top: 3rem;">
         <h2>Update Event</h2>
         <div class="form-section update-left">
-          <label>Search Events:
-            <input type="text" id="eventSearchInput" placeholder="Search event...">
+          <label for="eventSearchInput">Search Events:
+            <input list="eventList" id="eventSearchInput" placeholder="Search event..." autocomplete="off">
           </label>
-          <label>Select Event:
+          <datalist id="eventList"></datalist> <!-- <-- Added this -->
+          
+          <label for="eventSelector">Select Event:
             <select id="eventSelector">
               <option value="">-- Select an Event --</option>
             </select>
           </label>
-          <label>What do you want to update?
+          <label for="fieldSelector">What do you want to update?
             <select id="fieldSelector">
               <option value="">-- Select Field --</option>
               <option value="title">Title</option>
