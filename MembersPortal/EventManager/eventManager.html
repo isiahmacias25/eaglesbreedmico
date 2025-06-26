@@ -188,7 +188,34 @@
             <button type="submit">Update Event</button>
           </div>
       </form>
+      <form id="viewEventForm" class="form-grid">
+        <h2>View Event</h2>
+        <div class="form-section">
+          <label for="viewEventSearch">Search Event:</label>
+          <input type="text" id="viewEventSearch" placeholder="Type to search...">
+          
+          <label for="viewEventSelector">Select Event:</label>
+          <select id="viewEventSelector">
+            <option value="">-- Select an Event --</option>
+            <!-- Event options get added by JS -->
+          </select>
+          
+          <div class="grand-button">
+            <button type="button" id="viewEventBtn">View Event</button>
+          </div>
+        </div>
+      </form>
       
+      <!-- Popup modal for event details -->
+      <div id="eventModal" class="hidden">
+        <div class="event-modal-content">
+          <span id="closeModal" class="close-btn">&times;</span>
+          <div id="eventModalBody">
+            <!-- JS will fill in the event info dynamically -->
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
