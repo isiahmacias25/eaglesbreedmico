@@ -207,7 +207,6 @@ onAuthStateChanged(auth, async (user) => {
       }
     } catch (err) {
       console.error("🔥 Error checking user role:", err);
-      window.location.href = "/404.html";
     }
 
   } else {
