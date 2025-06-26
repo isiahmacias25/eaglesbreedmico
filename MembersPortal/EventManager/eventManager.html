@@ -43,8 +43,8 @@
 
       <!-- CREATE EVENT FORM -->
       <form id="createEventForm" class="form-grid">
+        <h2>Create Event</h2>
         <div class="form-section">
-          <h2>Create Event</h2>
           <label>Title (required):
             <input type="text" id="createTitle" name="title" required>
           </label>
@@ -84,11 +84,11 @@
           <button type="submit">Post Event</button>
         </div>
       </form>
-
+      
       <!-- UPDATE EVENT FORM -->
       <form id="updateEventForm" class="form-grid" style="margin-top: 3rem;">
-        <div class="form-section">
-          <h2>Update Event</h2>
+        <h2>Update Event</h2>
+        <div class="form-section update-left">
           <label>Search Events:
             <input type="text" id="eventSearchInput" placeholder="Search event...">
           </label>
@@ -114,6 +114,9 @@
               <option value="archive">Archive Event</option>
             </select>
           </label>
+          <div class="grand-button">
+            <button type="submit">Update Event</button>
+          </div>
         </div>
         <div class="form-section">
           <div id="titleField" class="hidden">
@@ -181,11 +184,9 @@
           <div id="archiveField" class="hidden">
             <label><input type="checkbox" id="archiveEvent"> Archive This Event</label>
           </div>
-          <div class="grand-button">
-            <button type="submit">Update Event</button>
-          </div>
         </div>
       </form>
+      
     </div>
   </div>
 
