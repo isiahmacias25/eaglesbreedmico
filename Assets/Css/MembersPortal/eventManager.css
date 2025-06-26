@@ -116,7 +116,8 @@ textarea {
 
 /* NEW STYLES FOR EVENT + FIELD DROPDOWNS */
 #eventSelector,
-#fieldSelector {
+#fieldSelector,
+#eventSearchInput {
   width: 100%;
   padding: 0.75rem;
   margin-top: 0.4rem;
@@ -127,7 +128,8 @@ textarea {
 }
 
 #eventSelector:focus,
-#fieldSelector:focus {
+#fieldSelector:focus,
+#eventSearchInput:focus {
   border-color: #2c3e50;
   outline: none;
 }
@@ -135,7 +137,16 @@ textarea {
 /* Dynamic field sections (location, flyer, notes) */
 #locationField,
 #flyerField,
-#notesField {
+#notesField,
+#archiveField,
+#whoField,
+#titleField,
+#descriptionField,
+#dateField,
+#timeField,
+#eventTypeField,
+#typeField,
+#reasonField {
   padding: 1rem;
   background: #fafafa;
   border: 1px solid #ddd;
