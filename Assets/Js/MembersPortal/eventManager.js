@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-import { getFirestore, collection, getDocs, addDoc, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+import { getFirestore, collection, getDocs, addDoc, doc, getDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
 
 // Firebase config & init
@@ -33,9 +33,9 @@ onAuthStateChanged(auth, (user) => {
 document.addEventListener('DOMContentLoaded', async () => {
   const fieldSelector = document.getElementById('fieldSelector');
   const eventSearchInput = document.getElementById('eventSearchInput');
-  const eventList = document.getElementById('eventList');          // datalist
-  const eventSelector = document.getElementById('eventSelector');  // select for update form
-  const viewEventSelector = document.getElementById('viewEventSelector'); // select for view form
+  const eventList = document.getElementById('eventList');
+  const eventSelector = document.getElementById('eventSelector');
+  const viewEventSelector = document.getElementById('viewEventSelector');
 
   const fields = {
     who: document.getElementById('whoField'),
@@ -118,11 +118,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  // **Updated Update Event Form Handler**
   document.getElementById('updateEventForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // Prefer dropdown select, fallback to datalist input
     const selectedEventId = eventSelector.value.trim() || (() => {
       const selectedEventName = eventSearchInput.value.trim();
       const option = Array.from(eventList.options).find(opt => opt.value === selectedEventName);
@@ -140,7 +138,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       return;
     }
 
-    // Fetch event doc to get current title for user-friendly alert
     let eventTitle = 'the event';
     try {
       const eventDocSnap = await getDoc(doc(db, "Events", selectedEventId));
@@ -149,6 +146,22 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     } catch (err) {
       console.warn("Couldn't fetch event title for alert", err);
+    }
+
+    if (selectedField === 'delete') {
+      const confirmDelete = confirm(`Are you sure you want to delete "${eventTitle}"? This cannot be undone.`);
+      if (!confirmDelete) return;
+
+      try {
+        await deleteDoc(doc(db, "Events", selectedEventId));
+        alert(`Event "${eventTitle}" deleted.`);
+        await loadEvents();
+        document.getElementById('updateEventForm').reset();
+      } catch (err) {
+        console.error("Error deleting event:", err);
+        alert("Failed to delete event. Check console for details.");
+      }
+      return;
     }
 
     const updateData = {};
@@ -213,7 +226,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  // Create event form submission (unchanged)
   document.getElementById('createEventForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -259,7 +271,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       alert(`Event "${title}" created successfully!`);
       document.getElementById('createEventForm').reset();
 
-      // Add new event to lists immediately
       const opt = document.createElement('option');
       opt.value = newEvent.title;
       opt.dataset.id = docRef.id;
@@ -280,5 +291,4 @@ document.addEventListener('DOMContentLoaded', async () => {
       alert("Error creating event. Check console for details.");
     }
   });
-
 });
