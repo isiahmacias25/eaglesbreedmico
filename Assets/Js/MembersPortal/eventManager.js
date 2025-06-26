@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
 
 // Firebase config & init
@@ -19,25 +19,24 @@ const auth = getAuth(app);
 
 let currentUser = null;
 
-// Wait for auth state before enabling event creation
 onAuthStateChanged(auth, (user) => {
   if (user) {
     currentUser = user;
-    console.log("User is signed in:", user.uid);
+    console.log("User signed in:", user.uid);
   } else {
     currentUser = null;
-    console.log("No user signed in. Redirecting to login...");
     alert("Please log in to access the event manager.");
     window.location.href = "/MembersPortal/membersPortal.html";
   }
 });
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // Cached DOM elements
   const fieldSelector = document.getElementById('fieldSelector');
   const eventSearchInput = document.getElementById('eventSearchInput');
-  const eventList = document.getElementById('eventList');
-  
+  const eventList = document.getElementById('eventList');          // datalist
+  const eventSelector = document.getElementById('eventSelector');  // select for update form
+  const viewEventSelector = document.getElementById('viewEventSelector'); // select for view form
+
   const fields = {
     who: document.getElementById('whoField'),
     reason: document.getElementById('reasonField'),
@@ -57,27 +56,54 @@ document.addEventListener('DOMContentLoaded', async () => {
   const addNoteBtn = document.getElementById('addNoteBtn');
   const noteList = document.getElementById('noteList');
 
-  // Fetch real events from Firestore and populate datalist
-  if (eventList) {
+  // Clear all options before populating (important if you reload)
+  function clearOptions() {
+    eventList.innerHTML = '';
+    eventSelector.innerHTML = '<option value="">-- Select an Event --</option>';
+    viewEventSelector.innerHTML = '<option value="">-- Select an Event --</option>';
+  }
+
+  // Populate datalist and selects with event data
+  async function loadEvents() {
+    clearOptions();
     try {
-      const eventsSnapshot = await getDocs(collection(db, "Events"));
-      if (eventsSnapshot.empty) {
-        console.log("No events found in Firestore.");
-      } else {
-        eventsSnapshot.forEach(doc => {
-          const event = doc.data();
-          const opt = document.createElement('option');
-          opt.value = event.title || `Untitled event (${doc.id})`; // fallback
-          opt.dataset.id = doc.id; // Firestore doc ID
-          eventList.appendChild(opt);
-        });
+      const snapshot = await getDocs(collection(db, "Events"));
+      if (snapshot.empty) {
+        console.log("No events found.");
+        return;
       }
+      snapshot.forEach(doc => {
+        const event = doc.data();
+        const title = event.title || 'Untitled Event';
+        const id = doc.id;
+
+        // datalist option
+        const opt = document.createElement('option');
+        opt.value = title;
+        opt.dataset.id = id;
+        eventList.appendChild(opt);
+
+        // select option for update form
+        const selOpt = document.createElement('option');
+        selOpt.value = id;
+        selOpt.textContent = title;
+        eventSelector.appendChild(selOpt);
+
+        // select option for view form
+        const viewOpt = document.createElement('option');
+        viewOpt.value = id;
+        viewOpt.textContent = title;
+        viewEventSelector.appendChild(viewOpt);
+      });
+      console.log('Events loaded successfully.');
     } catch (error) {
-      console.error("Error fetching events from Firestore:", error);
+      console.error('Error loading events:', error);
     }
   }
 
-  // Hide all update fields initially
+  await loadEvents();
+
+  // Hide all field update sections
   function hideAllFields() {
     Object.values(fields).forEach(el => el.classList.add('hidden'));
   }
@@ -89,7 +115,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (fields[val]) fields[val].classList.remove('hidden');
   });
 
-  // Add note to notes list
   addNoteBtn.addEventListener('click', () => {
     const text = noteInput.value.trim();
     if (text) {
@@ -100,17 +125,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  // UPDATE EVENT FORM SUBMIT
+  // Handle update event form submission
   document.getElementById('updateEventForm').addEventListener('submit', e => {
     e.preventDefault();
 
-    const selectedEventName = eventSearchInput.value.trim();
-    const eventMatch = Array.from(eventList.options).find(opt => opt.value === selectedEventName);
-    if (!eventMatch) {
+    // Prefer selecting event by dropdown if available; else use datalist input
+    const selectedEventId = eventSelector.value.trim() || (() => {
+      const selectedEventName = eventSearchInput.value.trim();
+      const option = Array.from(eventList.options).find(opt => opt.value === selectedEventName);
+      return option?.dataset.id || null;
+    })();
+
+    if (!selectedEventId) {
       alert('Please select a valid event.');
       return;
     }
-    const selectedEventId = eventMatch.dataset.id;
 
     const selectedField = fieldSelector.value;
     if (!selectedField) {
@@ -167,7 +196,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     alert(`Updating ${selectedField} for event ID ${selectedEventId}`);
   });
 
-  // CREATE EVENT FORM SUBMIT
+  // Create event form submission (unchanged)
   document.getElementById('createEventForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -213,15 +242,28 @@ document.addEventListener('DOMContentLoaded', async () => {
       alert(`Event "${title}" created successfully!`);
       document.getElementById('createEventForm').reset();
 
-      // Add new event to datalist immediately
+      // Add new event to lists immediately
       const opt = document.createElement('option');
       opt.value = newEvent.title;
       opt.dataset.id = docRef.id;
       eventList.appendChild(opt);
+
+      const selOpt = document.createElement('option');
+      selOpt.value = docRef.id;
+      selOpt.textContent = newEvent.title;
+      eventSelector.appendChild(selOpt);
+
+      const viewOpt = document.createElement('option');
+      viewOpt.value = docRef.id;
+      viewOpt.textContent = newEvent.title;
+      viewEventSelector.appendChild(viewOpt);
+
     } catch (err) {
       console.error("Error creating event: ", err);
       alert("Error creating event. Check console for details.");
     }
   });
+
+  // You can add code here to handle viewing event details with viewEventSelector + viewEventBtn if needed
 
 });
