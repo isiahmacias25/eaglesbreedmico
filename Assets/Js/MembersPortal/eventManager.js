@@ -57,8 +57,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   const addNoteBtn = document.getElementById('addNoteBtn');
   const noteList = document.getElementById('noteList');
 
-  // REMOVE exampleEvents array (we don't need it now)
-
   // Fetch real events from Firestore and populate datalist
   if (eventList) {
     try {
@@ -69,8 +67,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         eventsSnapshot.forEach(doc => {
           const event = doc.data();
           const opt = document.createElement('option');
-          opt.value = event.title;    // Use the event's title for display
-          opt.dataset.id = doc.id;     // Store the document ID
+          opt.value = event.title || `Untitled event (${doc.id})`; // fallback
+          opt.dataset.id = doc.id; // Firestore doc ID
           eventList.appendChild(opt);
         });
       }
@@ -79,7 +77,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // Hide all field update sections
+  // Hide all update fields initially
   function hideAllFields() {
     Object.values(fields).forEach(el => el.classList.add('hidden'));
   }
@@ -215,7 +213,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       alert(`Event "${title}" created successfully!`);
       document.getElementById('createEventForm').reset();
 
-      // Also add new event to datalist immediately
+      // Add new event to datalist immediately
       const opt = document.createElement('option');
       opt.value = newEvent.title;
       opt.dataset.id = docRef.id;
