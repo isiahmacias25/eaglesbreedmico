@@ -1,4 +1,3 @@
-<script type="module">
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 
 const db = getFirestore();
