@@ -1,9 +1,14 @@
+<script type="module">
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+
+const db = getFirestore();
+
 document.addEventListener('DOMContentLoaded', () => {
+  // FIELD SELECTOR LOGIC
   const fieldSelector = document.getElementById('fieldSelector');
   const eventSearchInput = document.getElementById('eventSearchInput');
-  const eventList = document.getElementById('eventList'); // Make sure you add <datalist id="eventList"></datalist> in your HTML near #eventSearchInput
+  const eventList = document.getElementById('eventList');
 
-  // Map the exact values of fieldSelector options to their field containers
   const fields = {
     who: document.getElementById('whoField'),
     reason: document.getElementById('reasonField'),
@@ -23,7 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const addNoteBtn = document.getElementById('addNoteBtn');
   const noteList = document.getElementById('noteList');
 
-  // Example events for datalist autocomplete
   const exampleEvents = [
     { id: 'evt1', name: 'Poker Run 2025' },
     { id: 'evt2', name: 'Charity Ride July' },
@@ -31,7 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
     { id: 'evt4', name: 'Spring Rally' }
   ];
 
-  // Populate datalist options for autocomplete (optional, add <datalist id="eventList"></datalist> in your HTML)
   if (eventList) {
     exampleEvents.forEach(event => {
       const opt = document.createElement('option');
@@ -59,10 +62,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const li = document.createElement('li');
       li.textContent = text;
       noteList.appendChild(li);
-      noteInput.value = ''; // clear input after add
+      noteInput.value = '';
     }
   });
 
+  // UPDATE EVENT SUBMIT
   document.getElementById('updateEventForm').addEventListener('submit', e => {
     e.preventDefault();
 
@@ -128,4 +132,51 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Update payload:', updateData);
     alert(`Updating ${selectedField} for event ID ${selectedEventId}`);
   });
+
+  // CREATE EVENT SUBMIT
+  document.getElementById('createEventForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const title = document.getElementById('createTitle').value.trim();
+    const who = document.getElementById('createWho').value.trim();
+    const reason = document.getElementById('createReason').value.trim();
+    const eventType = document.getElementById('createEventType').value.trim();
+    const description = document.getElementById('createDescription').value.trim();
+    const date = document.getElementById('createDate').value;
+    const time = document.getElementById('createTime').value.trim();
+    const location = document.getElementById('createLocation').value.trim();
+    const type = document.getElementById('createType').value;
+
+    if (!title) {
+      alert('Title is required!');
+      return;
+    }
+
+    const newEvent = {
+      title,
+      who: who || null,
+      reason: reason || null,
+      eventType: eventType || null,
+      description: description || null,
+      date: date || null,
+      time: time || null,
+      location: location || null,
+      type: type || null,
+      flyerUrl: null,
+      notes: [],
+      archived: false,
+      createdAt: new Date().toISOString()
+    };
+
+    try {
+      const docRef = await addDoc(collection(db, "events"), newEvent);
+      console.log("Event created with ID: ", docRef.id);
+      alert(`Event "${title}" created successfully!`);
+      document.getElementById('createEventForm').reset();
+    } catch (err) {
+      console.error("Error creating event: ", err);
+      alert("Error creating event. Check console for details.");
+    }
+  });
 });
+</script>
