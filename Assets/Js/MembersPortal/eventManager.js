@@ -1,10 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
   const fieldSelector = document.getElementById('fieldSelector');
   const eventSearchInput = document.getElementById('eventSearchInput');
-  const eventList = document.getElementById('eventList');
+  const eventList = document.getElementById('eventList'); // Make sure you add <datalist id="eventList"></datalist> in your HTML near #eventSearchInput
 
+  // Map the exact values of fieldSelector options to their field containers
   const fields = {
-    beneficiary: document.getElementById('whoField'),
+    who: document.getElementById('whoField'),
     reason: document.getElementById('reasonField'),
     eventType: document.getElementById('eventTypeField'),
     description: document.getElementById('descriptionField'),
@@ -14,14 +15,15 @@ document.addEventListener('DOMContentLoaded', () => {
     type: document.getElementById('typeField'),
     flyer: document.getElementById('flyerField'),
     notes: document.getElementById('notesField'),
-    archive: document.getElementById('archiveField')
+    archive: document.getElementById('archiveField'),
+    title: document.getElementById('titleField')
   };
 
   const noteInput = document.getElementById('noteInput');
   const addNoteBtn = document.getElementById('addNoteBtn');
   const noteList = document.getElementById('noteList');
 
-  // Example events for datalist
+  // Example events for datalist autocomplete
   const exampleEvents = [
     { id: 'evt1', name: 'Poker Run 2025' },
     { id: 'evt2', name: 'Charity Ride July' },
@@ -29,13 +31,15 @@ document.addEventListener('DOMContentLoaded', () => {
     { id: 'evt4', name: 'Spring Rally' }
   ];
 
-  // Populate datalist for event search
-  exampleEvents.forEach(event => {
-    const opt = document.createElement('option');
-    opt.value = event.name;
-    opt.dataset.id = event.id;
-    eventList.appendChild(opt);
-  });
+  // Populate datalist options for autocomplete (optional, add <datalist id="eventList"></datalist> in your HTML)
+  if (eventList) {
+    exampleEvents.forEach(event => {
+      const opt = document.createElement('option');
+      opt.value = event.name;
+      opt.dataset.id = event.id;
+      eventList.appendChild(opt);
+    });
+  }
 
   function hideAllFields() {
     Object.values(fields).forEach(el => el.classList.add('hidden'));
@@ -55,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const li = document.createElement('li');
       li.textContent = text;
       noteList.appendChild(li);
-      noteInput.value = '';
+      noteInput.value = ''; // clear input after add
     }
   });
 
@@ -79,7 +83,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const updateData = { eventId: selectedEventId };
 
     switch (selectedField) {
-      case 'beneficiary':
+      case 'title':
+        updateData.title = document.getElementById('updateTitle').value.trim();
+        break;
+      case 'who':
         updateData.beneficiary = document.getElementById('updateWho').value.trim();
         break;
       case 'reason':
