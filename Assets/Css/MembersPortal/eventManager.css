@@ -1,29 +1,30 @@
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;  /* Increased gap so columns don’t touch */
   background: #f7f7f7;
   padding: 2.5rem;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  max-width: 900px;
+  max-width: 1000px;
   margin: 2rem auto;
   font-family: 'Segoe UI', sans-serif;
   align-items: start;
 }
 
-.form-section {
-  display: flex;
-  flex-direction: column;
-}
-
-h2 {
-  font-size: 1.3rem;
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
+.form-grid > h2 {
+  grid-column: 1 / -1;
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
   border-bottom: 2px solid #444;
   padding-bottom: 0.4rem;
   color: #222;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
 }
 
 label {
@@ -59,11 +60,10 @@ textarea {
 }
 
 .grand-button {
-  width: 100%;
   grid-column: 1 / -1;
   display: flex;
   justify-content: center;
-  margin: 2rem;
+  margin: 2rem 0 0 0;
   align-items: center;
 }
 
@@ -134,7 +134,7 @@ textarea {
   outline: none;
 }
 
-/* Dynamic field sections (location, flyer, notes) */
+/* Dynamic field sections (location, flyer, notes, etc) */
 #locationField,
 #flyerField,
 #notesField,
@@ -154,7 +154,6 @@ textarea {
   margin-top: 1rem;
 }
 
-/* Notes list */
 #noteList {
   list-style: disc inside;
   margin-top: 0.5rem;
@@ -167,7 +166,25 @@ textarea {
   font-size: 0.95rem;
 }
 
-/* Hidden utility class */
 .hidden {
   display: none;
+}
+
+/* UPDATE FORM LEFT SIDE PACK */
+.update-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.update-left .grand-button {
+  justify-content: flex-start;
+  margin: 1rem 0 0 0;
+}
+
+/* Make it stack nicely on mobile */
+@media (max-width: 700px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
 }
