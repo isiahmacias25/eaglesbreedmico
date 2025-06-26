@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
 
 // Firebase config & init
@@ -32,7 +32,7 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   // Cached DOM elements
   const fieldSelector = document.getElementById('fieldSelector');
   const eventSearchInput = document.getElementById('eventSearchInput');
@@ -57,22 +57,26 @@ document.addEventListener('DOMContentLoaded', () => {
   const addNoteBtn = document.getElementById('addNoteBtn');
   const noteList = document.getElementById('noteList');
 
-  // Example events for datalist autocomplete
-  const exampleEvents = [
-    { id: 'evt1', name: 'Poker Run 2025' },
-    { id: 'evt2', name: 'Charity Ride July' },
-    { id: 'evt3', name: 'Monthly Meeting August' },
-    { id: 'evt4', name: 'Spring Rally' }
-  ];
+  // REMOVE exampleEvents array (we don't need it now)
 
-  // Populate eventList datalist options
+  // Fetch real events from Firestore and populate datalist
   if (eventList) {
-    exampleEvents.forEach(event => {
-      const opt = document.createElement('option');
-      opt.value = event.name;
-      opt.dataset.id = event.id;
-      eventList.appendChild(opt);
-    });
+    try {
+      const eventsSnapshot = await getDocs(collection(db, "Events"));
+      if (eventsSnapshot.empty) {
+        console.log("No events found in Firestore.");
+      } else {
+        eventsSnapshot.forEach(doc => {
+          const event = doc.data();
+          const opt = document.createElement('option');
+          opt.value = event.title;    // Use the event's title for display
+          opt.dataset.id = doc.id;     // Store the document ID
+          eventList.appendChild(opt);
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching events from Firestore:", error);
+    }
   }
 
   // Hide all field update sections
@@ -169,7 +173,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('createEventForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // Make sure user is logged in
     if (!currentUser) {
       alert("You must be logged in to create events.");
       return;
@@ -211,6 +214,12 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log("Event created with ID: ", docRef.id);
       alert(`Event "${title}" created successfully!`);
       document.getElementById('createEventForm').reset();
+
+      // Also add new event to datalist immediately
+      const opt = document.createElement('option');
+      opt.value = newEvent.title;
+      opt.dataset.id = docRef.id;
+      eventList.appendChild(opt);
     } catch (err) {
       console.error("Error creating event: ", err);
       alert("Error creating event. Check console for details.");
