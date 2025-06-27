@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
         apiKey: "AIzaSyChVYbT54aRIbAHyy_HRsH7caRHyaZwWTA",
         authDomain: "eaglesbreedmico.firebaseapp.com",
         projectId: "eaglesbreedmico",
-        storageBucket: "eaglesbreedmico.appspot.com",
+        storageBucket: "eaglesbreedmico.firebasestorage.app",
         messagingSenderId: "258146487149",
         appId: "1:258146487149:web:c443a6f9af1c929cb6e864",
         measurementId: "G-ZR1P59C7BP"
