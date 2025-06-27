@@ -96,9 +96,15 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       populateViewEventSelector();
 
+      // Debug check - confirm elements grabbed
+      console.log("View Button:", viewBtn);
+      console.log("View Selector:", viewSelect);
+
       // Show event modal on click
       viewBtn?.addEventListener('click', async () => {
+        console.log("View button clicked");
         const selectedId = viewSelect?.value;
+        console.log("Selected ID:", selectedId);
         if (!selectedId) {
           alert("Please select an event to view.");
           return;
@@ -106,12 +112,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
           const docSnap = await getDoc(doc(db, "Events", selectedId));
+          console.log("Doc snapshot exists:", docSnap.exists());
           if (!docSnap.exists()) {
             alert("Event not found.");
             return;
           }
 
           const event = docSnap.data();
+          console.log("Event data:", event);
+
           const flyer = event.flyerUrl ? `<p><strong>Flyer:</strong> <a href="${event.flyerUrl}" target="_blank">View Flyer</a></p>` : "";
 
           const html = `
