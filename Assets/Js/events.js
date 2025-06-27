@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // === VIEW EVENT LOGIC ===
   import("https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js").then(({ initializeApp }) => {
-    import("https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js").then(({ getFirestore, doc, getDoc, collection, getDocs }) => {
+    import("https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js").then(({ getFirestore, collection, getDocs, doc, getDoc }) => {
       const firebaseConfig = {
         apiKey: "AIzaSyChVYbT54aRIbAHyy_HRsH7caRHyaZwWTA",
         authDomain: "eaglesbreedmico.firebaseapp.com",
@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       let lastViewedEventHTML = "";
 
-      // <-- ADDED: Populate event dropdown on load
+      // Load events into dropdown on page load
       async function populateViewEventSelector() {
         try {
           const querySnapshot = await getDocs(collection(db, "Events"));
@@ -96,6 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       populateViewEventSelector();
 
+      // Show event modal on click
       viewBtn?.addEventListener('click', async () => {
         const selectedId = viewSelect?.value;
         if (!selectedId) {
@@ -141,11 +142,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
 
+      // Close modal on X or outside click
       closeModal?.addEventListener('click', () => modal.classList.add('hidden'));
       window.addEventListener('click', (e) => {
         if (e.target === modal) modal.classList.add('hidden');
       });
 
+      // Print and download buttons
       printBtn?.addEventListener('click', () => {
         const printWindow = window.open('', '', 'width=800,height=600');
         printWindow.document.write(`<!DOCTYPE html><html><head><title>Event</title></head><body>${lastViewedEventHTML}</body></html>`);
@@ -164,6 +167,8 @@ document.addEventListener("DOMContentLoaded", () => {
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
       });
+
     });
   });
+
 });
