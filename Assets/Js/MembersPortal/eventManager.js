@@ -161,6 +161,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const updateData = {};
 
+    console.log("Selected field for update:", selectedField);
+
     switch (selectedField) {
       case 'title':
         updateData.title = document.getElementById('updateTitle').value.trim();
@@ -191,6 +193,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         break;
       case 'flyer':
         const flyerFile = document.getElementById('updateFlyerFile').files[0];
+        console.log("Flyer chosen: ", flyerFile);
         if (!flyerFile) {
           alert("Please choose a file.");
           return;
