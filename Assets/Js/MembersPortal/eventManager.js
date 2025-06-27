@@ -85,10 +85,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         selOpt.textContent = title;
         eventSelector.appendChild(selOpt);
 
-        const viewOpt = document.createElement('option');
-        viewOpt.value = id;
-        viewOpt.textContent = title;
-        viewEventSelector.appendChild(viewOpt);
+        if (![...viewEventSelector.options].some(opt => opt.value === id)) {
+          const viewOpt = document.createElement('option');
+          viewOpt.value = id;
+          viewOpt.textContent = title;
+          viewEventSelector.appendChild(viewOpt);
+        }
+
       });
       console.log('Events loaded successfully.');
     } catch (error) {
