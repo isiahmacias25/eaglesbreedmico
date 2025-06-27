@@ -10,7 +10,7 @@
   <script src="../../Assets/Js/layout.js" defer></script>
   <script type="module" src="../../Assets/Js/MembersPortal/membersPortal.js" defer></script>
   <script type="module" src="../../Assets/Js/MembersPortal/eventManager.js" defer></script>
-  <script src="Assets/Js/events.js" defer></script>
+  <script type="module" src="Assets/Js/events.js" defer></script>
 </head>
 <body>
   <header>
@@ -211,11 +211,16 @@
       </form>
       
       <!-- Popup modal for event details -->
+     <!-- Popup modal for event details -->
       <div id="eventModal" class="hidden">
         <div class="event-modal-content">
           <span id="closeModal" class="close-btn">&times;</span>
           <div id="eventModalBody">
             <!-- JS will fill in the event info dynamically -->
+          </div>
+          <div class="modal-buttons">
+            <button id="printEventBtn">🖨️ Print</button>
+            <button id="downloadEventBtn">💾 Download</button>
           </div>
         </div>
       </div>
