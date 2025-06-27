@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           modalBody.innerHTML = html;
           lastViewedEventHTML = html;
-          modal.classList.remove('hidden');
+          modal.classList.add('active'); // SHOW modal
         } catch (err) {
           console.error("Error loading event:", err);
           alert("Failed to load event.");
@@ -152,9 +152,9 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       // Close modal on X or outside click
-      closeModal?.addEventListener('click', () => modal.classList.add('hidden'));
+      closeModal?.addEventListener('click', () => modal.classList.remove('active')); // HIDE modal
       window.addEventListener('click', (e) => {
-        if (e.target === modal) modal.classList.add('hidden');
+        if (e.target === modal) modal.classList.remove('active'); // HIDE modal
       });
 
       // Print and download buttons
