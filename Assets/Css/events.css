@@ -162,3 +162,29 @@
   color: #000;
 }
 
+/* Access type text colors */
+.access-public {
+  color: black; /* Public = black */
+}
+
+.access-members {
+  color: blue; /* Members = blue */
+}
+
+.access-officers {
+  color: red; /* Officers = red */
+}
+
+/* Modal border glow based on access */
+.modal-public .event-modal-content {
+  border: 3px solid black;
+}
+
+.modal-members .event-modal-content {
+  border: 3px solid blue;
+}
+
+.modal-officers .event-modal-content {
+  border: 3px solid red;
+}
+
