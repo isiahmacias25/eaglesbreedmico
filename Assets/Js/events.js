@@ -83,14 +83,13 @@ document.addEventListener("DOMContentLoaded", () => {
       async function populateViewEventSelector() {
         try {
           const querySnapshot = await getDocs(collection(db, "Events"));
-         querySnapshot.forEach(docSnap => {
-          const event = docSnap.data();
-          const option = document.createElement('option');
-          option.value = docSnap.id;
-          option.textContent = event.title || "Untitled Event";
-          viewSelect.appendChild(option);
-        });
-
+          querySnapshot.forEach(docSnap => {
+            const event = docSnap.data();
+            const option = document.createElement('option');
+            option.value = docSnap.id;
+            option.textContent = event.title || "Untitled Event";
+            viewSelect.appendChild(option);
+          });
         } catch (error) {
           console.error("Failed to load events for selector:", error);
         }
@@ -124,6 +123,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
           const flyer = event.flyerUrl ? `<p><strong>Flyer:</strong> <a href="${event.flyerUrl}" target="_blank">View Flyer</a></p>` : "";
 
+          const accessType = (event.type || 'public').toLowerCase();
+
           const html = `
             <h2>${event.title || 'Untitled Event'}</h2>
             <p><strong>Beneficiary:</strong> ${event.who || 'N/A'}</p>
@@ -133,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <p><strong>Date:</strong> ${event.date || 'N/A'}</p>
             <p><strong>Time:</strong> ${event.time || 'N/A'}</p>
             <p><strong>Location:</strong> ${event.location || 'N/A'}</p>
-            <p><strong>Access:</strong> ${event.type || 'N/A'}</p>
+            <p class="access-${accessType}"><strong>Access:</strong> ${event.type || 'N/A'}</p>
             <p><strong>Archived:</strong> ${event.archived ? 'Yes' : 'No'}</p>
             ${flyer}
             ${event.notes?.length ? `
@@ -145,6 +146,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
           modalBody.innerHTML = html;
           lastViewedEventHTML = html;
+
+          // Remove old access classes
+          modal.classList.remove('modal-public', 'modal-members', 'modal-officers');
+
+          // Add new class for border color
+          if(['public','members','officers'].includes(accessType)) {
+            modal.classList.add(`modal-${accessType}`);
+          } else {
+            modal.classList.add('modal-public');
+          }
+
           modal.classList.add('active'); // SHOW modal
         } catch (err) {
           console.error("Error loading event:", err);
@@ -153,9 +165,9 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       // Close modal on X or outside click
-      closeModal?.addEventListener('click', () => modal.classList.remove('active')); // HIDE modal
+      closeModal?.addEventListener('click', () => modal.classList.remove('active'));
       window.addEventListener('click', (e) => {
-        if (e.target === modal) modal.classList.remove('active'); // HIDE modal
+        if (e.target === modal) modal.classList.remove('active');
       });
 
       // Print and download buttons
