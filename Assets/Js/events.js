@@ -83,13 +83,14 @@ document.addEventListener("DOMContentLoaded", () => {
       async function populateViewEventSelector() {
         try {
           const querySnapshot = await getDocs(collection(db, "Events"));
-          querySnapshot.forEach(docSnap => {
-            const event = docSnap.data();
-            const option = document.createElement('option');
-            option.value = docSnap.id;
-            option.textContent = event.title || "Untitled Event";
-            viewSelect.appendChild(option);
-          });
+         querySnapshot.forEach(docSnap => {
+          const event = docSnap.data();
+          const option = document.createElement('option');
+          option.value = docSnap.id;
+          option.textContent = event.title || "Untitled Event";
+          viewSelect.appendChild(option);
+        });
+
         } catch (error) {
           console.error("Failed to load events for selector:", error);
         }
