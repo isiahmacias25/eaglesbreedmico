@@ -35,7 +35,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   const eventSearchInput = document.getElementById('eventSearchInput');
   const eventList = document.getElementById('eventList');
   const eventSelector = document.getElementById('eventSelector');
-  const viewEventSelector = document.getElementById('viewEventSelector');
 
   const fields = {
     who: document.getElementById('whoField'),
@@ -59,7 +58,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   function clearOptions() {
     eventList.innerHTML = '';
     eventSelector.innerHTML = '<option value="">-- Select an Event --</option>';
-    viewEventSelector.innerHTML = '<option value="">-- Select an Event --</option>';
   }
 
   async function loadEvents() {
@@ -84,14 +82,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         selOpt.value = id;
         selOpt.textContent = title;
         eventSelector.appendChild(selOpt);
-
-        if (![...viewEventSelector.options].some(opt => opt.value === id)) {
-          const viewOpt = document.createElement('option');
-          viewOpt.value = id;
-          viewOpt.textContent = title;
-          viewEventSelector.appendChild(viewOpt);
-        }
-
       });
       console.log('Events loaded successfully.');
     } catch (error) {
@@ -283,12 +273,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       selOpt.value = docRef.id;
       selOpt.textContent = newEvent.title;
       eventSelector.appendChild(selOpt);
-
-      const viewOpt = document.createElement('option');
-      viewOpt.value = docRef.id;
-      viewOpt.textContent = newEvent.title;
-      viewEventSelector.appendChild(viewOpt);
-
     } catch (err) {
       console.error("Error creating event: ", err);
       alert("Error creating event. Check console for details.");
