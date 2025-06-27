@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // === MONTHLY CALENDAR LOGIC ===
   const monthButtons = document.querySelectorAll(".month-btn");
   const popup = document.getElementById("calendar-popup");
   const closeBtn = document.querySelector(".close-btn");
@@ -25,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
   monthButtons.forEach(button => {
     button.addEventListener("click", () => {
       const month = button.getAttribute("data-month");
-      monthTitle.textContent = months[parseInt(month) - 1] + " 2025";
+      monthTitle.textContent = `${months[parseInt(month) - 1]} 2025`;
       generateCalendar(month);
       popup.style.display = "block";
     });
@@ -40,8 +41,8 @@ document.addEventListener("DOMContentLoaded", () => {
       <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
     `;
 
-    let firstDay = firstDayOfMonth2025[month];
-    let totalDays = daysInMonth[month];
+    const firstDay = firstDayOfMonth2025[month];
+    const totalDays = daysInMonth[month];
 
     for (let i = 0; i < firstDay; i++) {
       calendarDiv.innerHTML += `<div></div>`;
@@ -52,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // 🔽 VIEW EVENT LOGIC
+  // === VIEW EVENT LOGIC ===
   import("https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js").then(({ initializeApp }) => {
     import("https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js").then(({ getFirestore, doc, getDoc }) => {
       const firebaseConfig = {
@@ -125,9 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       closeModal?.addEventListener('click', () => modal.classList.add('hidden'));
       window.addEventListener('click', (e) => {
-        if (e.target === modal) {
-          modal.classList.add('hidden');
-        }
+        if (e.target === modal) modal.classList.add('hidden');
       });
 
       printBtn?.addEventListener('click', () => {
