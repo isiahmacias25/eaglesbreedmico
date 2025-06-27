@@ -1,6 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
 import { getFirestore, collection, getDocs, addDoc, doc, getDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-storage.js";
 
 // Firebase config & init
 const firebaseConfig = {
@@ -16,6 +17,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
+const storage = getStorage(app);
 
 let currentUser = null;
 
@@ -188,8 +190,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         updateData.type = document.getElementById('updateType').value;
         break;
       case 'flyer':
-        alert('Flyer update not implemented yet.');
-        return;
+        const flyerFile = document.getElementById('updateFlyerFile').files[0];
+        if (!flyerFile) {
+          alert("Please choose a file.");
+          return;
+        }
+
+        const flyerRef = ref(storage, `flyers/${selectedEventId}_${flyerFile.name}`);
+        try {
+          const snap = await uploadBytes(flyerRef, flyerFile);
+          const url = await getDownloadURL(snap.ref);
+          updateData.flyerUrl = url;
+        } catch (err) {
+          console.error("Flyer upload failed:", err);
+          alert("Flyer upload failed. Check console for details.");
+          return;
+        }
+        break;
       case 'notes':
         const notes = [];
         noteList.querySelectorAll('li').forEach(li => notes.push(li.textContent));
