@@ -51,4 +51,103 @@ document.addEventListener("DOMContentLoaded", () => {
       calendarDiv.innerHTML += `<div>${day}</div>`;
     }
   }
+
+  // 🔽 VIEW EVENT LOGIC
+  import("https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js").then(({ initializeApp }) => {
+    import("https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js").then(({ getFirestore, doc, getDoc }) => {
+      const firebaseConfig = {
+        apiKey: "AIzaSyChVYbT54aRIbAHyy_HRsH7caRHyaZwWTA",
+        authDomain: "eaglesbreedmico.firebaseapp.com",
+        projectId: "eaglesbreedmico",
+        storageBucket: "eaglesbreedmico.appspot.com",
+        messagingSenderId: "258146487149",
+        appId: "1:258146487149:web:c443a6f9af1c929cb6e864",
+        measurementId: "G-ZR1P59C7BP"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      const viewBtn = document.getElementById('viewEventBtn');
+      const viewSelect = document.getElementById('viewEventSelector');
+      const modal = document.getElementById('eventModal');
+      const modalBody = document.getElementById('eventModalBody');
+      const closeModal = document.getElementById('closeModal');
+      const printBtn = document.getElementById('printEventBtn');
+      const downloadBtn = document.getElementById('downloadEventBtn');
+
+      let lastViewedEventHTML = "";
+
+      viewBtn?.addEventListener('click', async () => {
+        const selectedId = viewSelect?.value;
+        if (!selectedId) {
+          alert("Please select an event to view.");
+          return;
+        }
+
+        try {
+          const docSnap = await getDoc(doc(db, "Events", selectedId));
+          if (!docSnap.exists()) {
+            alert("Event not found.");
+            return;
+          }
+
+          const event = docSnap.data();
+          const flyer = event.flyerUrl ? `<p><strong>Flyer:</strong> <a href="${event.flyerUrl}" target="_blank">View Flyer</a></p>` : "";
+
+          const html = `
+            <h2>${event.title || 'Untitled Event'}</h2>
+            <p><strong>Beneficiary:</strong> ${event.who || 'N/A'}</p>
+            <p><strong>Purpose:</strong> ${event.reason || 'N/A'}</p>
+            <p><strong>Event Type:</strong> ${event.eventType || 'N/A'}</p>
+            <p><strong>Description:</strong> ${event.description || 'N/A'}</p>
+            <p><strong>Date:</strong> ${event.date || 'N/A'}</p>
+            <p><strong>Time:</strong> ${event.time || 'N/A'}</p>
+            <p><strong>Location:</strong> ${event.location || 'N/A'}</p>
+            <p><strong>Access:</strong> ${event.type || 'N/A'}</p>
+            <p><strong>Archived:</strong> ${event.archived ? 'Yes' : 'No'}</p>
+            ${flyer}
+            ${event.notes?.length ? `
+              <div><strong>Notes:</strong><ul>
+                ${event.notes.map(note => `<li>${note}</li>`).join('')}
+              </ul></div>
+            ` : ''}
+          `;
+
+          modalBody.innerHTML = html;
+          lastViewedEventHTML = html;
+          modal.classList.remove('hidden');
+        } catch (err) {
+          console.error("Error loading event:", err);
+          alert("Failed to load event.");
+        }
+      });
+
+      closeModal?.addEventListener('click', () => modal.classList.add('hidden'));
+      window.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.classList.add('hidden');
+        }
+      });
+
+      printBtn?.addEventListener('click', () => {
+        const printWindow = window.open('', '', 'width=800,height=600');
+        printWindow.document.write(`<!DOCTYPE html><html><head><title>Event</title></head><body>${lastViewedEventHTML}</body></html>`);
+        printWindow.document.close();
+        printWindow.print();
+      });
+
+      downloadBtn?.addEventListener('click', () => {
+        const blob = new Blob([lastViewedEventHTML], { type: "text/html" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "event.html";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      });
+    });
+  });
 });
