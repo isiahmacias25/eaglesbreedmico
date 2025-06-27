@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // === VIEW EVENT LOGIC ===
   import("https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js").then(({ initializeApp }) => {
-    import("https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js").then(({ getFirestore, doc, getDoc }) => {
+    import("https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js").then(({ getFirestore, doc, getDoc, collection, getDocs }) => {
       const firebaseConfig = {
         apiKey: "AIzaSyChVYbT54aRIbAHyy_HRsH7caRHyaZwWTA",
         authDomain: "eaglesbreedmico.firebaseapp.com",
@@ -78,6 +78,23 @@ document.addEventListener("DOMContentLoaded", () => {
       const downloadBtn = document.getElementById('downloadEventBtn');
 
       let lastViewedEventHTML = "";
+
+      // <-- ADDED: Populate event dropdown on load
+      async function populateViewEventSelector() {
+        try {
+          const querySnapshot = await getDocs(collection(db, "Events"));
+          querySnapshot.forEach(docSnap => {
+            const event = docSnap.data();
+            const option = document.createElement('option');
+            option.value = docSnap.id;
+            option.textContent = event.title || "Untitled Event";
+            viewSelect.appendChild(option);
+          });
+        } catch (error) {
+          console.error("Failed to load events for selector:", error);
+        }
+      }
+      populateViewEventSelector();
 
       viewBtn?.addEventListener('click', async () => {
         const selectedId = viewSelect?.value;
