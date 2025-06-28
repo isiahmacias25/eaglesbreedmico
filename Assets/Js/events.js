@@ -6,15 +6,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const calendarDiv = document.getElementById("calendar");
   const monthTitle = document.getElementById("popup-month-title");
 
-  const year = new Date().getFullYear(); // You could also let user pick year later
-  monthTitle.textContent = `${months[parseInt(month) - 1]} ${year}`;
-  generateCalendar(month, year);
-
   const months = [
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
   ];
-
+  
+ const year = new Date().getFullYear(); // You could also let user pick year later
+  monthTitle.textContent = `${months[parseInt(month) - 1]} ${year}`;
+  generateCalendar(month, year);
   function getDaysInMonth(year, monthIndex) {
     return new Date(year, monthIndex + 1, 0).getDate();
   }
