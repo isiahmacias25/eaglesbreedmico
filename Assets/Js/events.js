@@ -161,7 +161,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
-      firebase.firestoreInstance = db; // store globally
 
       const viewBtn = document.getElementById('viewEventBtn');
       const viewSelect = document.getElementById('viewEventSelector');
