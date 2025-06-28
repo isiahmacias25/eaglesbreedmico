@@ -1,154 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // === MONTHLY CALENDAR LOGIC ===
-  const monthButtons = document.querySelectorAll(".month-btn");
-  const popup = document.getElementById("calendar-popup");
-  const closeBtn = document.querySelector(".close-btn");
-  const calendarDiv = document.getElementById("calendar");
-  const monthTitle = document.getElementById("popup-month-title");
-
-  const months = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-  ];
-  
-  function getDaysInMonth(year, monthIndex) {
-    return new Date(year, monthIndex + 1, 0).getDate();
-  }
-  
-  function getFirstDayOfMonth(year, monthIndex) {
-    return new Date(year, monthIndex, 1).getDay(); // Sunday = 0, Monday = 1, etc.
-  }
-
-  monthButtons.forEach(button => {
-    button.addEventListener("click", () => {
-      const month = button.getAttribute("data-month");
-      monthTitle.textContent = `${months[parseInt(month) - 1]} 2025`;
-      generateCalendar(month);
-      popup.style.display = "block";
-    });
-  });
-
-  closeBtn.addEventListener("click", () => {
-    popup.style.display = "none";
-  });
-
-  async function generateCalendar(month, year = new Date().getFullYear()) {
-    calendarDiv.innerHTML = `
-      <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
-    `;
-
-    const date = new Date(`${year}-${month}-01`);
-    const firstDay = date.getDay();
-    const totalDays = getDaysInMonth(year, parseInt(month) - 1);
-
-    // Load events for this month
-    const db = firebase.firestoreInstance;
-    const eventsSnap = await getDocs(collection(db, "Events"));
-    const eventsByDate = {};
-
-    eventsSnap.forEach(doc => {
-      const data = doc.data();
-      const eventDate = new Date(data.date);
-      const eventMonth = String(eventDate.getMonth() + 1).padStart(2, '0');
-      const eventDay = eventDate.getDate();
-      const eventYear = eventDate.getFullYear();
-
-      if (eventMonth === month && eventYear === year) {
-        eventsByDate[eventDay] = (data.type || 'public').toLowerCase(); // public, members, officers
-      }
-    });
-
-    // Empty cells before start of month
-    for (let i = 0; i < firstDay; i++) {
-      calendarDiv.innerHTML += `<div></div>`;
-    }
-
-    for (let day = 1; day <= totalDays; day++) {
-      const eventType = eventsByDate[day];
-      let color = 'white';
-      if (eventType === 'public') color = '#000';       // black
-      else if (eventType === 'members') color = '#2980b9'; // blue
-      else if (eventType === 'officers') color = '#c0392b'; // red
-
-      const style = eventType ? `style="background:${color}; color: white;"` : '';
-      if (eventType) {
-          calendarDiv.innerHTML += `
-            <div class="calendar-day" data-day="${day}" data-month="${month}" data-year="${year}" data-type="${eventType}" ${style}>
-              ${day}
-            </div>`;
-        } else {
-          calendarDiv.innerHTML += `<div>${day}</div>`;
-        }
-    }
-    const dayCells = calendarDiv.querySelectorAll(".calendar-day");
-
-    dayCells.forEach(cell => {
-      cell.addEventListener("click", async () => {
-        const day = cell.getAttribute("data-day");
-        const month = cell.getAttribute("data-month");
-        const year = cell.getAttribute("data-year");
-
-        const dateStr = `${year}-${month.padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-
-        try {
-          const db = getFirestore();
-          const querySnapshot = await getDocs(collection(db, "Events"));
-          let foundEvent = null;
-
-          querySnapshot.forEach(docSnap => {
-            const event = docSnap.data();
-            if (event.date === dateStr) {
-              foundEvent = { ...event, id: docSnap.id };
-            }
-          });
-
-          if (!foundEvent) {
-            alert("No event found on this day.");
-            return;
-          }
-
-          const modal = document.getElementById('eventModal');
-          const modalBody = document.getElementById('eventModalBody');
-          const accessType = (foundEvent.type || 'public').toLowerCase();
-
-          const flyer = foundEvent.flyerUrl ? `<p><strong>Flyer:</strong> <a href="${foundEvent.flyerUrl}" target="_blank">View Flyer</a></p>` : "";
-
-          const html = `
-            <h2>${foundEvent.title || 'Untitled Event'}</h2>
-            <p><strong>Beneficiary:</strong> ${foundEvent.who || 'N/A'}</p>
-            <p><strong>Purpose:</strong> ${foundEvent.reason || 'N/A'}</p>
-            <p><strong>Event Type:</strong> ${foundEvent.eventType || 'N/A'}</p>
-            <p><strong>Description:</strong> ${foundEvent.description || 'N/A'}</p>
-            <p><strong>Date:</strong> ${foundEvent.date || 'N/A'}</p>
-            <p><strong>Time:</strong> ${foundEvent.time || 'N/A'}</p>
-            <p><strong>Location:</strong> ${foundEvent.location || 'N/A'}</p>
-            <p class="access-${accessType}"><strong>Access:</strong> ${foundEvent.type || 'N/A'}</p>
-            <p><strong>Archived:</strong> ${foundEvent.archived ? 'Yes' : 'No'}</p>
-            ${flyer}
-            ${foundEvent.notes?.length ? `
-              <div><strong>Notes:</strong><ul>
-                ${foundEvent.notes.map(note => `<li>${note}</li>`).join('')}
-              </ul></div>
-            ` : ''}
-          `;
-
-          modalBody.innerHTML = html;
-
-          modal.classList.remove('modal-public', 'modal-members', 'modal-officers');
-          modal.classList.add(`modal-${accessType}`);
-          modal.classList.add('active');
-        } catch (err) {
-          console.error("Error opening event modal:", err);
-          alert("Something went wrong loading this event.");
-        }
-      });
-    });
-  }
-
-
-  // === VIEW EVENT LOGIC ===
   import("https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js").then(({ initializeApp }) => {
     import("https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js").then(({ getFirestore, collection, getDocs, doc, getDoc }) => {
+      
       const firebaseConfig = {
         apiKey: "AIzaSyChVYbT54aRIbAHyy_HRsH7caRHyaZwWTA",
         authDomain: "eaglesbreedmico.firebaseapp.com",
@@ -161,7 +14,150 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
-      firebase.firestoreInstance = db; // store globally
+
+      // === MONTHLY CALENDAR LOGIC ===
+      const monthButtons = document.querySelectorAll(".month-btn");
+      const popup = document.getElementById("calendar-popup");
+      const closeBtn = document.querySelector(".close-btn");
+      const calendarDiv = document.getElementById("calendar");
+      const monthTitle = document.getElementById("popup-month-title");
+
+      const months = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ];
+
+      function getDaysInMonth(year, monthIndex) {
+        return new Date(year, monthIndex + 1, 0).getDate();
+      }
+  
+      function getFirstDayOfMonth(year, monthIndex) {
+        return new Date(year, monthIndex, 1).getDay();
+      }
+
+      async function generateCalendar(month, year = new Date().getFullYear()) {
+        calendarDiv.innerHTML = `
+          <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+        `;
+    
+        const date = new Date(`${year}-${month}-01`);
+        const firstDay = date.getDay();
+        const totalDays = getDaysInMonth(year, parseInt(month) - 1);
+
+        // Load events for this month from Firestore
+        const eventsSnap = await getDocs(collection(db, "Events"));
+        const eventsByDate = {};
+    
+        eventsSnap.forEach(doc => {
+          const data = doc.data();
+          const eventDate = new Date(data.date);
+          const eventMonth = String(eventDate.getMonth() + 1).padStart(2, '0');
+          const eventDay = eventDate.getDate();
+          const eventYear = eventDate.getFullYear();
+    
+          if (eventMonth === month && eventYear === year) {
+            eventsByDate[eventDay] = (data.type || 'public').toLowerCase();
+          }
+        });
+
+        for (let i = 0; i < firstDay; i++) {
+          calendarDiv.innerHTML += `<div></div>`;
+        }
+
+        for (let day = 1; day <= totalDays; day++) {
+          const eventType = eventsByDate[day];
+          let color = 'white';
+          if (eventType === 'public') color = '#000';
+          else if (eventType === 'members') color = '#2980b9';
+          else if (eventType === 'officers') color = '#c0392b';
+
+          const style = eventType ? `style="background:${color}; color: white;"` : '';
+          if (eventType) {
+            calendarDiv.innerHTML += `
+              <div class="calendar-day" data-day="${day}" data-month="${month}" data-year="${year}" data-type="${eventType}" ${style}>
+                ${day}
+              </div>`;
+          } else {
+            calendarDiv.innerHTML += `<div>${day}</div>`;
+          }
+        }
+
+        // Add click listeners for days with events
+        const dayCells = calendarDiv.querySelectorAll(".calendar-day");
+        dayCells.forEach(cell => {
+          cell.addEventListener("click", async () => {
+            const day = cell.getAttribute("data-day");
+            const month = cell.getAttribute("data-month");
+            const year = cell.getAttribute("data-year");
+            const dateStr = `${year}-${month.padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+      
+            try {
+              const querySnapshot = await getDocs(collection(db, "Events"));
+              let foundEvent = null;
+              querySnapshot.forEach(docSnap => {
+                const event = docSnap.data();
+                if (event.date === dateStr) {
+                  foundEvent = { ...event, id: docSnap.id };
+                }
+              });
+      
+              if (!foundEvent) {
+                alert("No event found on this day.");
+                return;
+              }
+      
+              const modal = document.getElementById('eventModal');
+              const modalBody = document.getElementById('eventModalBody');
+              const accessType = (foundEvent.type || 'public').toLowerCase();
+      
+              const flyer = foundEvent.flyerUrl ? `<p><strong>Flyer:</strong> <a href="${foundEvent.flyerUrl}" target="_blank">View Flyer</a></p>` : "";
+      
+              const html = `
+                <h2>${foundEvent.title || 'Untitled Event'}</h2>
+                <p><strong>Beneficiary:</strong> ${foundEvent.who || 'N/A'}</p>
+                <p><strong>Purpose:</strong> ${foundEvent.reason || 'N/A'}</p>
+                <p><strong>Event Type:</strong> ${foundEvent.eventType || 'N/A'}</p>
+                <p><strong>Description:</strong> ${foundEvent.description || 'N/A'}</p>
+                <p><strong>Date:</strong> ${foundEvent.date || 'N/A'}</p>
+                <p><strong>Time:</strong> ${foundEvent.time || 'N/A'}</p>
+                <p><strong>Location:</strong> ${foundEvent.location || 'N/A'}</p>
+                <p class="access-${accessType}"><strong>Access:</strong> ${foundEvent.type || 'N/A'}</p>
+                <p><strong>Archived:</strong> ${foundEvent.archived ? 'Yes' : 'No'}</p>
+                ${flyer}
+                ${foundEvent.notes?.length ? `
+                  <div><strong>Notes:</strong><ul>
+                    ${foundEvent.notes.map(note => `<li>${note}</li>`).join('')}
+                  </ul></div>
+                ` : ''}
+              `;
+      
+              modalBody.innerHTML = html;
+              modal.classList.remove('modal-public', 'modal-members', 'modal-officers');
+              modal.classList.add(`modal-${accessType}`);
+              modal.classList.add('active');
+            } catch (err) {
+              console.error("Error opening event modal:", err);
+              alert("Something went wrong loading this event.");
+            }
+          });
+        });
+      }
+
+      // Setup event listeners for month buttons
+      monthButtons.forEach(button => {
+        button.addEventListener("click", () => {
+          const month = button.getAttribute("data-month");
+          monthTitle.textContent = `${months[parseInt(month) - 1]} 2025`;
+          generateCalendar(month);
+          popup.style.display = "block";
+        });
+      });
+
+      closeBtn.addEventListener("click", () => {
+        popup.style.display = "none";
+      });
+
+      // === VIEW EVENT LOGIC ===
 
       const viewBtn = document.getElementById('viewEventBtn');
       const viewSelect = document.getElementById('viewEventSelector');
@@ -173,7 +169,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       let lastViewedEventHTML = "";
 
-      // Load events into dropdown on page load
       async function populateViewEventSelector() {
         try {
           const querySnapshot = await getDocs(collection(db, "Events"));
@@ -190,15 +185,8 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       populateViewEventSelector();
 
-      // Debug check - confirm elements grabbed
-      console.log("View Button:", viewBtn);
-      console.log("View Selector:", viewSelect);
-
-      // Show event modal on click
       viewBtn?.addEventListener('click', async () => {
-        console.log("View button clicked");
         const selectedId = viewSelect?.value;
-        console.log("Selected ID:", selectedId);
         if (!selectedId) {
           alert("Please select an event to view.");
           return;
@@ -206,14 +194,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
           const docSnap = await getDoc(doc(db, "Events", selectedId));
-          console.log("Doc snapshot exists:", docSnap.exists());
           if (!docSnap.exists()) {
             alert("Event not found.");
             return;
           }
 
           const event = docSnap.data();
-          console.log("Event data:", event);
 
           const flyer = event.flyerUrl ? `<p><strong>Flyer:</strong> <a href="${event.flyerUrl}" target="_blank">View Flyer</a></p>` : "";
 
@@ -241,30 +227,26 @@ document.addEventListener("DOMContentLoaded", () => {
           modalBody.innerHTML = html;
           lastViewedEventHTML = html;
 
-          // Remove old access classes
           modal.classList.remove('modal-public', 'modal-members', 'modal-officers');
 
-          // Add new class for border color
           if(['public','members','officers'].includes(accessType)) {
             modal.classList.add(`modal-${accessType}`);
           } else {
             modal.classList.add('modal-public');
           }
 
-          modal.classList.add('active'); // SHOW modal
+          modal.classList.add('active');
         } catch (err) {
           console.error("Error loading event:", err);
           alert("Failed to load event.");
         }
       });
 
-      // Close modal on X or outside click
       closeModal?.addEventListener('click', () => modal.classList.remove('active'));
       window.addEventListener('click', (e) => {
         if (e.target === modal) modal.classList.remove('active');
       });
 
-      // Print and download buttons
       printBtn?.addEventListener('click', () => {
         const printWindow = window.open('', '', 'width=800,height=600');
         printWindow.document.write(`<!DOCTYPE html><html><head><title>Event</title></head><body>${lastViewedEventHTML}</body></html>`);
@@ -286,5 +268,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
   });
-
 });
