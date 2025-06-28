@@ -11,17 +11,13 @@ document.addEventListener("DOMContentLoaded", () => {
     "July", "August", "September", "October", "November", "December"
   ];
 
-  const daysInMonth = {
-    "01": 31, "02": 28, "03": 31, "04": 30,
-    "05": 31, "06": 30, "07": 31, "08": 31,
-    "09": 30, "10": 31, "11": 30, "12": 31
-  };
-
-  const firstDayOfMonth2025 = {
-    "01": 3, "02": 6, "03": 6, "04": 2,
-    "05": 4, "06": 7, "07": 2, "08": 5,
-    "09": 1, "10": 3, "11": 6, "12": 1
-  };
+  function getDaysInMonth(year, monthIndex) {
+    return new Date(year, monthIndex + 1, 0).getDate();
+  }
+  
+  function getFirstDayOfMonth(year, monthIndex) {
+    return new Date(year, monthIndex, 1).getDay(); // Sunday = 0, Monday = 1, etc.
+  }
 
   monthButtons.forEach(button => {
     button.addEventListener("click", () => {
@@ -36,21 +32,26 @@ document.addEventListener("DOMContentLoaded", () => {
     popup.style.display = "none";
   });
 
-  function generateCalendar(month) {
+   function generateCalendar(monthStr) {
     calendarDiv.innerHTML = `
-      <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+      <div>Sun</div><div>Mon</div><div>Tue</div>
+      <div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
     `;
-
-    const firstDay = firstDayOfMonth2025[month];
-    const totalDays = daysInMonth[month];
-
+  
+    const year = new Date().getFullYear(); // Or let the user choose later
+    const monthIndex = parseInt(monthStr, 10) - 1;
+    const firstDay = getFirstDayOfMonth(year, monthIndex);
+    const totalDays = getDaysInMonth(year, monthIndex);
+  
     for (let i = 0; i < firstDay; i++) {
       calendarDiv.innerHTML += `<div></div>`;
     }
-
+  
     for (let day = 1; day <= totalDays; day++) {
       calendarDiv.innerHTML += `<div>${day}</div>`;
     }
+  
+    monthTitle.textContent = `${months[monthIndex]} ${year}`;
   }
 
   // === VIEW EVENT LOGIC ===
