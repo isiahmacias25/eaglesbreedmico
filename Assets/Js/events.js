@@ -6,6 +6,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const calendarDiv = document.getElementById("calendar");
   const monthTitle = document.getElementById("popup-month-title");
 
+  const year = new Date().getFullYear(); // You could also let user pick year later
+  monthTitle.textContent = `${months[parseInt(month) - 1]} ${year}`;
+  generateCalendar(month, year);
+
   const months = [
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
@@ -32,27 +36,49 @@ document.addEventListener("DOMContentLoaded", () => {
     popup.style.display = "none";
   });
 
-   function generateCalendar(monthStr) {
+   async function generateCalendar(month, year = new Date().getFullYear()) {
     calendarDiv.innerHTML = `
-      <div>Sun</div><div>Mon</div><div>Tue</div>
-      <div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+      <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
     `;
   
-    const year = new Date().getFullYear(); // Or let the user choose later
-    const monthIndex = parseInt(monthStr, 10) - 1;
-    const firstDay = getFirstDayOfMonth(year, monthIndex);
-    const totalDays = getDaysInMonth(year, monthIndex);
+    const date = new Date(`${year}-${month}-01`);
+    const firstDay = date.getDay();
+    const totalDays = new Date(year, parseInt(month), 0).getDate();
   
+    // Load events for this month
+    const db = getFirestore();
+    const eventsSnap = await getDocs(collection(db, "Events"));
+    const eventsByDate = {};
+  
+    eventsSnap.forEach(doc => {
+      const data = doc.data();
+      const eventDate = new Date(data.date);
+      const eventMonth = String(eventDate.getMonth() + 1).padStart(2, '0');
+      const eventDay = eventDate.getDate();
+      const eventYear = eventDate.getFullYear();
+  
+      if (eventMonth === month && eventYear === year) {
+        eventsByDate[eventDay] = (data.type || 'public').toLowerCase(); // public, members, officers
+      }
+    });
+  
+    // Empty cells before start of month
     for (let i = 0; i < firstDay; i++) {
       calendarDiv.innerHTML += `<div></div>`;
     }
   
     for (let day = 1; day <= totalDays; day++) {
-      calendarDiv.innerHTML += `<div>${day}</div>`;
-    }
+      const eventType = eventsByDate[day];
+      let color = 'white';
+      if (eventType === 'public') color = '#000';       // black
+      else if (eventType === 'members') color = '#2980b9'; // blue
+      else if (eventType === 'officers') color = '#c0392b'; // red
   
-    monthTitle.textContent = `${months[monthIndex]} ${year}`;
+      const style = eventType ? `style="background:${color}; color: white;"` : '';
+      calendarDiv.innerHTML += `<div ${style}>${day}</div>`;
+    }
   }
+
 
   // === VIEW EVENT LOGIC ===
   import("https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js").then(({ initializeApp }) => {
