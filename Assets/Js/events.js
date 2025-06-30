@@ -138,11 +138,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       monthButtons.forEach(button => {
         button.addEventListener("click", () => {
-          const month = button.getAttribute("data-month");
-          monthTitle.textContent = `${months[parseInt(month) - 1]} 2025`;
-          generateCalendar(month);
-          popup.style.display = "block";
-        });
+        const month = button.getAttribute("data-month");
+        const currentYear = new Date().getFullYear(); // ✅ Dynamic year
+        monthTitle.textContent = `${months[parseInt(month) - 1]} ${currentYear}`;
+        generateCalendar(month, currentYear); // ✅ Pass actual year to calendar
+        popup.style.display = "block";
+      });
+
       });
 
       closeBtn.addEventListener("click", () => {
