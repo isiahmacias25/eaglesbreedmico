@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   import("https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js").then(({ initializeApp }) => {
     import("https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js").then(({ getFirestore, collection, getDocs, doc, getDoc }) => {
-      
+
       const firebaseConfig = {
         apiKey: "AIzaSyChVYbT54aRIbAHyy_HRsH7caRHyaZwWTA",
         authDomain: "eaglesbreedmico.firebaseapp.com",
@@ -30,10 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return new Date(year, monthIndex + 1, 0).getDate();
       }
 
-      function getFirstDayOfMonth(year, monthIndex) {
-        return new Date(year, monthIndex, 1).getDay();
-      }
-
       async function generateCalendar(month, year = new Date().getFullYear()) {
         calendarDiv.innerHTML = `
           <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
@@ -48,9 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         eventsSnap.forEach(doc => {
           const data = doc.data();
-
-          // ✅ Fix timezone shift bug
-          const eventDate = new Date(data.date + "T12:00:00");
+          const eventDate = new Date(data.date + "T12:00:00"); // ✅ FIXED
           const eventMonth = String(eventDate.getMonth() + 1).padStart(2, '0');
           const eventDay = eventDate.getDate();
           const eventYear = eventDate.getFullYear();
@@ -179,6 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
           console.error("Failed to load events for selector:", error);
         }
       }
+
       populateViewEventSelector();
 
       viewBtn?.addEventListener('click', async () => {
@@ -252,6 +247,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
       });
+
     });
   });
 });
