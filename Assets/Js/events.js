@@ -45,101 +45,81 @@ document.addEventListener("DOMContentLoaded", () => {
           const data = doc.data();
           if (!data.date) return;
 
-          // Timezone-safe parsing
           const eventDate = new Date(data.date + "T12:00:00");
-          const eventYear = eventDate.getFullYear();
-          const eventMonth = eventDate.getMonth() + 1;
-          const eventDay = eventDate.getDate();
+          const y = eventDate.getFullYear();
+          const m = eventDate.getMonth() + 1;
+          const d = eventDate.getDate();
+          const key = `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
 
-          if (eventYear === year && eventMonth === parseInt(month)) {
-            eventsByDate[eventDay] = (data.type || 'public').toLowerCase();
-          }
+          eventsByDate[key] = { ...data, id: doc.id };
         });
 
-        // Empty grid slots for previous month days
         for (let i = 0; i < firstDay; i++) {
           calendarDiv.innerHTML += `<div></div>`;
         }
 
         for (let day = 1; day <= totalDays; day++) {
-          const eventType = eventsByDate[day];
-          let color = 'white';
+          const dateKey = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+          const event = eventsByDate[dateKey];
+          const eventType = event?.type?.toLowerCase();
 
+          let color = 'white';
           if (eventType === 'public') color = '#000';
           else if (eventType === 'members') color = '#2980b9';
           else if (eventType === 'officers') color = '#c0392b';
 
           const style = eventType ? `style="background:${color}; color: white;"` : '';
           calendarDiv.innerHTML += `
-            <div class="calendar-day" data-day="${day}" data-month="${month}" data-year="${year}" data-type="${eventType || ''}" ${style}>
+            <div class="calendar-day" data-date="${dateKey}" ${style}>
               ${day}
             </div>`;
         }
 
-        // Handle clicks on event days
         calendarDiv.querySelectorAll(".calendar-day").forEach(cell => {
-          cell.addEventListener("click", async () => {
-            const day = cell.getAttribute("data-day");
-            const month = cell.getAttribute("data-month");
-            const year = cell.getAttribute("data-year");
-            const dateStr = `${year}-${month.padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+          cell.addEventListener("click", () => {
+            const date = cell.getAttribute("data-date");
+            const event = eventsByDate[date];
 
-            try {
-              const querySnapshot = await getDocs(collection(db, "Events"));
-              let foundEvent = null;
-
-              querySnapshot.forEach(docSnap => {
-                const event = docSnap.data();
-                if (event.date === dateStr) {
-                  foundEvent = { ...event, id: docSnap.id };
-                }
-              });
-
-              if (!foundEvent) {
-                alert("No event found on this day.");
-                return;
-              }
-
-              const modal = document.getElementById('eventModal');
-              const modalBody = document.getElementById('eventModalBody');
-              const accessType = (foundEvent.type || 'public').toLowerCase();
-              const flyer = foundEvent.flyerUrl ? `<p><strong>Flyer:</strong> <a href="${foundEvent.flyerUrl}" target="_blank">View Flyer</a></p>` : "";
-
-              const html = `
-                <h2>${foundEvent.title || 'Untitled Event'}</h2>
-                <p><strong>Beneficiary:</strong> ${foundEvent.who || 'N/A'}</p>
-                <p><strong>Purpose:</strong> ${foundEvent.reason || 'N/A'}</p>
-                <p><strong>Event Type:</strong> ${foundEvent.eventType || 'N/A'}</p>
-                <p><strong>Description:</strong> ${foundEvent.description || 'N/A'}</p>
-                <p><strong>Date:</strong> ${foundEvent.date || 'N/A'}</p>
-                <p><strong>Time:</strong> ${foundEvent.time || 'N/A'}</p>
-                <p><strong>Location:</strong> ${foundEvent.location || 'N/A'}</p>
-                <p class="access-${accessType}"><strong>Access:</strong> ${foundEvent.type || 'N/A'}</p>
-                <p><strong>Archived:</strong> ${foundEvent.archived ? 'Yes' : 'No'}</p>
-                ${flyer}
-                ${foundEvent.notes?.length ? `
-                  <div><strong>Notes:</strong><ul>
-                    ${foundEvent.notes.map(note => `<li>${note}</li>`).join('')}
-                  </ul></div>` : ''}
-              `;
-
-              modalBody.innerHTML = html;
-              modal.classList.remove('modal-public', 'modal-members', 'modal-officers');
-              modal.classList.add(`modal-${accessType}`, 'active');
-            } catch (err) {
-              console.error("Error opening event modal:", err);
-              alert("Something went wrong loading this event.");
+            if (!event) {
+              alert("No event found on this day.");
+              return;
             }
+
+            const modal = document.getElementById('eventModal');
+            const modalBody = document.getElementById('eventModalBody');
+            const accessType = (event.type || 'public').toLowerCase();
+            const flyer = event.flyerUrl ? `<p><strong>Flyer:</strong> <a href="${event.flyerUrl}" target="_blank">View Flyer</a></p>` : "";
+
+            const html = `
+              <h2>${event.title || 'Untitled Event'}</h2>
+              <p><strong>Beneficiary:</strong> ${event.who || 'N/A'}</p>
+              <p><strong>Purpose:</strong> ${event.reason || 'N/A'}</p>
+              <p><strong>Event Type:</strong> ${event.eventType || 'N/A'}</p>
+              <p><strong>Description:</strong> ${event.description || 'N/A'}</p>
+              <p><strong>Date:</strong> ${event.date || 'N/A'}</p>
+              <p><strong>Time:</strong> ${event.time || 'N/A'}</p>
+              <p><strong>Location:</strong> ${event.location || 'N/A'}</p>
+              <p class="access-${accessType}"><strong>Access:</strong> ${event.type || 'N/A'}</p>
+              <p><strong>Archived:</strong> ${event.archived ? 'Yes' : 'No'}</p>
+              ${flyer}
+              ${event.notes?.length ? `
+                <div><strong>Notes:</strong><ul>
+                  ${event.notes.map(note => `<li>${note}</li>`).join('')}
+                </ul></div>` : ''}
+            `;
+
+            modalBody.innerHTML = html;
+            modal.classList.remove('modal-public', 'modal-members', 'modal-officers');
+            modal.classList.add(`modal-${accessType}`, 'active');
           });
         });
       }
 
-      // Month button click
       monthButtons.forEach(button => {
         button.addEventListener("click", () => {
-          const month = button.getAttribute("data-month");
-          const currentYear = new Date().getFullYear(); // 🔁 auto adjust year
-          monthTitle.textContent = `${months[parseInt(month) - 1]} ${currentYear}`;
+          const month = parseInt(button.getAttribute("data-month"));
+          const currentYear = new Date().getFullYear();
+          monthTitle.textContent = `${months[month - 1]} ${currentYear}`;
           generateCalendar(month, currentYear);
           popup.style.display = "block";
         });
