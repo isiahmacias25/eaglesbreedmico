@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
 
-      // === MONTHLY CALENDAR LOGIC ===
       const monthButtons = document.querySelectorAll(".month-btn");
       const popup = document.getElementById("calendar-popup");
       const closeBtn = document.querySelector(".close-btn");
@@ -30,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
       function getDaysInMonth(year, monthIndex) {
         return new Date(year, monthIndex + 1, 0).getDate();
       }
-  
+
       function getFirstDayOfMonth(year, monthIndex) {
         return new Date(year, monthIndex, 1).getDay();
       }
@@ -39,22 +38,23 @@ document.addEventListener("DOMContentLoaded", () => {
         calendarDiv.innerHTML = `
           <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
         `;
-    
+
         const date = new Date(`${year}-${month}-01`);
         const firstDay = date.getDay();
         const totalDays = getDaysInMonth(year, parseInt(month) - 1);
 
-        // Load events for this month from Firestore
         const eventsSnap = await getDocs(collection(db, "Events"));
         const eventsByDate = {};
-    
+
         eventsSnap.forEach(doc => {
           const data = doc.data();
-          const eventDate = new Date(data.date);
+
+          // ✅ Fix timezone shift bug
+          const eventDate = new Date(data.date + "T12:00:00");
           const eventMonth = String(eventDate.getMonth() + 1).padStart(2, '0');
           const eventDay = eventDate.getDate();
           const eventYear = eventDate.getFullYear();
-    
+
           if (eventMonth === month && eventYear === year) {
             eventsByDate[eventDay] = (data.type || 'public').toLowerCase();
           }
@@ -82,7 +82,6 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }
 
-        // Add click listeners for days with events
         const dayCells = calendarDiv.querySelectorAll(".calendar-day");
         dayCells.forEach(cell => {
           cell.addEventListener("click", async () => {
@@ -90,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const month = cell.getAttribute("data-month");
             const year = cell.getAttribute("data-year");
             const dateStr = `${year}-${month.padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-      
+
             try {
               const querySnapshot = await getDocs(collection(db, "Events"));
               let foundEvent = null;
@@ -100,18 +99,18 @@ document.addEventListener("DOMContentLoaded", () => {
                   foundEvent = { ...event, id: docSnap.id };
                 }
               });
-      
+
               if (!foundEvent) {
                 alert("No event found on this day.");
                 return;
               }
-      
+
               const modal = document.getElementById('eventModal');
               const modalBody = document.getElementById('eventModalBody');
               const accessType = (foundEvent.type || 'public').toLowerCase();
-      
+
               const flyer = foundEvent.flyerUrl ? `<p><strong>Flyer:</strong> <a href="${foundEvent.flyerUrl}" target="_blank">View Flyer</a></p>` : "";
-      
+
               const html = `
                 <h2>${foundEvent.title || 'Untitled Event'}</h2>
                 <p><strong>Beneficiary:</strong> ${foundEvent.who || 'N/A'}</p>
@@ -130,7 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   </ul></div>
                 ` : ''}
               `;
-      
+
               modalBody.innerHTML = html;
               modal.classList.remove('modal-public', 'modal-members', 'modal-officers');
               modal.classList.add(`modal-${accessType}`);
@@ -143,7 +142,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
 
-      // Setup event listeners for month buttons
       monthButtons.forEach(button => {
         button.addEventListener("click", () => {
           const month = button.getAttribute("data-month");
@@ -156,8 +154,6 @@ document.addEventListener("DOMContentLoaded", () => {
       closeBtn.addEventListener("click", () => {
         popup.style.display = "none";
       });
-
-      // === VIEW EVENT LOGIC ===
 
       const viewBtn = document.getElementById('viewEventBtn');
       const viewSelect = document.getElementById('viewEventSelector');
@@ -200,9 +196,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
 
           const event = docSnap.data();
-
           const flyer = event.flyerUrl ? `<p><strong>Flyer:</strong> <a href="${event.flyerUrl}" target="_blank">View Flyer</a></p>` : "";
-
           const accessType = (event.type || 'public').toLowerCase();
 
           const html = `
@@ -226,15 +220,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
           modalBody.innerHTML = html;
           lastViewedEventHTML = html;
-
           modal.classList.remove('modal-public', 'modal-members', 'modal-officers');
-
-          if(['public','members','officers'].includes(accessType)) {
-            modal.classList.add(`modal-${accessType}`);
-          } else {
-            modal.classList.add('modal-public');
-          }
-
+          modal.classList.add(`modal-${accessType}`);
           modal.classList.add('active');
         } catch (err) {
           console.error("Error loading event:", err);
@@ -265,7 +252,6 @@ document.addEventListener("DOMContentLoaded", () => {
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
       });
-
     });
   });
 });
