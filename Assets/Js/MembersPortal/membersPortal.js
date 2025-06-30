@@ -1,8 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-
 
 // Firebase configuration
 const firebaseConfig = {
@@ -24,7 +22,7 @@ const db = getFirestore(app);
 function logoutUser() {
   console.log("Logging out due to inactivity...");
   localStorage.clear();
-  window.location.href = "../../../MembersPortal/membersPortal.html";
+  window.location.href = "/MembersPortal/membersPortal.html";
 }
 
 // Function to update last activity timestamp
@@ -51,7 +49,6 @@ document.addEventListener("DOMContentLoaded", function () {
   checkSession();
   checkInactivity(); // Check immediately on page load
 
-  // Set up login form submission
   const loginForm = document.getElementById("loginForm");
   const loginError = document.getElementById("loginError");
 
@@ -83,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
         updateLastActivity();
 
         console.log("Login successful. Redirecting to members portal...");
-        window.location.href = "../../../MembersPortal/membersPortal.html";
+        window.location.href = "/MembersPortal/membersPortal.html";
       } catch (error) {
         console.error("Login error:", error);
         let errorMessage = "An error occurred. Please try again.";
@@ -160,7 +157,6 @@ function checkSession() {
   }
 }
 
-
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     const uid = user.uid;
@@ -210,10 +206,11 @@ onAuthStateChanged(auth, async (user) => {
     }
 
   } else {
-    window.location.href = "/MembersPortal/membersPortal.html";
+    if (!window.location.pathname.includes("membersPortal.html")) {
+      window.location.href = "/MembersPortal/membersPortal.html";
+    }
   }
 });
-
 
 document.addEventListener("DOMContentLoaded", () => {
   const username = localStorage.getItem("username");
