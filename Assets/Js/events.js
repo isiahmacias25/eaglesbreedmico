@@ -48,6 +48,28 @@ document.addEventListener("DOMContentLoaded", () => {
       return null;
     }
 
+    // Create a promise that resolves once user role is ready
+    let roleReadyResolve;
+    const roleReady = new Promise((resolve) => {
+      roleReadyResolve = resolve;
+    });
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        currentUserRole = await fetchUserRole(user.uid);
+      } else {
+        currentUserRole = null;
+      }
+      roleReadyResolve();
+    });
+
+    // Disable buttons until role is ready
+    monthButtons.forEach(btn => btn.disabled = true);
+
+    roleReady.then(() => {
+      monthButtons.forEach(btn => btn.disabled = false);
+    });
+
     async function generateCalendar(month, year) {
       calendarDiv.innerHTML = `
         <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
@@ -153,17 +175,9 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    // Auth state listener to get current user role, then generate calendar buttons
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        currentUserRole = await fetchUserRole(user.uid);
-      } else {
-        currentUserRole = null;
-      }
-    });
-
     monthButtons.forEach(button => {
-      button.addEventListener("click", () => {
+      button.addEventListener("click", async () => {
+        await roleReady; // wait for role ready before generating calendar
         const month = parseInt(button.getAttribute("data-month"));
         const currentYear = new Date().getFullYear();
         monthTitle.textContent = `${months[month - 1]} ${currentYear}`;
@@ -202,6 +216,7 @@ document.addEventListener("DOMContentLoaded", () => {
     populateViewEventSelector();
 
     viewBtn?.addEventListener('click', async () => {
+      await roleReady; // ensure role is ready before showing event
       const selectedId = viewSelect?.value;
       if (!selectedId) {
         alert("Please select an event to view.");
@@ -217,7 +232,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const event = docSnap.data();
         const accessType = (event.type || 'public').toLowerCase();
-        // Restrict access here too
         if (accessType === 'members' && !(currentUserRole === 'members' || currentUserRole === 'officers')) {
           alert("You must be logged in as a member or officer to view this event.");
           return;
@@ -263,7 +277,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     printBtn?.addEventListener('click', () => {
-      const modalBody = document.getElementById('eventModalBody');
       const content = modalBody?.innerHTML || '';
 
       if (!content.trim()) {
@@ -278,7 +291,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     downloadBtn?.addEventListener('click', () => {
-      const modalBody = document.getElementById('eventModalBody');
       const content = modalBody?.innerHTML || '';
 
       if (!content.trim()) {
