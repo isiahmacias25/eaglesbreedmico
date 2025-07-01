@@ -39,6 +39,8 @@ document.addEventListener("DOMContentLoaded", () => {
     async function fetchUserRole(uid) {
       try {
         const userDoc = await getDoc(doc(db, "Users", uid));
+        console.log("Fetched doc:", userDoc.exists(), userDoc.data()); // <-- this will help
+
         if (userDoc.exists()) {
           return userDoc.data().role || null;
         }
