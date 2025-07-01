@@ -137,11 +137,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
           const eventType = event?.type?.toLowerCase();
           // Check access again before showing modal
-          if (eventType === 'members' && !(currentUserRole === 'members' || currentUserRole === 'officers')) {
+          if (eventType === 'members' && !(currentUserRole === 'Brother' || currentUserRole === 'Officer'|| currentUserRole === 'sister')) {
             alert("You must be logged in as a member or officer to view this event.");
             return;
           }
-          if (eventType === 'officers' && currentUserRole !== 'officers') {
+          if (eventType === 'officers' && currentUserRole !== 'Officer') {
             alert("You must be logged in as an officer to view this event.");
             return;
           }
