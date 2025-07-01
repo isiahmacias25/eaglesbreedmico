@@ -206,23 +206,40 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       printBtn?.addEventListener('click', () => {
+        const modalBody = document.getElementById('eventModalBody');
+        const content = modalBody?.innerHTML || '';
+      
+        if (!content.trim()) {
+          alert("No event loaded to print.");
+          return;
+        }
+      
         const printWindow = window.open('', '', 'width=800,height=600');
-        printWindow.document.write(`<!DOCTYPE html><html><head><title>Event</title></head><body>${lastViewedEventHTML}</body></html>`);
+        printWindow.document.write(`<!DOCTYPE html><html><head><title>Event</title></head><body>${content}</body></html>`);
         printWindow.document.close();
         printWindow.print();
       });
 
+
       downloadBtn?.addEventListener('click', () => {
-        const blob = new Blob([lastViewedEventHTML], { type: "text/html" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "event.html";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-      });
+      const modalBody = document.getElementById('eventModalBody');
+      const content = modalBody?.innerHTML || '';
+    
+      if (!content.trim()) {
+        alert("No event loaded to download.");
+        return;
+      }
+    
+      const blob = new Blob([content], { type: "text/html" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "event.html";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
     });
   });
 });
