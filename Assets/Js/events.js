@@ -130,7 +130,6 @@ document.addEventListener("DOMContentLoaded", () => {
           const event = eventsByDate[date];
 
           if (!event) {
-            alert("No event found on this day.");
             return;
           }
 
