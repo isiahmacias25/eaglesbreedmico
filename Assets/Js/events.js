@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function fetchUserRole(uid) {
       try {
-        const userDoc = await getDoc(doc(db, "Users", uid));
+        const userDoc = await getDoc(doc(db, "users", uid));
         if (userDoc.exists()) {
           return userDoc.data().role || null;
         }
@@ -130,6 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const event = eventsByDate[date];
 
           if (!event) {
+            alert("No event found on this day.");
             return;
           }
 
