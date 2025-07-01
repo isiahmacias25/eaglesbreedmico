@@ -195,3 +195,15 @@
 .event-modal-content h2.access-officers {
   color: #c0392b; /* Red */
 }
+
+.archiveBtn {
+  display: inline-block;
+  margin: 5px 10px 15px 0;
+  padding: 8px 16px;
+  width: 100%;
+  background-color: #444;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
