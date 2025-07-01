@@ -1,5 +1,10 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { 
+  getAuth, 
+  signInWithEmailAndPassword, 
+  onAuthStateChanged, 
+  signOut 
+} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
 // Firebase configuration
@@ -21,8 +26,17 @@ const db = getFirestore(app);
 // Function to log out and clear localStorage
 function logoutUser() {
   console.log("Logging out due to inactivity...");
-  localStorage.clear();
-  window.location.href = "/MembersPortal/membersPortal.html";
+  signOut(auth)
+    .then(() => {
+      localStorage.clear();
+      window.location.href = "/MembersPortal/membersPortal.html";
+    })
+    .catch((error) => {
+      console.error("Logout error:", error);
+      // Still clear localStorage and redirect even if signOut fails, to avoid stuck state
+      localStorage.clear();
+      window.location.href = "/MembersPortal/membersPortal.html";
+    });
 }
 
 // Function to update last activity timestamp
@@ -43,7 +57,37 @@ function checkInactivity() {
   }
 }
 
-// Check session on page load and show/hide content accordingly
+// Function to check session and update UI
+function checkSession() {
+  const token = localStorage.getItem("token");
+  const username = localStorage.getItem("username");
+
+  const loginForm = document.getElementById("loginForm");
+  const membersContent = document.getElementById("membersContent");
+  const membersSubNav = document.getElementById("membersSubNav");
+  const welcomeContainer = document.getElementById("welcomeContainer");
+  const welcomeMessage = document.getElementById("welcomeMessage");
+  const mustLogin = document.getElementById("mustLogin");
+
+  if (!token || !username) {
+    loginForm?.classList.remove("hidden");
+    membersContent?.classList.add("hidden");
+    membersSubNav?.classList.add("hidden");
+    welcomeContainer?.classList.add("hidden");
+    mustLogin?.classList.remove("hidden");
+  } else {
+    loginForm?.classList.add("hidden");
+    membersContent?.classList.remove("hidden");
+    membersSubNav?.classList.remove("hidden");
+    if (welcomeMessage) {
+      welcomeMessage.textContent = `Welcome, ${username}!`;
+      welcomeMessage.classList.remove("hidden");
+      welcomeContainer?.classList.remove("hidden");
+    }
+    mustLogin?.classList.add("hidden");
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   console.log("Checking session on page load...");
   checkSession();
@@ -124,38 +168,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Check inactivity every minute
   setInterval(checkInactivity, 60 * 1000);
-});
 
-// Function to check session and update UI
-function checkSession() {
-  const token = localStorage.getItem("token");
+  // Extra console logging on load
   const username = localStorage.getItem("username");
-
-  const loginForm = document.getElementById("loginForm");
-  const membersContent = document.getElementById("membersContent");
-  const membersSubNav = document.getElementById("membersSubNav");
-  const welcomeContainer = document.getElementById("welcomeContainer");
-  const welcomeMessage = document.getElementById("welcomeMessage");
-  const mustLogin = document.getElementById("mustLogin");
-
-  if (!token || !username) {
-    loginForm?.classList.remove("hidden");
-    membersContent?.classList.add("hidden");
-    membersSubNav?.classList.add("hidden");
-    welcomeContainer?.classList.add("hidden");
-    mustLogin?.classList.remove("hidden");
-  } else {
-    loginForm?.classList.add("hidden");
-    membersContent?.classList.remove("hidden");
-    membersSubNav?.classList.remove("hidden");
-    if (welcomeMessage) {
-      welcomeMessage.textContent = `Welcome, ${username}!`;
-      welcomeMessage.classList.remove("hidden");
-      welcomeContainer?.classList.remove("hidden");
+  const token = localStorage.getItem("token");
+  const loginFormCheck = document.getElementById("loginForm");
+  if (loginFormCheck) {
+    if (username && token) {
+      loginFormCheck.style.display = "none";
+    } else {
+      loginFormCheck.style.display = "block";
     }
-    mustLogin?.classList.add("hidden");
   }
-}
+  console.log("Username from localStorage:", username);
+  console.log("Token from localStorage:", token);
+});
 
 onAuthStateChanged(auth, async (user) => {
   if (user) {
@@ -210,21 +237,4 @@ onAuthStateChanged(auth, async (user) => {
       window.location.href = "/MembersPortal/membersPortal.html";
     }
   }
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  const username = localStorage.getItem("username");
-  const token = localStorage.getItem("token");
-
-  const loginForm = document.getElementById("loginForm");
-  if (loginForm) {
-    if (username && token) {
-      loginForm.style.display = "none";
-    } else {
-      loginForm.style.display = "block";
-    }
-  }
-
-  console.log("Username from localStorage:", username);
-  console.log("Token from localStorage:", token);
 });
