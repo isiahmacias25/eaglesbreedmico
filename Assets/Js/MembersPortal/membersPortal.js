@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
         updateLastActivity();
 
         console.log("Login successful. Redirecting to members portal...");
-        window.location.href = "/MembersPortal/membersPortal.html";
+        checksession();
       } catch (error) {
         console.error("Login error:", error);
         let errorMessage = "An error occurred. Please try again.";
@@ -232,9 +232,11 @@ onAuthStateChanged(auth, async (user) => {
       console.error("🔥 Error checking user role:", err);
     }
 
-  } else {
-    if (!window.location.pathname.includes("membersPortal.html")) {
+  }  if (!window.location.pathname.includes("membersPortal.html")) {
       window.location.href = "/MembersPortal/membersPortal.html";
+    } else {
+      // If already on portal page, just show the login form
+      checkSession();
     }
   }
 });
