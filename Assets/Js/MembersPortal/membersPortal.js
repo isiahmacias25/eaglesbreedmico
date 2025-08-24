@@ -232,10 +232,13 @@ onAuthStateChanged(auth, async (user) => {
       console.error("🔥 Error checking user role:", err);
     }
 
-  }  if (!window.location.pathname.includes("membersPortal.html")) {
+  } else {
+    // Redirect ONLY if you're not already on the portal page
+    if (!window.location.pathname.includes("membersPortal.html")) {
       window.location.href = "/MembersPortal/membersPortal.html";
     } else {
       // If already on portal page, just show the login form
       checkSession();
     }
+  }
 });
