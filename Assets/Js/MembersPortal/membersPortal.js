@@ -238,5 +238,4 @@ onAuthStateChanged(auth, async (user) => {
       // If already on portal page, just show the login form
       checkSession();
     }
-  }
 });
