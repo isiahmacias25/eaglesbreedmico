@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
         updateLastActivity();
 
         console.log("Login successful. Redirecting to members portal...");
-        checksession();
+        checkSession();
       } catch (error) {
         console.error("Login error:", error);
         let errorMessage = "An error occurred. Please try again.";
