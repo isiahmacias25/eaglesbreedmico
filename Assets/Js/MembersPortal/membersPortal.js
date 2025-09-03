@@ -173,6 +173,7 @@ onAuthStateChanged(auth, async (user) => {
       if (docSnap.exists()) {
         const data = docSnap.data();
         const role = data.role?.toLowerCase();
+
         switch (role) {
           case "officer":
             break;
@@ -195,16 +196,22 @@ onAuthStateChanged(auth, async (user) => {
       } else {
         window.location.href = "/unauthorized.html";
       }
-    } catch {}
+    } catch (err) {
+      console.error("Error checking user role:", err);
+    }
   } else {
-    const safePages = [
-      "/MembersPortal/membersPortal.html",
-      "/unauthorized.html"
+    const protectedPaths = [
+      "/EventManager",
+      "/SupportersManager",
+      "/MeetingMinutes"
     ];
-    if (!safePages.some(page => window.location.pathname.toLowerCase().includes(page.toLowerCase()))) {
+    const currentPath = window.location.pathname.toLowerCase();
+    const isProtected = protectedPaths.some(page => currentPath.includes(page.toLowerCase()));
+
+    if (isProtected) {
       window.location.href = "/MembersPortal/membersPortal.html";
     } else {
-      checkSession();
+      // public page, no redirect
     }
   }
 });
