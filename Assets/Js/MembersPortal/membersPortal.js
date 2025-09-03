@@ -201,7 +201,7 @@ onAuthStateChanged(auth, async (user) => {
       "/MembersPortal/membersPortal.html",
       "/unauthorized.html"
     ];
-    if (!safePages.includes(window.location.pathname)) {
+    if (!safePages.some(page => window.location.pathname.toLowerCase().includes(page.toLowerCase()))) {
       window.location.href = "/MembersPortal/membersPortal.html";
     } else {
       checkSession();
